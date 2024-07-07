@@ -9,6 +9,8 @@ Rails.application.routes.draw do
 
   get "/user_profile", to: "pages#user_profile"
 
+  resources :users, only: [:show, :edit, :update]
+
   # Defines the root path route ("/")
   # root "posts#index"
 end

@@ -13,19 +13,15 @@
   <%= f.text_field :last_name %>
 </div>
 
-<div class="field">
-  <%= f.label :date_joined %><br />
-  <%= f.date_select :date_joined %>
-</div>
 
 <div class="field">
   <%= f.label :profile_picture %><br />
-  <%= f.text_field :profile_picture %>
+<%= f.file_field :profile_picture %>
 </div>
 
 <div class="field">
   <%= f.label :govt_id_picture %><br />
-  <%= f.text_field :govt_id_picture %>
+<%= f.file_field :govt_id_picture %>
 </div>
 
 <div class="field">
