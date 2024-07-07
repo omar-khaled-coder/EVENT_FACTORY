@@ -10,6 +10,35 @@
       <p>Currently waiting confirmation for: <%= resource.unconfirmed_email %></p>
     <% end %>
 
+    <div>
+    <%= f.label :first_name %><br />
+    <%= f.text_field :first_name %>
+  </div>
+
+  <div>
+    <%= f.label :last_name %><br />
+    <%= f.text_field :last_name %>
+  </div>
+  <div>
+    <%= f.label :phone_number %><br />
+    <%= f.text_field :phone_number %>
+  </div>
+
+  <div>
+    <%= f.label :profile_picture %><br />
+    <%= f.file_field :profile_picture %>
+    <% if resource.profile_picture.present? %>
+      <%= image_tag resource.profile_picture, alt: 'Profile Picture', width: 100 %>
+    <% end %>
+  </div>
+
+  <div>
+    <%= f.label :govt_id_picture %><br />
+    <%= f.file_field :govt_id_picture %>
+    <% if resource.govt_id_picture.present? %>
+      <%= image_tag resource.govt_id_picture, alt: 'Government ID Picture', width: 100 %>
+    <% end %>
+  </div>
     <%= f.input :password,
                 hint: "leave it blank if you don't want to change it",
                 required: false,

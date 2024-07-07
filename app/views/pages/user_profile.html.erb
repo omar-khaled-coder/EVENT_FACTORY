@@ -1,4 +1,21 @@
 
-        <p>full name: <%= @user.first_name + " " + @user.last_name%></p>
-        <p>Email: <%=@user.email %></p>
-        <p>Phone nuber: <%=@user.phone_number %></p>
+<h1>Profile Page</h1>
+<p>Full name: <%= @user.first_name + " " + @user.last_name %></p>
+<p>Email: <%= @user.email %></p>
+<p>Phone number: <%= @user.phone_number %></p>
+<p>Date joined: <%= @user.created_at.strftime("%B %d, %Y") %></p>
+
+<% if @user.profile_picture.present? %>
+  <p>Profile picture:</p>
+  <%= image_tag @user.profile_picture, alt: 'Profile Picture' %>
+<% else %>
+  <p>No profile picture uploaded</p>
+<% end %>
+
+<% if @user.govt_id_picture.present? %>
+  <p>Government ID picture:</p>
+  <%= image_tag @user.govt_id_picture.url, alt: 'Government ID Picture' %>
+<% else %>
+  <p>No government ID picture uploaded</p>
+<% end %>
+<button type="button" class="btn btn-primary"><%= link_to "Edit Profile", edit_user_registration_path, class: "dropdown-item" %></button>
