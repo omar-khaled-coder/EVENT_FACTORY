@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_07_080551) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_09_040119) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -42,6 +42,29 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_07_080551) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "spaces", force: :cascade do |t|
+    t.bigint "owner_id", null: false
+    t.string "title"
+    t.text "description"
+    t.string "address"
+    t.string "city"
+    t.string "state"
+    t.string "country"
+    t.string "postal_code"
+    t.string "space_type"
+    t.integer "capacity"
+    t.json "amenities"
+    t.decimal "price_per_hour", precision: 10, scale: 2
+    t.decimal "price_per_day", precision: 10, scale: 2
+    t.date "start_date"
+    t.date "end_date"
+    t.boolean "is_hourly_available"
+    t.boolean "is_daily_available"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["owner_id"], name: "index_spaces_on_owner_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -61,4 +84,5 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_07_080551) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "spaces", "users", column: "owner_id"
 end
