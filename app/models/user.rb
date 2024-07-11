@@ -17,5 +17,9 @@ class User < ApplicationRecord
   #def set_date_joined
    # self.date_joined = Time.current
   #end
+
+  has_many :spaces, foreign_key: 'owner_id'
+
+
 end
 console

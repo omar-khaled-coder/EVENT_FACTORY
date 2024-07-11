@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_09_040119) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_11_101841) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -51,7 +51,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_09_040119) do
     t.string "state"
     t.string "country"
     t.string "postal_code"
-    t.string "space_type"
+    t.text "space_type", default: [], array: true
     t.integer "capacity"
     t.json "amenities"
     t.decimal "price_per_hour", precision: 10, scale: 2

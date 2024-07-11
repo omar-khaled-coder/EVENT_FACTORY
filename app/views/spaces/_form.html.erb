@@ -1,10 +1,12 @@
-
 <%= simple_form_for(@space) do |f| %>
   <%= f.error_notification %>
   <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
 
   <div class="form-inputs">
-    <%= f.association :owner %>
+    <div class="form-group">
+      <%= f.label :owner, 'Owner' %><br />
+      <%= "#{current_user.first_name} #{current_user.last_name}" %>
+    </div>
     <%= f.input :title %>
     <%= f.input :description %>
     <%= f.input :address %>
@@ -12,8 +14,7 @@
     <%= f.input :state %>
     <%= f.input :country %>
     <%= f.input :postal_code %>
-    <%= f.input :space_type %>
-    <%= f.input :capacity %>
+  <%= f.input :space_type, as: :check_boxes, collection: ['Event Venue', 'Co-working Space', 'Vacation Rental', 'Shooting Location', 'Studio', 'Wedding Hall', 'Classroom'] %>
     <%= f.input :amenities %>
     <%= f.input :price_per_hour %>
     <%= f.input :price_per_day %>
