@@ -3,7 +3,7 @@ class SpacesController < ApplicationController
 
   # GET /spaces or /spaces.json
   def index
-    @spaces = Space.all
+    @spaces = Space.accepted
   end
 
   # GET /spaces/1 or /spaces/1.json
@@ -23,6 +23,7 @@ class SpacesController < ApplicationController
   def create
     @space = Space.new(space_params)
     @space.owner = current_user
+    @space.status = 'pending'
 
     respond_to do |format|
       if @space.save
@@ -66,6 +67,7 @@ class SpacesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def space_params
-      params.require(:space).permit(:owner_id, :title, :description, :address, :city, :state, :country, :postal_code,  :capacity, :amenities, :price_per_hour, :price_per_day, :start_date, :end_date, :is_hourly_available, :is_daily_available, space_type:[])
+      params.require(:space).permit(:owner_id, :title, :description, :address, :city, :state, :country, :postal_code,  :capacity, :amenities, :price_per_hour, :status,
+        :admin_comment, :price_per_day, :start_date, :end_date, :is_hourly_available, :is_daily_available, space_type:[])
     end
 end

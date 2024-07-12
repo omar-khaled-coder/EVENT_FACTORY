@@ -1,0 +1,32 @@
+<h1>Space Requests</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @spaces.each do |space| %>
+      <tr>
+        <td><%= space.title %></td>
+        <td><%= space.description %></td>
+        <td>
+          <%= form_with url: approve_space_path(space), method: :patch do |f| %>
+            <%= f.hidden_field :comments, value: "Approved by admin" %>
+            <%= f.submit "Approve" %>
+          <% end %>
+          <%= form_with url: reject_space_path(space), method: :patch do |f| %>
+            <%= f.text_area :comments, placeholder: "Add comments" %>
+            <%= f.submit "Reject" %>
+          <% end %>
+        </td>
+      </tr>
+      <p>
+      <%= link_to "Show this space", space %>
+    </p>
+    <% end %>
+  </tbody>
+</table>
