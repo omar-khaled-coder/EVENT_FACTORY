@@ -19,3 +19,32 @@
   <p>No government ID picture uploaded</p>
 <% end %>
 <button type="button" class="btn btn-primary"><%= link_to "Edit Profile", edit_user_registration_path, class: "dropdown-item" %></button>
+
+<h2>My Spaces</h2>
+<% if @spaces.any? %>
+  <table>
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @spaces.each do |space| %>
+        <tr>
+          <td><%= space.title %></td>
+          <td><%= space.description %></td>
+          <td><%= space.status %></td>
+          <td>
+            <%= link_to "Edit", edit_space_path(space) %> |
+            <%= link_to "Delete", space, method: :delete, data: { confirm: "Are you sure?" } %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>You have not created any spaces.</p>
+<% end %>

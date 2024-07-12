@@ -9,7 +9,10 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   get "/user_profile", to: "pages#user_profile"
+  get "/space_requests", to: "pages#space_requests"
 
+  patch "/spaces/:id/approve", to: "pages#approve", as: :approve_space
+  patch "/spaces/:id/reject", to: "pages#reject", as: :reject_space
 
   # Defines the root path route ("/")
   # root "posts#index"

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_11_101841) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_12_075617) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -62,6 +62,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_11_101841) do
     t.boolean "is_daily_available"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "status"
+    t.text "admin_comment"
     t.index ["owner_id"], name: "index_spaces_on_owner_id"
   end
 
