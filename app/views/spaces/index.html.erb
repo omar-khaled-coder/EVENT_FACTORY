@@ -4,18 +4,30 @@
 
 <div id="spaces">
   <% @spaces.each do |space| %>
+    <% if space.accepted? %>
+      <div class="card">
+        <div class="card-body">
+          <% if space.images.attached? %>
+            <div class="space-images">
+              <% space.images.each do |image| %>
+                <%= image_tag image, class: "card-img-top" %>
+              <% end %>
+            </div>
+          <% end %>
 
-  <% if space.accepted? %>
 
-    <%= render space %>
+          <h5 class="card-title"><%= space.title %></h5>
+          <p class="card-text"><strong>City:</strong> <%= space.city %></p>
+          <p class="card-text"><strong>Capacity:</strong> <%= space.capacity %></p>
+          <p class="card-text"><strong>Price per Hour:</strong> <%= number_to_currency(space.price_per_hour) %></p>
 
-    <p>
-      <%= link_to "Show this space", space %>
-    </p>
-
-     <% end %>
-
+          <p>
+            <%= link_to "Show this space", space, class: "btn btn-primary" %>
+          </p>
+        </div>
+      </div>
+    <% end %>
   <% end %>
 </div>
 
-<%= link_to "New space", new_space_path %>
+<%= link_to "New space", new_space_path, class: "btn btn-success" %>
