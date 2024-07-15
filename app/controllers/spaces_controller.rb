@@ -39,10 +39,17 @@ class SpacesController < ApplicationController
 
   # PATCH/PUT /spaces/1 or /spaces/1.json
   def update
+    if params[:space][:remove_images].present?
+      params[:space][:remove_images].each do |image_id|
+        image = @space.images.find_by(id: image_id)
+        image&.purge
+      end
+    end
+
     respond_to do |format|
       if @space.update(space_params)
         @space.update(status: 'pending') # Ensure status is set to pending
-        format.html { redirect_to space_url(@space), notice: "Space was successfully updated, And waiting for the admin." }
+        format.html { redirect_to space_url(@space), notice: 'Space was successfully updated and waiting for the admin.' }
         format.json { render :show, status: :ok, location: @space }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -50,6 +57,7 @@ class SpacesController < ApplicationController
       end
     end
   end
+
 
   # DELETE /spaces/1 or /spaces/1.json
   def destroy
