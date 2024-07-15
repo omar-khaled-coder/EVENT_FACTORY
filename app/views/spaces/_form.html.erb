@@ -22,8 +22,23 @@
     <%= f.input :end_date %>
     <%= f.input :is_hourly_available %>
     <%= f.input :is_daily_available %>
-    <%= f.file_field :images, multiple: true %>  </div>
-
+<% if @space.images.attached? %>
+      <div>
+        <h3>Current Images:</h3>
+        <% @space.images.each do |image| %>
+          <div class="existing-image">
+            <%= image_tag image, width: 100 %>
+            <%= check_box_tag "space[remove_images][]", image.id %>
+            <%= label_tag "space_remove_images_#{image.id}", "Remove this image" %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+    <div class="form-group">
+      <%= f.label :images, 'Upload Images' %>
+      <%= f.file_field :images, multiple: true %>
+    </div>
+  </div>
   <div class="form-actions">
     <%= f.button :submit %>
   </div>
