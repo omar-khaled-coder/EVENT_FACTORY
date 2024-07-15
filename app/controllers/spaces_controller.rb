@@ -25,6 +25,7 @@ class SpacesController < ApplicationController
     @space.owner = current_user
     @space.status = 'pending'
 
+
     respond_to do |format|
       if @space.save
         format.html { redirect_to space_url(@space), notice: "Space was successfully created." }
@@ -40,7 +41,8 @@ class SpacesController < ApplicationController
   def update
     respond_to do |format|
       if @space.update(space_params)
-        format.html { redirect_to space_url(@space), notice: "Space was successfully updated." }
+        @space.update(status: 'pending') # Ensure status is set to pending
+        format.html { redirect_to space_url(@space), notice: "Space was successfully updated, And waiting for the admin." }
         format.json { render :show, status: :ok, location: @space }
       else
         format.html { render :edit, status: :unprocessable_entity }
