@@ -1,4 +1,13 @@
 <div id="<%= dom_id space %>">
+  <% if space.images.attached? %>
+    <div>
+      <% space.images.each do |image| %>
+        <%= image_tag image %>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+
   <p>
     <strong>Owner:</strong>
     <%= space.owner_id %>

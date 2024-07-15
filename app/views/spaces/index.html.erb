@@ -4,12 +4,17 @@
 
 <div id="spaces">
   <% @spaces.each do |space| %>
+
   <% if space.accepted? %>
+
     <%= render space %>
+
     <p>
       <%= link_to "Show this space", space %>
     </p>
+
      <% end %>
+
   <% end %>
 </div>
 
