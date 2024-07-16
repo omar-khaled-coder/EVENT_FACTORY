@@ -36,13 +36,36 @@
 }
 
 .space-images {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+  position: relative; /* Add position relative for absolute positioning of arrows */
 }
 
-.btn {
-  margin-top: 10px;
+.space-images img.hidden {
+  display: none; /* Hide images with the hidden class */
+}
+
+.image-nav {
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  transform: translateY(-50%);
+}
+
+.prev, .next {
+  cursor: pointer;
+  padding: 16px;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  user-select: none;
+  transition: background-color 0.3s;
+}
+
+.prev:hover, .next:hover {
+  background-color: rgba(0, 0, 0, 0.8);
 }
 
 /* Responsive Design */
