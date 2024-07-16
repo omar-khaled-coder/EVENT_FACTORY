@@ -22,7 +22,7 @@
     <%= f.input :end_date %>
     <%= f.input :is_hourly_available %>
     <%= f.input :is_daily_available %>
-<% if @space.images.attached? %>
+  <% if @space.images.attached? %>
       <div>
         <h3>Current Images:</h3>
         <% @space.images.each do |image| %>
@@ -34,6 +34,7 @@
         <% end %>
       </div>
     <% end %>
+
     <div class="form-group">
       <%= f.label :images, 'Upload Images' %>
       <%= f.file_field :images, multiple: true %>

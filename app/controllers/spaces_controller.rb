@@ -39,17 +39,21 @@ class SpacesController < ApplicationController
 
   # PATCH/PUT /spaces/1 or /spaces/1.json
   def update
-    if params[:space][:remove_images].present?
-      params[:space][:remove_images].each do |image_id|
-        image = @space.images.find_by(id: image_id)
-        image&.purge
+    if space_params[:remove_images].present?
+      space_params[:remove_images].each do |image_id|
+        image = @space.images.find(image_id)
+        image.purge
       end
     end
 
+    if space_params[:images].present?
+      @space.images.attach(space_params[:images])
+    end
+
     respond_to do |format|
-      if @space.update(space_params)
+      if @space.update(space_params.except(:images, :remove_images))
         @space.update(status: 'pending') # Ensure status is set to pending
-        format.html { redirect_to space_url(@space), notice: 'Space was successfully updated and waiting for the admin.' }
+        format.html { redirect_to space_url(@space), notice: "Space was successfully updated, And waiting for the admin." }
         format.json { render :show, status: :ok, location: @space }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -78,6 +82,6 @@ class SpacesController < ApplicationController
     # Only allow a list of trusted parameters through.
     def space_params
       params.require(:space).permit(:owner_id, :title, :description, :address, :city, :state, :country, :postal_code,  :capacity, :amenities, :price_per_hour, :status,
-        :admin_comment, :price_per_day, :start_date, :end_date, :is_hourly_available, :is_daily_available, space_type:[], images:[])
+        :admin_comment, :price_per_day, :start_date, :end_date, :is_hourly_available, :is_daily_available, space_type:[], remove_images: [], images:[])
     end
 end
