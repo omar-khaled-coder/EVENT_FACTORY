@@ -8,13 +8,16 @@
       <div class="card">
         <div class="card-body">
           <% if space.images.attached? %>
-            <div class="space-images">
-              <% space.images.each do |image| %>
-                <%= image_tag image, class: "card-img-top" %>
+            <div class="space-images" id="space-images-<%= space.id %>">
+              <% space.images.each_with_index do |image, index| %>
+                <%= image_tag image, class: "card-img-top #{'hidden' if index != 0}", data: { index: index } %>
               <% end %>
+              <div class="image-nav">
+                <a href="javascript:void(0)" class="prev" onclick="changeImage(-1, <%= space.id %>)">&#10094;</a>
+                <a href="javascript:void(0)" class="next" onclick="changeImage(1, <%= space.id %>)">&#10095;</a>
+              </div>
             </div>
           <% end %>
-
 
           <h5 class="card-title"><%= space.title %></h5>
           <p class="card-text"><strong>City:</strong> <%= space.city %></p>
@@ -31,3 +34,39 @@
 </div>
 
 <%= link_to "New space", new_space_path, class: "btn btn-success" %>
+
+<script>
+  function changeImage(n, spaceId) {
+    const imagesContainer = document.getElementById(`space-images-${spaceId}`);
+    const images = imagesContainer.getElementsByTagName('img');
+    let currentIndex;
+
+    for (let i = 0; i < images.length; i++) {
+      if (!images[i].classList.contains('hidden')) {
+        currentIndex = i;
+        break;
+      }
+    }
+
+    let newIndex = currentIndex + n;
+    if (newIndex >= images.length) {
+      newIndex = 0;
+    } else if (newIndex < 0) {
+      newIndex = images.length - 1;
+    }
+
+    images[currentIndex].classList.add('hidden');
+    images[newIndex].classList.remove('hidden');
+  }
+
+  // Initialize all images for each space
+  document.addEventListener('DOMContentLoaded', () => {
+    const spaces = document.querySelectorAll('.space-images');
+    spaces.forEach(space => {
+      const images = space.getElementsByTagName('img');
+      if (images.length > 0) {
+        images[0].classList.remove('hidden');
+      }
+    });
+  });
+</script>
