@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_12_075617) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_18_080223) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -64,6 +64,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_12_075617) do
     t.datetime "updated_at", null: false
     t.string "status"
     t.text "admin_comment"
+    t.float "latitude"
+    t.float "longitude"
     t.index ["owner_id"], name: "index_spaces_on_owner_id"
   end
 

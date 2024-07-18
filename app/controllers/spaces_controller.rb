@@ -4,6 +4,14 @@ class SpacesController < ApplicationController
   # GET /spaces or /spaces.json
   def index
     @spaces = Space.accepted
+
+    # The `geocoded` scope filters only spaces with coordinates
+    @markers = @spaces.geocoded.map do |space|
+    {
+      lat: space.latitude,
+      lng: space.longitude
+    }
+    end
   end
 
   # GET /spaces/1 or /spaces/1.json
