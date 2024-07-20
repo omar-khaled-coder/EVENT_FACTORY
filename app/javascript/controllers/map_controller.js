@@ -7,6 +7,7 @@ export default class extends Controller {
   }
 
   connect() {
+
     if (typeof google === 'undefined') {
       console.error('Google Maps JavaScript API is not loaded.');
       return;
