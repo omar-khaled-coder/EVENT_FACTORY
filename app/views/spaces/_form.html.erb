@@ -14,7 +14,7 @@
     <%= f.input :state %>
     <%= f.input :country %>
     <%= f.input :postal_code %>
-  <%= f.input :space_type, as: :check_boxes, collection: ['Event Venue', 'Co-working Space', 'Vacation Rental', 'Shooting Location', 'Studio', 'Wedding Hall', 'Classroom'] %>
+    <%= f.input :space_type, as: :check_boxes, collection: ['Event Venue', 'Co-working Space', 'Vacation Rental', 'Shooting Location', 'Studio', 'Wedding Hall', 'Classroom'] %>
     <%= f.input :amenities %>
     <%= f.input :price_per_hour %>
     <%= f.input :price_per_day %>
@@ -22,7 +22,10 @@
     <%= f.input :end_date %>
     <%= f.input :is_hourly_available %>
     <%= f.input :is_daily_available %>
-  <% if @space.images.attached? %>
+    <%= f.input :latitude, as: :hidden %>
+    <%= f.input :longitude, as: :hidden %>
+
+    <% if @space.images.attached? %>
       <div>
         <h3>Current Images:</h3>
         <% @space.images.each do |image| %>
@@ -34,7 +37,6 @@
         <% end %>
       </div>
     <% end %>
-
 
     <div class="form-group">
       <%= f.label :images, 'Upload Images' %>

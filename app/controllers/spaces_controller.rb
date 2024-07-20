@@ -6,11 +6,16 @@ class SpacesController < ApplicationController
     @spaces = Space.accepted
 
     # The `geocoded` scope filters only spaces with coordinates
-    @markers = @spaces.geocoded.map do |space|
-    {
-      lat: space.latitude,
-      lng: space.longitude
-    }
+    #@spaces = Space.where.not(latitude: nil, longitude: nil)
+
+    @markers = @spaces.map do |space|
+      {
+        lat: space.latitude,
+        lng: space.longitude #,
+        # infoWindow: { content: render_to_string(partial: "/flats/map_box", locals: { flat: flat }) }
+        # Uncomment the above line if you want each of your markers to display a info window when clicked
+        # (you will also need to create the partial "/flats/map_box")
+      }
     end
   end
 
