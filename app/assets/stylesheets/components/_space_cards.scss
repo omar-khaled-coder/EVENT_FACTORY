@@ -1,13 +1,29 @@
 #spaces {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 20px;
-  justify-content: center; /* Center the cards */
 }
 
+#spaces #map_index {
+  flex: 0 0 30%;
+  height: 100vh;
+  position: -webkit-sticky !important; /* For Safari */
+  position: sticky !important;
+  top: 0;
+  background: white; /* Ensure the background is set to avoid overlap issues */
+}
+
+.container {
+  display: grid;
+  flex-wrap: wrap;
+  gap: 20px;
+  flex: 1;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+
 .card {
-  width: 100%;
-  max-width: 300px; /* Set a maximum width for the cards */
+  width: calc(25% - 20px);
   border: 1px solid #ccc;
   border-radius: 10px;
   overflow: hidden;
@@ -36,11 +52,11 @@
 }
 
 .space-images {
-  position: relative; /* Add position relative for absolute positioning of arrows */
+  position: relative;
 }
 
 .space-images img.hidden {
-  display: none; /* Hide images with the hidden class */
+  display: none;
 }
 
 .image-nav {
@@ -71,24 +87,24 @@
 /* Responsive Design */
 @media (min-width: 576px) {
   .card {
-    width: calc(50% - 20px); /* Two cards per row on small screens */
+    width: calc(100% - 20px);
   }
 }
 
 @media (min-width: 768px) {
   .card {
-    width: calc(33.3333% - 20px); /* Three cards per row on medium screens */
+    //width: calc(33.3333% - 20px);
   }
 }
 
 @media (min-width: 992px) {
   .card {
-    width: calc(25% - 20px); /* Four cards per row on large screens */
+    //width: calc(25% - 20px);
   }
 }
 
 @media (min-width: 1200px) {
   .card {
-    width: calc(20% - 20px); /* Five cards per row on extra large screens */
+    //width: calc(20% - 20px);
   }
 }
