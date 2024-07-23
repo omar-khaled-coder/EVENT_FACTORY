@@ -1,7 +1,18 @@
 <p style="color: green"><%= notice %></p>
 
 <%= render @space %>
-
+<div
+  data-controller="map"
+  data-map-latitude-value="<%= @space.latitude %>"
+  data-map-longitude-value="<%= @space.longitude %>"
+  data-map-api-key-value="<%= ENV['GOOGLE_MAPS_API_KEY'] %>"
+  style="width: 100%; height: 400px;">
+</div>
+<div id="map_index"
+    data-controller="map"
+    data-map-markers-value="<%= @markers.to_json %>"
+    data-map-api-key-value="<%= ENV['GOOGLE_MAPS_API_KEY'] %>">
+  </div>
 <div>
   <%= link_to "Edit this space", edit_space_path(@space) %> |
   <%= link_to "Back to spaces", spaces_path %>
