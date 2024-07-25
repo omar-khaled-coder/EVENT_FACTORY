@@ -8,7 +8,7 @@ class SpacesController < ApplicationController
     # The `geocoded` scope filters only spaces with coordinates
     #@spaces = Space.where.not(latitude: nil, longitude: nil)
 
-    @markers = @spaces.map do |space|
+    @markers = @spaces.geocoded.map do |space|
       {
         lat: space.latitude,
         lng: space.longitude #,
@@ -21,6 +21,15 @@ class SpacesController < ApplicationController
 
   # GET /spaces/1 or /spaces/1.json
   def show
+    @space = Space.find(params[:id])
+    if @space.geocoded?
+      @marker =
+        {
+          lat: @space.latitude,
+          lng: @space.longitude
+        }
+
+      end
   end
 
   # GET /spaces/new
@@ -95,6 +104,6 @@ class SpacesController < ApplicationController
     # Only allow a list of trusted parameters through.
     def space_params
       params.require(:space).permit(:owner_id, :title, :description, :address, :city, :state, :country, :postal_code,  :capacity, :amenities, :price_per_hour, :status,
-        :admin_comment, :price_per_day, :start_date, :end_date, :is_hourly_available, :is_daily_available, space_type:[], remove_images: [], images:[])
+        :admin_comment, :price_per_day, :start_date, :end_date, :is_hourly_available, :is_daily_available, :latitude, :longitude, space_type:[], remove_images: [], images:[])
     end
 end
