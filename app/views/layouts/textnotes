@@ -1,0 +1,6 @@
+# Notes on Google Maps Integration
+
+## 1. Google Maps Script
+```html
+
+<!--   <script async defer src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GOOGLE_MAPS_API_KEY'] %>"></script>
