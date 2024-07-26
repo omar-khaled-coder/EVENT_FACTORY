@@ -4,6 +4,20 @@
 
 <%= debug @space.latitude %>
 <%= debug @space.longitude %>
+
+<div>
+  <%= month_calendar do |date| %>
+    <%= date %>
+    <% @spaces.each do |space| %>
+      <% if space.start_date <= date && space.end_date >= date %>
+        <ul>
+          <li><%= space.title %></li>
+        </ul>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>
+
 <div id="map_show"
   data-controller="map"
          data-map-marker-value="<%= @marker.to_json %>"

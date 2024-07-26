@@ -78,3 +78,4 @@ gem 'devise'
 gem 'carrierwave', '~> 2.0'
 gem 'country_select'
 gem 'geocoder'
+gem "simple_calendar"
