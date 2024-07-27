@@ -7,16 +7,14 @@
 
 <div>
   <%= month_calendar do |date| %>
-    <%= date %>
-    <% @spaces.each do |space| %>
-      <% if space.start_date <= date && space.end_date >= date %>
-        <ul>
-          <li><%= space.title %></li>
-        </ul>
-      <% end %>
+    <% if @space.start_date <= date && @space.end_date >= date && date >= Date.today %>
+      <%= link_to date.day, "select_date_path(date: date, space_id: @space.id)", class: 'available-day' %>
+    <% else %>
+      <span><%= date.day %></span>
     <% end %>
   <% end %>
 </div>
+
 
 <div id="map_show"
   data-controller="map"
