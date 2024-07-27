@@ -32,6 +32,8 @@ class SpacesController < ApplicationController
     end
     @spaces = [@space]
     start_date = params.fetch(:start_date, Date.today).to_date
+
+
   @spaces = Space.where("start_date <= ? AND end_date >= ?", start_date.end_of_month, start_date.beginning_of_month)
 
   end
