@@ -35,7 +35,10 @@ class SpacesController < ApplicationController
 
 
   @spaces = Space.where("start_date <= ? AND end_date >= ?", start_date.end_of_month, start_date.beginning_of_month)
-
+  respond_to do |format|
+    format.html
+    format.js { render partial: 'simple_calendar/month_calendar', locals: { start_date: start_date, events: [] } }
+  end
   end
 
 
