@@ -17,4 +17,12 @@ class Space < ApplicationRecord
   def images_limit
     errors.add(:images, "You can attach up to 15 images") if images.count > 15
   end
+
+  validate :end_time_after_start_time
+
+  def end_time_after_start_time
+    if available_from && available_to && available_from >= available_to
+      errors.add(:available_to, "must be after the start time")
+    end
+  end
 end
