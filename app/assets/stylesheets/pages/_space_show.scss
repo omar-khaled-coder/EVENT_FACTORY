@@ -1,0 +1,45 @@
+.space-images {
+  position: relative;
+}
+
+.large-image img {
+  width: 100%;
+  max-height: 500px;
+  object-fit: cover;
+}
+
+.thumbnail-images {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.thumbnail {
+  width: 80px;
+  height: 60px;
+  object-fit: cover;
+  margin-right: 5px;
+  cursor: pointer;
+  opacity: 0.6;
+}
+
+.thumbnail.active, .thumbnail:hover {
+  opacity: 1;
+}
+
+.image-nav {
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  transform: translateY(-50%);
+}
+
+.image-nav a {
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  padding: 10px;
+  text-decoration: none;
+  font-weight: bold;
+}

@@ -1,12 +1,52 @@
-<div id="<%= dom_id space %>">
-  <% if space.images.attached? %>
-    <div>
-      <% space.images.each do |image| %>
-        <%= image_tag image %>
+<div id="<%= dom_id(@space) %>" class="space-images">
+  <% if @space.images.attached? %>
+    <div class="large-image">
+      <%= image_tag @space.images.first, id: "current-image", class: "current-image" %>
+    </div>
+    <div class="thumbnail-images">
+      <% @space.images.each_with_index do |image, index| %>
+        <%= image_tag image, class: "thumbnail #{'active' if index == 0}", data: { large_image: url_for(image), index: index } %>
       <% end %>
+    </div>
+    <div class="image-nav">
+      <a href="javascript:void(0)" class="prev" onclick="changeImage(-1)">&#10094;</a>
+      <a href="javascript:void(0)" class="next" onclick="changeImage(1)">&#10095;</a>
     </div>
   <% end %>
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const thumbnails = document.querySelectorAll('.thumbnail');
+    const currentImage = document.getElementById('current-image');
+    let currentIndex = 0;
+
+    thumbnails.forEach((thumbnail, index) => {
+      thumbnail.addEventListener('click', () => {
+        currentIndex = index;
+        updateCurrentImage();
+      });
+    });
+
+    window.changeImage = function(n) {
+      currentIndex = (currentIndex + n + thumbnails.length) % thumbnails.length;
+      updateCurrentImage();
+    };
+
+    function updateCurrentImage() {
+      const selectedThumbnail = thumbnails[currentIndex];
+      currentImage.src = selectedThumbnail.dataset.largeImage;
+
+      thumbnails.forEach(thumbnail => thumbnail.classList.remove('active'));
+      selectedThumbnail.classList.add('active');
+    }
+
+    // Initialize first image as active
+    updateCurrentImage();
+  });
+</script>
+
+
 
   <p>
     <strong>Owner:</strong>
