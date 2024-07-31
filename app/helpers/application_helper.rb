@@ -5,6 +5,18 @@ module ApplicationHelper
     country&.iso_short_name || country_code
   end
 
+  SPACE_TYPE_ICONS = {
+    "Studio" => "fas fa-microphone",
+    "Office" => "fas fa-briefcase",
+    "Conference Room" => "fas fa-users",
+    "Shooting Location" => "fa-solid fa-camera"
+    # Add other space types and their corresponding icons here
+  }
+
+  def icon_for_space_type(space_type)
+    SPACE_TYPE_ICONS[space_type] || "fas fa-question"
+  end
+
   def time_options
     options = []
     start_time = Time.parse("00:00")
