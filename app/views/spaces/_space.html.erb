@@ -62,10 +62,12 @@
         <%= space.city%> | <%= space.state %>| <%= country_name(space.country) %>
       </p>
 
-     <p>
-  <strong>Space type:</strong>
-  <%= space.space_type.reject(&:blank?).join(", ") %>
-</p>
+      <p>
+        <% space.space_type.reject(&:blank?).each do |type| %>
+          <i class="<%= icon_for_space_type(type) %>"></i> <%= type %><br>
+        <% end %>
+      </p>
+
 
 
       <p>
