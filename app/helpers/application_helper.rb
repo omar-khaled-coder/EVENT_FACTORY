@@ -1,4 +1,10 @@
 module ApplicationHelper
+
+  def country_name(country_code)
+    country = ISO3166::Country[country_code]
+    country&.iso_short_name || country_code
+  end
+
   def time_options
     options = []
     start_time = Time.parse("00:00")
