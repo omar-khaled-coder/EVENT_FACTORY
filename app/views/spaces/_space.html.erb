@@ -1,20 +1,3 @@
-<div id="<%= dom_id(@space) %>" class="space-images">
-  <% if @space.images.attached? %>
-    <div class="large-image">
-      <%= image_tag @space.images.first, id: "current-image", class: "current-image" %>
-    </div>
-    <div class="thumbnail-images">
-      <% @space.images.each_with_index do |image, index| %>
-        <%= image_tag image, class: "thumbnail #{'active' if index == 0}", data: { large_image: url_for(image), index: index } %>
-      <% end %>
-    </div>
-    <div class="image-nav">
-      <a href="javascript:void(0)" class="prev" onclick="changeImage(-1)">&#10094;</a>
-      <a href="javascript:void(0)" class="next" onclick="changeImage(1)">&#10095;</a>
-    </div>
-  <% end %>
-</div>
-
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const thumbnails = document.querySelectorAll('.thumbnail');
@@ -48,94 +31,155 @@
 
 
 
-  <p>
-    <strong>Owner:</strong>
-    <%= space.owner_id %>
-  </p>
 
-  <p>
-    <strong>Owner:</strong>
-    <%= space.owner.first_name %>
-  </p>
+<div class="space-container">
 
-  <p>
-    <strong>Title:</strong>
-    <%= space.title %>
-  </p>
 
-  <p>
-    <strong>Description:</strong>
-    <%= space.description %>
-  </p>
+    <div id="<%= dom_id(@space) %>" class="space-images">
+      <% if @space.images.attached? %>
+        <div class="large-image">
+          <%= image_tag @space.images.first, id: "current-image", class: "current-image" %>
+        </div>
+        <div class="thumbnail-images">
+          <% @space.images.each_with_index do |image, index| %>
+            <%= image_tag image, class: "thumbnail #{'active' if index == 0}", data: { large_image: url_for(image), index: index } %>
+          <% end %>
+        </div>
+        <div class="image-nav">
+          <a href="javascript:void(0)" class="prev" onclick="changeImage(-1)">&#10094;</a>
+          <a href="javascript:void(0)" class="next" onclick="changeImage(1)">&#10095;</a>
+        </div>
+      <% end %>
+    </div>
 
-  <p>
-    <strong>Address:</strong>
-    <%= space.address %>
-  </p>
+<div class="space-title mt-4">
+       <p >
+        <%= space.title %>
+      </p>
+</div>
 
-  <p>
-    <strong>City:</strong>
-    <%= space.city %>
-  </p>
+      <p>
+        <%= space.city%> | <%= space.state %>| <%= country_name(space.country) %>
+      </p>
 
-  <p>
-    <strong>State:</strong>
-    <%= space.state %>
-  </p>
+     <p>
+  <strong>Space type:</strong>
+  <%= space.space_type.reject(&:blank?).join(", ") %>
+</p>
 
-  <p>
-    <strong>Country:</strong>
-    <%= space.country %>
-  </p>
 
-  <p>
-    <strong>Postal code:</strong>
-    <%= space.postal_code %>
-  </p>
+      <p>
+        <strong>Owner:</strong>
+        <%= space.owner_id %>
+      </p>
 
-  <p>
-    <strong>Space type:</strong>
-    <%= space.space_type %>
-  </p>
+      <p>
+        <strong>Owner:</strong>
+        <%= space.owner.first_name %>
+      </p>
 
-  <p>
-    <strong>Capacity:</strong>
-    <%= space.capacity %>
-  </p>
 
-  <p>
-    <strong>Amenities:</strong>
-    <%= space.amenities %>
-  </p>
 
-  <p>
-    <strong>Price per hour:</strong>
-    <%= space.price_per_hour %>
-  </p>
+      <p>
+        <strong>Description:</strong>
+        <%= space.description %>
+      </p>
 
-  <p>
-    <strong>Price per day:</strong>
-    <%= space.price_per_day %>
-  </p>
+      <p>
+        <strong>Address:</strong>
+        <%= space.address %>
+      </p>
 
-  <p>
-    <strong>Start date:</strong>
-    <%= space.start_date %>
-  </p>
 
-  <p>
-    <strong>End date:</strong>
-    <%= space.end_date %>
-  </p>
 
-  <p>
-    <strong>Is hourly available:</strong>
-    <%= space.is_hourly_available %>
-  </p>
+      <p>
+        <strong>State:</strong>
+        <%= space.state %>
+      </p>
 
-  <p>
-    <strong>Is daily available:</strong>
-    <%= space.is_daily_available %>
-  </p>
+
+
+      <p>
+        <strong>Postal code:</strong>
+        <%= space.postal_code %>
+      </p>
+
+
+
+      <p>
+        <strong>Capacity:</strong>
+        <%= space.capacity %>
+      </p>
+
+      <p>
+        <strong>Amenities:</strong>
+        <%= space.amenities %>
+      </p>
+
+      <p>
+        <strong>Price per hour:</strong>
+        <%= space.price_per_hour %>
+      </p>
+
+      <p>
+        <strong>Price per day:</strong>
+        <%= space.price_per_day %>
+      </p>
+
+      <p>
+        <strong>Start date:</strong>
+        <%= space.start_date %>
+      </p>
+
+      <p>
+        <strong>End date:</strong>
+        <%= space.end_date %>
+      </p>
+
+      <p>
+        <strong>Is hourly available:</strong>
+        <%= space.is_hourly_available %>
+      </p>
+
+      <p>
+        <strong>Is daily available:</strong>
+        <%= space.is_daily_available %>
+      </p>
+
+      <div class="field">
+        <label for="start_time">Start Time</label>
+        <select id="start_time" name="start_time">
+          <% generate_time_options(@space.available_from, @space.available_to).each do |time| %>
+            <option value="<%= time.strftime("%H:%M") %>"><%= time.strftime("%I:%M %p") %></option>
+          <% end %>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="end_time">End Time</label>
+        <select id="end_time" name="end_time">
+          <% generate_time_options(@space.available_from, @space.available_to).each do |time| %>
+            <option value="<%= time.strftime("%H:%M") %>"><%= time.strftime("%I:%M %p") %></option>
+          <% end %>
+        </select>
+      </div>
+
+        <%= month_calendar do |date| %>
+          <% if @space.start_date <= date && @space.end_date >= date && date >= Date.today %>
+            <%= link_to date.day, "select_date_path(date: date, space_id: @space.id)", class: 'available-day' %>
+          <% else %>
+            <span><%= date.day %></span>
+          <% end %>
+        <% end %>
+
+
+
+      <div id="map_show"
+        data-controller="map"
+              data-map-marker-value="<%= @marker.to_json %>"
+        data-map-api-key-value="<%= ENV['GOOGLE_API_BROWSER_KEY'] %>"
+        style="width: 100%; height: 400px;">
+      </div>
+
 
 </div>
