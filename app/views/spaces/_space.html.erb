@@ -32,10 +32,10 @@
 
 
 
-<div class="space-container">
+<div class=" container">
 
 
-    <div id="<%= dom_id(@space) %>" class="space-images">
+    <div id="<%= dom_id(@space) %>" class="space-images row">
       <% if @space.images.attached? %>
         <div class="large-image">
           <%= image_tag @space.images.first, id: "current-image", class: "current-image" %>
@@ -52,40 +52,54 @@
       <% end %>
     </div>
 
-<div class="space-title mt-4">
-       <p >
-        <%= space.title %>
-      </p>
-</div>
+      <div class="space-title row">
+              <%= space.title %>
+      </div>
 
       <p>
         <%= space.city%> | <%= space.state %>| <%= country_name(space.country) %>
       </p>
 
-      <p>
+      <div class="space-type-container">
         <% space.space_type.reject(&:blank?).each do |type| %>
-          <i class="<%= icon_for_space_type(type) %>"></i> <%= type %><br>
+          <div class="space-type-item">
+            <i class="<%= icon_for_space_type(type) %>"></i>
+            <span><%= type %></span>
+          </div>
         <% end %>
-      </p>
+      </div>
 
 
+      <hr>
 
-      <p>
-        <strong>Owner:</strong>
-        <%= space.owner_id %>
-      </p>
+      <div style="display: block ruby;">
+        <%= image_tag space.owner.profile_picture, class: "avatar-show"  %> <h5>Hosted by |<h5>  <%= space.owner.first_name %>
+      </div>
 
-      <p>
-        <strong>Owner:</strong>
-        <%= space.owner.first_name %>
-      </p>
+      <hr>
+
+      <div class=" row mt-5" >
+        <p class="space-title">The Space:</p>
+        <p style="width: 65%;font-size: 18px;white-space: pre-line;color: #606060;"><%= space.description %><p>
+      </div>
 
 
+      <hr style="margin-top: 0;">
 
-      <p>
-        <strong>Description:</strong>
-        <%= space.description %>
-      </p>
+
+      <div>
+        <strong>Amenities:</strong>
+        <ul class="amenities-list">
+          <% space.amenities.split(/\r?\n/).map(&:strip).each do |amenity| %>
+            <li>
+              <i class="<%= icon_for_amenity(amenity) %>"></i>
+              <span><%= amenity.capitalize %></span>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+
+<hr>
 
       <p>
         <strong>Address:</strong>
@@ -113,10 +127,7 @@
         <%= space.capacity %>
       </p>
 
-      <p>
-        <strong>Amenities:</strong>
-        <%= space.amenities %>
-      </p>
+
 
       <p>
         <strong>Price per hour:</strong>
