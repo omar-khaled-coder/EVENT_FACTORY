@@ -17,6 +17,22 @@ module ApplicationHelper
     SPACE_TYPE_ICONS[space_type] || "fas fa-question"
   end
 
+  def icon_for_amenity(amenity)
+    case amenity.downcase
+    when 'wifi'
+      'fas fa-wifi'
+    when 'parking', 'free parking'
+      'fas fa-parking'
+    when 'pool', 'swimming pool'
+      'fas fa-swimming-pool'
+    when 'bathrooms'
+      'fas fa-restroom'
+    # Add more cases for other amenities
+    else
+      'fas fa-check' # Default icon
+    end
+  end
+
   def time_options
     options = []
     start_time = Time.parse("00:00")
