@@ -85,7 +85,19 @@
 
 
       <hr style="margin-top: 0;">
+    <div class="minumms row">
+      <div class="capacity-display col-sm-6">
+        <i class="fas fa-users"></i>
+        <span><%= space.capacity %> MAX</span>
+        <!-- Use "fa-light fa-users" if you have access to FontAwesome Pro -->
+      </div>
 
+      <div class="houres col-sm-6">
+         <i class="fas fa-clock"></i> <!-- Assuming you have an icon for the duration -->
+         <span><%= space.minimum_rental_duration %> hrs minimum</span>
+      </div>
+    </div>
+      <hr>
 
       <div>
         <strong>Amenities:</strong>
