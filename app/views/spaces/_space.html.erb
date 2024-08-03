@@ -36,102 +36,124 @@
 
 
     <div id="<%= dom_id(@space) %>" class="space-images row">
+
       <% if @space.images.attached? %>
+
         <div class="large-image">
           <%= image_tag @space.images.first, id: "current-image", class: "current-image" %>
         </div>
+
         <div class="thumbnail-images">
           <% @space.images.each_with_index do |image, index| %>
             <%= image_tag image, class: "thumbnail #{'active' if index == 0}", data: { large_image: url_for(image), index: index } %>
           <% end %>
         </div>
+
         <div class="image-nav">
           <a href="javascript:void(0)" class="prev" onclick="changeImage(-1)">&#10094;</a>
           <a href="javascript:void(0)" class="next" onclick="changeImage(1)">&#10095;</a>
         </div>
+
       <% end %>
+
     </div>
 
-      <div class="space-title row">
-              <%= space.title %>
-      </div>
+    <div class="space-title row">
+            <%= space.title %>
+    </div>
 
-      <p>
-        <%= space.city%> | <%= space.state %>| <%= country_name(space.country) %>
-      </p>
+    <p>
+      <%= space.city%> | <%= space.state %>| <%= country_name(space.country) %>
+    </p>
 
-      <div class="space-type-container">
-        <% space.space_type.reject(&:blank?).each do |type| %>
-          <div class="space-type-item">
-            <i class="<%= icon_for_space_type(type) %>"></i>
-            <span><%= type %></span>
-          </div>
-        <% end %>
-      </div>
+    <div class="space-type-container">
 
+      <% space.space_type.reject(&:blank?).each do |type| %>
+        <div class="space-type-item">
+          <i class="<%= icon_for_space_type(type) %>"></i>
+          <span><%= type %></span>
+        </div>
+      <% end %>
 
-      <hr>
-
-      <div style="display: block ruby;">
-        <%= image_tag space.owner.profile_picture, class: "avatar-show"  %> <h5>Hosted by |<h5>  <%= space.owner.first_name %>
-      </div>
-
-      <hr>
-
-      <div class=" row" >
-        <p class="space-title">The Space:</p>
-        <p style="width: 50%;font-size: 18px;white-space: pre-line;color: #606060;"><%= space.description %><p>
-      </div>
+    </div>
 
 
-      <hr style="margin-top: 0;">
+    <hr>
+
+    <div style="display: block ruby;">
+      <%= image_tag space.owner.profile_picture, class: "avatar-show"  %> <h5>Hosted by |<h5>  <%= space.owner.first_name %>
+    </div>
+
+    <hr>
+
+    <div class=" row" >
+      <p class="space-title">The Space:</p>
+      <p style="width: 50%;font-size: 18px;white-space: pre-line;color: #606060;"><%= space.description %><p>
+    </div>
+
+
+    <hr style="margin-top: 0;">
 
     <div class=" row">
+
       <div class="col-12 col-lg-6" style="display: flex;justify-content: space-around;">
-      <div class="capacity-display">
-        <i class="fas fa-users"></i>
-        <span><%= space.capacity %> MAX</span>
-        <!-- Use "fa-light fa-users" if you have access to FontAwesome Pro -->
+
+          <div class="capacity-display">
+            <i class="fas fa-users"></i>
+            <span><%= space.capacity %> MAX</span>
+            <!-- Use "fa-light fa-users" if you have access to FontAwesome Pro -->
+          </div>
+
+
+          <div class="houres">
+            <i class="fas fa-clock"></i> <!-- Assuming you have an icon for the duration -->
+            <span><%= space.minimum_rental_duration %> hrs minimum</span>
+          </div>
+
       </div>
 
-      <div class="houres">
-         <i class="fas fa-clock"></i> <!-- Assuming you have an icon for the duration -->
-         <span><%= space.minimum_rental_duration %> hrs minimum</span>
-      </div>
-      </div>
     </div>
-      <hr>
 
-      <div class="row">
-        <strong>Amenities:</strong>
-        <ul class="amenities-list col-12 col-lg-6">
-          <% space.amenities.split(/\r?\n/).map(&:strip).each do |amenity| %>
-            <li>
-              <i class="<%= icon_for_amenity(amenity) %>"></i>
-              <span><%= amenity.capitalize %></span>
-            </li>
-          <% end %>
-        </ul>
-      </div>
+    <hr>
 
-<hr>
+    <div class="row">
 
-      <div class="row">
-        <p>
-          <strong>Address:</strong>
-          <%= space.address %>
-        </p>
-<div class="col-12 col-lg-6">
-        <div id="map_show"
-          data-controller="map"
-                data-map-marker-value="<%= @marker.to_json %>"
-          data-map-api-key-value="<%= ENV['GOOGLE_API_BROWSER_KEY'] %>"
-          style="width: 100%; height: 400px;">
-        </div>
-</div>
-      </div>
+      <strong>Amenities:</strong>
 
-<hr>
+      <ul class="amenities-list col-12 col-lg-6">
+        <% space.amenities.split(/\r?\n/).map(&:strip).each do |amenity| %>
+          <li>
+            <i class="<%= icon_for_amenity(amenity) %>"></i>
+            <span><%= amenity.capitalize %></span>
+          </li>
+        <% end %>
+      </ul>
+
+    </div>
+
+    <hr>
+
+    <div class="row">
+
+          <p>
+            <strong>Address:</strong>
+            <%= space.address %>
+          </p>
+
+          <div class="col-12 col-lg-6">
+
+              <div id="map_show"
+                data-controller="map"
+                      data-map-marker-value="<%= @marker.to_json %>"
+                data-map-api-key-value="<%= ENV['GOOGLE_API_BROWSER_KEY'] %>"
+                style="width: 100%; height: 400px;">
+              </div>
+
+          </div>
+
+    </div>
+
+    <hr>
 
 
       <p>
