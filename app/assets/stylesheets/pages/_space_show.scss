@@ -165,9 +165,15 @@ hr{
   padding: 20px;
   border: 1px solid #ddd;
   border-radius: 5px;
-  background-color: #f9f9f9;
-  margin-left: 20px;
-  max-width: 300px; /* Adjust as needed */
+  background-color: #d3d3d687;
+  margin-top: 20px;
+  max-width: 35%;
+  max-height: 592px;/* Adjust as needed */
+  flex: 0 0 30%;
+  position: -webkit-sticky !important; /* For Safari */
+  position: sticky !important;
+  top: 0;
+
 }
 
 .field {
@@ -186,17 +192,4 @@ hr{
   border-radius: 5px;
   border: 1px solid #ccc;
   background-color: #fff;
-}
-
-.calendar-section {
-  margin-top: 20px;
-}
-
-.available-day {
-  color: green;
-  text-decoration: none;
-}
-
-.available-day:hover {
-  text-decoration: underline;
 }
