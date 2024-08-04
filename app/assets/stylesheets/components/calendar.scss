@@ -8,3 +8,28 @@
   cursor: pointer;
   border: 1px solid #008000; // Optional: to make it more distinct
 }
+
+.simple-calendar {
+  table {
+    min-height: 34vh;
+  }
+  .today {
+    background-color: #FAF3DD;
+  }
+  .day{
+    height: 53px !important;
+  }
+}
+
+.meeting {
+  color: white;
+  padding: 8px 24px;
+  border-radius: 4px;
+  background: #1EDD88;
+  transition: background 0.3s ease;
+}
+
+.meeting:hover {
+  background: #1BCB7F;
+  color: white;
+}

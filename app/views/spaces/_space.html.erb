@@ -216,35 +216,37 @@
         <%= space.is_daily_available %>
       </p>
 </div>
-          <div class="form-section col-12 col-lg-6">
-            <form>
-              <div class="field">
-                <label for="start_time">Start Time</label>
-                <select id="start_time" name="start_time">
-                  <% generate_time_options(@space.available_from, @space.available_to).each do |time| %>
-                    <option value="<%= time.strftime("%H:%M") %>"><%= time.strftime("%I:%M %p") %></option>
-                  <% end %>
-                </select>
-              </div>
-              <div class="field">
-                <label for="end_time">End Time</label>
-                <select id="end_time" name="end_time">
-                  <% generate_time_options(@space.available_from, @space.available_to).each do |time| %>
-                    <option value="<%= time.strftime("%H:%M") %>"><%= time.strftime("%I:%M %p") %></option>
-                  <% end %>
-                </select>
-              </div>
-              <div class="calendar-section">
-                <%= month_calendar do |date| %>
-                  <% if @space.start_date <= date && @space.end_date >= date && date >= Date.today %>
-                    <%= link_to date.day, "select_date_path(date: date, space_id: @space.id)", class: 'available-day' %>
-                  <% else %>
-                    <span><%= date.day %></span>
-                  <% end %>
-                <% end %>
-              </div>
-            </form>
-          </div>
+<div class="form-section col-12 col-lg-6">
+  <form>
+    <div class="field">
+      <label for="start_time">Start Time</label>
+      <select id="start_time" name="start_time">
+        <% generate_time_options(@space.available_from, @space.available_to).each do |time| %>
+          <option value="<%= time.strftime("%H:%M") %>"><%= time.strftime("%I:%M %p") %></option>
+        <% end %>
+      </select>
+    </div>
+    <div class="field">
+      <label for="end_time">End Time</label>
+      <select id="end_time" name="end_time">
+        <% generate_time_options(@space.available_from, @space.available_to).each do |time| %>
+          <option value="<%= time.strftime("%H:%M") %>"><%= time.strftime("%I:%M %p") %></option>
+        <% end %>
+      </select>
+    </div>
+    <div>
+      <%= month_calendar do |date| %>
+        <% if @space.start_date <= date && @space.end_date >= date && date >= Date.today %>
+          <%= link_to date.day, "select_date_path(date: date, space_id: @space.id)", class: 'available-day' %>
+        <% else %>
+          <span><%= date.day %></span>
+        <% end %>
+      <% end %>
+    </div>
+  </form>
+</div>
+
+
 
       </div>
 
@@ -274,10 +276,10 @@
         </select>
       </div>
 
-        <%= month_calendar do |date| %>
+    <!--<%= month_calendar do |date| %>
           <% if @space.start_date <= date && @space.end_date >= date && date >= Date.today %>
             <%= link_to date.day, "select_date_path(date: date, space_id: @space.id)", class: 'available-day' %>
           <% else %>
             <span><%= date.day %></span>
           <% end %>
-        <% end %>
+        <% end %> -->
