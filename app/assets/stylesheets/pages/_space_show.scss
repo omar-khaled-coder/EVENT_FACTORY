@@ -46,7 +46,6 @@ hr{
     border-top-color: currentcolor;
   border-top: var(--bs-border-width) solid;
   opacity: 0.25;
-  width: 50%;
 }
 
 
@@ -152,4 +151,52 @@ hr{
   padding: 10px;
   text-decoration: none;
   font-weight: bold;
+}
+
+
+
+
+
+
+
+
+.form-section {
+  flex: 1;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  margin-left: 20px;
+  max-width: 300px; /* Adjust as needed */
+}
+
+.field {
+  margin-bottom: 15px;
+}
+
+.field label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.field select {
+  width: 100%;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+}
+
+.calendar-section {
+  margin-top: 20px;
+}
+
+.available-day {
+  color: green;
+  text-decoration: none;
+}
+
+.available-day:hover {
+  text-decoration: underline;
 }
