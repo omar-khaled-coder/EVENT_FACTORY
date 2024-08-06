@@ -31,43 +31,29 @@
 
 
 
+<div class="container">
+  <div id="<%= dom_id(@space) %>" class="space-images row">
+    <% if @space.images.attached? %>
+      <div class="large-image">
+        <%= image_tag @space.images.first, id: "current-image", class: "current-image" %>
+      </div>
+      <div class="thumbnail-images">
+        <% @space.images.each_with_index do |image, index| %>
+          <%= image_tag image, class: "thumbnail #{'active' if index == 0}", data: { large_image: url_for(image), index: index } %>
+        <% end %>
+      </div>
+      <div class="image-nav">
+        <a href="javascript:void(0)" class="prev" onclick="changeImage(-1)">&#10094;</a>
+        <a href="javascript:void(0)" class="next" onclick="changeImage(1)">&#10095;</a>
+      </div>
+    <% end %>
+  </div>
 
-<div class=" container">
-
-
-    <div id="<%= dom_id(@space) %>" class="space-images row">
-
-      <% if @space.images.attached? %>
-
-        <div class="large-image">
-          <%= image_tag @space.images.first, id: "current-image", class: "current-image" %>
-        </div>
-
-        <div class="thumbnail-images">
-          <% @space.images.each_with_index do |image, index| %>
-            <%= image_tag image, class: "thumbnail #{'active' if index == 0}", data: { large_image: url_for(image), index: index } %>
-          <% end %>
-        </div>
-
-        <div class="image-nav">
-          <a href="javascript:void(0)" class="prev" onclick="changeImage(-1)">&#10094;</a>
-          <a href="javascript:void(0)" class="next" onclick="changeImage(1)">&#10095;</a>
-        </div>
-
-      <% end %>
-
-    </div>
-
-     <!-- Form Section -->
-
-
-  <div class="row" style="display: flex;justify-content: space-between;flex-flow: row;max-width: 1320px;">
-
-
-
-
-<div class="col-12 col-lg-6">
-    <div class="space-title row">
+  <!-- Form Section -->
+  <div class="row content-section">
+    <div class="col-12 col-lg-6">
+      <!-- Space details... -->
+      <div class="space-title row">
             <%= space.title %>
     </div>
 
@@ -103,7 +89,7 @@
 
     <hr style="margin-top: 0;">
 
-    <div class=" row">
+    <div >
 
       <div style="display: flex;justify-content: space-around;">
 
@@ -125,7 +111,7 @@
 
     <hr>
 
-    <div class="row">
+    <div>
 
       <strong>Amenities:</strong>
 
@@ -142,7 +128,7 @@
 
     <hr>
 
-    <div class="row">
+    <div >
 
           <p>
             <strong>Address:</strong>
@@ -215,45 +201,39 @@
         <strong>Is daily available:</strong>
         <%= space.is_daily_available %>
       </p>
-</div>
-<div class="form-section col-12 col-lg-6">
-  <form>
-    <div class="field">
-      <label for="start_time">Start Time</label>
-      <select id="start_time" name="start_time">
-        <% generate_time_options(@space.available_from, @space.available_to).each do |time| %>
-          <option value="<%= time.strftime("%H:%M") %>"><%= time.strftime("%I:%M %p") %></option>
-        <% end %>
-      </select>
     </div>
-    <div class="field">
-      <label for="end_time">End Time</label>
-      <select id="end_time" name="end_time">
-        <% generate_time_options(@space.available_from, @space.available_to).each do |time| %>
-          <option value="<%= time.strftime("%H:%M") %>"><%= time.strftime("%I:%M %p") %></option>
-        <% end %>
-      </select>
+    <div class="form-section col-12 col-lg-6">
+      <form>
+        <div class="field">
+          <label for="start_time">Start Time</label>
+          <select id="start_time" name="start_time">
+            <% generate_time_options(@space.available_from, @space.available_to).each do |time| %>
+              <option value="<%= time.strftime("%H:%M") %>"><%= time.strftime("%I:%M %p") %></option>
+            <% end %>
+          </select>
+        </div>
+        <div class="field">
+          <label for="end_time">End Time</label>
+          <select id="end_time" name="end_time">
+            <% generate_time_options(@space.available_from, @space.available_to).each do |time| %>
+              <option value="<%= time.strftime("%H:%M") %>"><%= time.strftime("%I:%M %p") %></option>
+            <% end %>
+          </select>
+        </div>
+        <div>
+          <%= month_calendar do |date| %>
+            <% if @space.start_date <= date && @space.end_date >= date && date >= Date.today %>
+              <%= link_to date.day, "select_date_path(date: date, space_id: @space.id)", class: 'available-day' %>
+            <% else %>
+              <span><%= date.day %></span>
+            <% end %>
+          <% end %>
+        </div>
+      </form>
     </div>
-    <div>
-      <%= month_calendar do |date| %>
-        <% if @space.start_date <= date && @space.end_date >= date && date >= Date.today %>
-          <%= link_to date.day, "select_date_path(date: date, space_id: @space.id)", class: 'available-day' %>
-        <% else %>
-          <span><%= date.day %></span>
-        <% end %>
-      <% end %>
-    </div>
-  </form>
+  </div>
 </div>
 
-
-
-      </div>
-
-
-
-
-</div>
 
 
 
