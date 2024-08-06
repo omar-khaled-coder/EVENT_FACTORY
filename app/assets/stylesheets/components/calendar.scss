@@ -12,12 +12,13 @@
 .simple-calendar {
   table {
     min-height: 34vh;
+    width: 69% !important;
   }
   .today {
     background-color: #FAF3DD;
   }
   .day{
-    height: 53px !important;
+    height: 35px !important;
   }
 }
 
