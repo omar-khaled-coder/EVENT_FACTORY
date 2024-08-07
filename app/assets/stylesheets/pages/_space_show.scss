@@ -179,3 +179,21 @@ hr {
     flex-direction: column;
   }
 }
+
+.carousel-image {
+  max-height: 464px; /* Adjust the height as needed */
+  object-fit: cover; /* Ensures the image covers the element proportionally */
+}
+
+.thumbnail {
+  width: 80px;
+  height: 60px;
+  object-fit: cover;
+  margin-right: 5px;
+  cursor: pointer;
+  opacity: 0.6;
+}
+
+.thumbnail.active, .thumbnail:hover {
+  opacity: 1;
+}
