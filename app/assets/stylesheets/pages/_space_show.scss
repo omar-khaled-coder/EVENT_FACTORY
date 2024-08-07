@@ -197,3 +197,31 @@ hr {
 .thumbnail.active, .thumbnail:hover {
   opacity: 1;
 }
+
+@media (max-width: 576px) { /* For small screens */
+  .thumbnail {
+    width: 100px; /* Adjust the width */
+    height: 75px; /* Adjust the height */
+  }
+}
+
+@media (min-width: 577px) and (max-width: 768px) { /* For medium screens */
+  .thumbnail {
+    width: 120px; /* Adjust the width */
+    height: 90px; /* Adjust the height */
+  }
+}
+
+//@media (min-width: 769px) and (max-width: 992px) { /* For large screens */
+  //.thumbnail {
+    //width: 140px; /* Adjust the width */
+    //height: 105px; /* Adjust the height */
+  //}
+//}
+
+//@media (min-width: 993px) { /* For extra large screens */
+  //.thumbnail {
+    //width: 160px; /* Adjust the width */
+    //height: 120px; /* Adjust the height */
+  //}
+//}
