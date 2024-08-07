@@ -1,32 +1,31 @@
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const thumbnails = document.querySelectorAll('.thumbnail');
-    const currentImage = document.getElementById('current-image');
-    let currentIndex = 0;
+document.addEventListener('DOMContentLoaded', () => {
+  const thumbnails = document.querySelectorAll('.thumbnail');
+  const carousel = document.querySelector('#carouselExample');
+  const bootstrapCarousel = new bootstrap.Carousel(carousel);
 
-    thumbnails.forEach((thumbnail, index) => {
-      thumbnail.addEventListener('click', () => {
-        currentIndex = index;
-        updateCurrentImage();
-      });
-    });
-
-    window.changeImage = function(n) {
-      currentIndex = (currentIndex + n + thumbnails.length) % thumbnails.length;
-      updateCurrentImage();
-    };
-
-    function updateCurrentImage() {
-      const selectedThumbnail = thumbnails[currentIndex];
-      currentImage.src = selectedThumbnail.dataset.largeImage;
-
+  thumbnails.forEach((thumbnail, index) => {
+    thumbnail.addEventListener('click', (event) => {
+      // Remove active class from all thumbnails
       thumbnails.forEach(thumbnail => thumbnail.classList.remove('active'));
-      selectedThumbnail.classList.add('active');
-    }
 
-    // Initialize first image as active
-    updateCurrentImage();
+      // Add active class to the clicked thumbnail
+      event.currentTarget.classList.add('active');
+
+      // Move the carousel to the clicked image
+      bootstrapCarousel.to(index);
+    });
   });
+
+  carousel.addEventListener('slid.bs.carousel', (event) => {
+    // Remove active class from all thumbnails
+    thumbnails.forEach(thumbnail => thumbnail.classList.remove('active'));
+
+    // Add active class to the current thumbnail
+    thumbnails[event.to].classList.add('active');
+  });
+});
+
 </script>
 
 
@@ -48,7 +47,7 @@
       </div>
     <% end %>
   </div>-->
-  <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+  <div id="carouselExample" class="carousel slide" > <!-- 5000ms = 5 seconds OR use data-bs-ride="carousel" to make it change automatic -->
     <div class="carousel-inner">
       <% @space.images.each_with_index do |image, index| %>
         <div class="carousel-item <%= 'active' if index == 0 %>">
@@ -66,7 +65,7 @@
     </button>
   </div>
 
-  <div class="thumbnail-images">
+<div class="thumbnail-images d-flex justify-content-center flex-wrap mt-2">
     <% @space.images.each_with_index do |image, index| %>
       <%= image_tag url_for(image), class: "thumbnail #{'active' if index == 0}", data: { bs_target: '#carouselExample', bs_slide_to: index } %>
     <% end %>
