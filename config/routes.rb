@@ -11,7 +11,10 @@ Rails.application.routes.draw do
   get "/user_profile", to: "pages#user_profile"
   get "/space_requests", to: "pages#space_requests"
 
-
+# config/routes.rb
+resources :spaces do
+  get 'select_date', on: :member
+end
 
   patch "/spaces/:id/approve", to: "pages#approve", as: :approve_space
   patch "/spaces/:id/reject", to: "pages#reject", as: :reject_space

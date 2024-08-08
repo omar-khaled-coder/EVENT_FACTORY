@@ -18,10 +18,22 @@ class SpacesController < ApplicationController
       }
     end
   end
+  def select_date
+    @space = Space.find(params[:id])
+    @selected_date = params[:date]
+
+    # Add any additional logic you need here.
+
+    respond_to do |format|
+      format.turbo_stream
+      format.html { redirect_to space_path(@space) }
+    end
+  end
 
   # GET /spaces/1 or /spaces/1.json
   def show
     @space = Space.find(params[:id])
+
     if @space.geocoded?
       @marker =
         {
@@ -39,6 +51,8 @@ class SpacesController < ApplicationController
     format.html
     format.js { render partial: 'simple_calendar/month_calendar', locals: { start_date: start_date, events: [] } }
   end
+
+
   end
 
 

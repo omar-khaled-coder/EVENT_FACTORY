@@ -1,0 +1,9 @@
+<div>
+  <%= month_calendar do |date| %>
+    <% if @space.start_date <= date && @space.end_date >= date && date >= Date.today %>
+      <%= link_to date.day, select_date_space_path(date: date, id: @space.id), class: 'available-day', data: { date: date.strftime("%Y-%m-%d") }, remote: true %>
+    <% else %>
+      <span><%= date.day %></span>
+    <% end %>
+  <% end %>
+</div>
