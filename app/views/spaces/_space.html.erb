@@ -252,23 +252,9 @@ document.addEventListener('DOMContentLoaded', () => {
         <% end %>
       </select>
     </div>
-    <div class="field">
-      <label for="end_time">End Time</label>
-      <select id="end_time" name="end_time">
-        <% generate_time_options(@space.available_from, @space.available_to).each do |time| %>
-          <option value="<%= time.strftime("%H:%M") %>"><%= time.strftime("%I:%M %p") %></option>
-        <% end %>
-      </select>
-    </div>
-    <div>
-      <%= month_calendar do |date| %>
-        <% if @space.start_date <= date && @space.end_date >= date && date >= Date.today %>
-          <%= link_to date.day, "select_date_path(date: date, space_id: @space.id)", class: 'available-day', data: { date: date.strftime("%Y-%m-%d") } %>
-        <% else %>
-          <span><%= date.day %></span>
-        <% end %>
-      <% end %>
-    </div>
+<%= render 'simple_calendar/calendar_view' %>
+<input type="datetime-local">
+
   </form>
 </div>
 
