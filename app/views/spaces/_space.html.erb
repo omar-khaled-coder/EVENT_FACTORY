@@ -37,6 +37,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 });
+document.addEventListener("DOMContentLoaded", function() {
+  const datePicker = document.querySelector(".date-picker");
+  datePicker.addEventListener("change", function(event) {
+    const selectedDate = event.target.value;
+    // Perform an action with the selected date, such as sending an AJAX request
+  });
+});
 
 </script>
 
@@ -262,7 +269,10 @@ document.addEventListener('DOMContentLoaded', () => {
     </div>
 <%= render 'simple_calendar/calendar_view' %>
 <input type="datetime-local">
-
+<div class="date-selection">
+  <label for="booking_date">Select Booking Date:</label>
+  <input type="date" id="booking_date" name="booking_date" class="date-picker">
+</div>
   </form>
 </div>
 

@@ -33,7 +33,7 @@ class SpacesController < ApplicationController
   # GET /spaces/1 or /spaces/1.json
   def show
     @space = Space.find(params[:id])
-
+    @selected_date = params[:booking_date] if params[:booking_date].present?
     if @space.geocoded?
       @marker =
         {
