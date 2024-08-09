@@ -212,10 +212,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 
-      <p>
-        <strong>Price per hour:</strong>
-        <%= space.price_per_hour %>
-      </p>
+
 
       <p>
         <strong>Price per day:</strong>
@@ -247,10 +244,15 @@ document.addEventListener("DOMContentLoaded", function() {
     <!-- Form Section -->
   <div class="form-section col-12 col-lg-6">
   <form>
-    <div class="field">
+
+    <div style="display: flex;align-items: last baseline;">
+    <h3 style="font-family: initial;">$<%= space.price_per_hour %></h3> <h6 style="color: #383838ab;font-style: italic;">Per Hour (Min. <%= space.minimum_rental_duration%> hr)</h6>
+    </div>
+
+    <!--<div class="field">
       <label for="selected_date">Selected Date</label>
       <input type="text" id="selected_date" name="selected_date" readonly>
-    </div>
+    </div>-->
     <div class="field">
       <label for="start_time">Start Time</label>
       <select id="start_time" name="start_time">
@@ -267,12 +269,14 @@ document.addEventListener("DOMContentLoaded", function() {
         <% end %>
       </select>
     </div>
-<%= render 'simple_calendar/calendar_view' %>
-<input type="datetime-local">
+<!--<%= render 'simple_calendar/calendar_view' %>
+<input type="datetime-local">-->
 <div class="date-selection">
   <label for="booking_date">Select Booking Date:</label>
-  <input type="date" id="booking_date" name="booking_date" class="date-picker">
+  <input type="date" id="booking_date" name="booking_date" class="date-picker"
+         min="<%= Date.today.strftime('%Y-%m-%d') %>" max="<%= @space.end_date %>">
 </div>
+
   </form>
 </div>
 

@@ -4,5 +4,5 @@ import "controllers"
 import "@popperjs/core"
 import "bootstrap"
 import './imagesshow';
-import flatpickr from "flatpickr";
-import "flatpickr/dist/flatpickr.css";
+//import flatpickr from "flatpickr";
+//import "flatpickr/dist/flatpickr.css";
