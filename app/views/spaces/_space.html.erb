@@ -44,6 +44,15 @@ document.addEventListener("DOMContentLoaded", function() {
     // Perform an action with the selected date, such as sending an AJAX request
   });
 });
+document.addEventListener("DOMContentLoaded", function() {
+  flatpickr(".date-picker", {
+    minDate: "today", // Disables past dates
+    maxDate: "<%= @space.end_date %>", // Set maximum date from your database
+    dateFormat: "Y-m-d", // Format for the date
+    altInput: true, // Use a more human-friendly input format
+    altFormat: "F j, Y", // The format of the alternative input
+  });
+});
 
 </script>
 
@@ -272,10 +281,11 @@ document.addEventListener("DOMContentLoaded", function() {
 <!--<%= render 'simple_calendar/calendar_view' %>
 <input type="datetime-local">-->
 <div class="date-selection">
-  <label for="booking_date">Select Booking Date:</label>
-  <input type="date" id="booking_date" name="booking_date" class="date-picker"
-         min="<%= Date.today.strftime('%Y-%m-%d') %>" max="<%= @space.end_date %>">
+  <label for="booking_date" class="date-label">Select Booking Date:</label>
+  <input type="text" id="booking_date" name="booking_date" class="date-picker">
 </div>
+
+
 
   </form>
 </div>

@@ -36,6 +36,7 @@ hr {
   opacity: 0.25;
 }
 
+// avatar in the show page of rhe space
 .avatar-show {
   height: 80px;
   width: 80px;
@@ -90,6 +91,8 @@ hr {
   margin-top: 10px;
 }
 
+
+// images crosal view
 .space-images {
   position: relative;
 }
@@ -115,6 +118,7 @@ hr {
   opacity: 0.6;
 }
 
+
 .thumbnail.active, .thumbnail:hover {
   opacity: 1;
 }
@@ -136,6 +140,46 @@ hr {
   font-weight: bold;
 }
 
+.carousel-image {
+  max-height: 464px; /* Adjust the height as needed */
+  object-fit: cover; /* Ensures the image covers the element proportionally */
+}
+
+
+
+@media (max-width: 576px) { /* For small screens */
+  .thumbnail {
+    width: 100px; /* Adjust the width */
+    height: 75px; /* Adjust the height */
+  }
+}
+
+@media (min-width: 577px) and (max-width: 768px) { /* For medium screens */
+  .thumbnail {
+    width: 120px; /* Adjust the width */
+    height: 90px; /* Adjust the height */
+  }
+}
+
+//@media (min-width: 769px) and (max-width: 992px) { /* For large screens */
+  //.thumbnail {
+    //width: 140px; /* Adjust the width */
+    //height: 105px; /* Adjust the height */
+  //}
+//}
+
+//@media (min-width: 993px) { /* For extra large screens */
+  //.thumbnail {
+    //width: 160px; /* Adjust the width */
+    //height: 120px; /* Adjust the height */
+  //}
+//}
+
+
+
+
+
+// booking form section
 .form-section {
   padding: 20px;
   border: 1px solid #ddd;
@@ -180,48 +224,40 @@ hr {
   }
 }
 
-.carousel-image {
-  max-height: 464px; /* Adjust the height as needed */
-  object-fit: cover; /* Ensures the image covers the element proportionally */
+
+
+
+
+.date-selection {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: 20px;
 }
 
-.thumbnail {
-  width: 80px;
-  height: 60px;
-  object-fit: cover;
-  margin-right: 5px;
-  cursor: pointer;
-  opacity: 0.6;
+.date-label {
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #333;
 }
 
-.thumbnail.active, .thumbnail:hover {
-  opacity: 1;
+.date-picker {
+  padding: 10px;
+  border: 2px solid #007bff;
+  border-radius: 5px;
+  font-size: 16px;
+  color: #333;
+  background-color: #f9f9f9;
+  width: 100%;
+  max-width: 300px;
 }
 
-@media (max-width: 576px) { /* For small screens */
-  .thumbnail {
-    width: 100px; /* Adjust the width */
-    height: 75px; /* Adjust the height */
-  }
+.date-picker:hover {
+  border-color: #0056b3;
 }
 
-@media (min-width: 577px) and (max-width: 768px) { /* For medium screens */
-  .thumbnail {
-    width: 120px; /* Adjust the width */
-    height: 90px; /* Adjust the height */
-  }
+.date-picker:focus {
+  outline: none;
+  border-color: #0056b3;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
-
-//@media (min-width: 769px) and (max-width: 992px) { /* For large screens */
-  //.thumbnail {
-    //width: 140px; /* Adjust the width */
-    //height: 105px; /* Adjust the height */
-  //}
-//}
-
-//@media (min-width: 993px) { /* For extra large screens */
-  //.thumbnail {
-    //width: 160px; /* Adjust the width */
-    //height: 120px; /* Adjust the height */
-  //}
-//}
