@@ -80,3 +80,5 @@ gem 'country_select'
 gem 'geocoder'
 gem "simple_calendar"
 gem "pundit"
+gem "sidekiq", "~> 7"
+gem "sidekiq-failures"

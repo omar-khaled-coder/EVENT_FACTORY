@@ -210,6 +210,8 @@ GEM
       activesupport (>= 3.0.0)
     racc (1.8.0)
     rack (3.1.6)
+    rack-proxy (0.7.7)
+      rack
     rack-session (2.0.0)
       rack (>= 3.0.0)
     rack-test (2.1.0)
@@ -249,6 +251,8 @@ GEM
     rake (13.2.1)
     rdoc (6.7.0)
       psych (>= 4.0.0)
+    redis-client (0.22.2)
+      connection_pool
     regexp_parser (2.9.2)
     reline (0.5.9)
       io-console (~> 0.5)
@@ -274,6 +278,15 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
+    semantic_range (3.0.0)
+    sidekiq (7.3.0)
+      concurrent-ruby (< 2)
+      connection_pool (>= 2.3.0)
+      logger
+      rack (>= 2.2.4)
+      redis-client (>= 0.22.2)
+    sidekiq-failures (1.0.4)
+      sidekiq (>= 4.0.0)
     simple_calendar (2.4.3)
       rails (>= 3.0)
     sprockets (4.2.1)
@@ -305,6 +318,11 @@ GEM
       activemodel (>= 6.0.0)
       bindex (>= 0.4.0)
       railties (>= 6.0.0)
+    webpacker (5.4.4)
+      activesupport (>= 5.2)
+      rack-proxy (>= 0.6.1)
+      railties (>= 5.2)
+      semantic_range (>= 2.3.0)
     webrick (1.8.1)
     websocket (1.2.10)
     websocket-driver (0.7.6)
@@ -340,6 +358,8 @@ DEPENDENCIES
   rails (~> 7.1.3, >= 7.1.3.2)
   sassc-rails
   selenium-webdriver
+  sidekiq (~> 7)
+  sidekiq-failures
   simple_calendar
   simple_form!
   sprockets-rails
@@ -347,6 +367,7 @@ DEPENDENCIES
   turbo-rails
   tzinfo-data
   web-console
+  webpacker (~> 5.4)
 
 RUBY VERSION
    ruby 3.1.2p20
