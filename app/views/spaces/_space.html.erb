@@ -54,6 +54,42 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 });
 
+ function calculatePrice() {
+    const startTime = document.getElementById("start_time").value;
+    const endTime = document.getElementById("end_time").value;
+    const pricePerHour = <%= @space.price_per_hour %>;
+    const minHours = <%= @space.minimum_rental_duration %>;
+
+    if (startTime && endTime) {
+      const start = new Date(`1970-01-01T${startTime}:00`);
+      const end = new Date(`1970-01-01T${endTime}:00`);
+      const hours = (end - start) / (1000 * 60 * 60);
+
+      const calculatedHours = hours < minHours ? minHours : hours;
+      const spacePrice = pricePerHour * calculatedHours;
+      const estimatedPrice = spacePrice + 0; // Add additional fees if any
+
+      document.getElementById("price-calculation").innerHTML = `
+    <p>Space price: $ ${pricePerHour} x ${calculatedHours} hrs: </p> <p>$ ${spacePrice.toFixed(2)}</p>
+<p>Estimated price: </p> <p> $ ${estimatedPrice.toFixed(2)}</p>
+
+      `;
+    }
+  }
+
+  function validateGuests() {
+  const guestInput = document.getElementById("guest_number");
+  const maxGuests = guestInput.max;
+  const guestError = document.getElementById("guest-error");
+
+  if (parseInt(guestInput.value) > parseInt(maxGuests)) {
+    guestError.style.display = "block";
+    guestInput.value = maxGuests;
+  } else {
+    guestError.style.display = "none";
+  }
+}
+
 </script>
 
 
@@ -251,41 +287,43 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
     <!-- Form Section -->
-  <div class="form-section col-12 col-lg-6">
+<div class="form-section col-12 col-lg-6">
   <form>
-
-    <div style="display: flex;align-items: last baseline;">
-    <h3 style="font-family: initial;">$<%= space.price_per_hour %></h3> <h6 style="color: #383838ab;font-style: italic;">Per Hour (Min. <%= space.minimum_rental_duration%> hr)</h6>
+    <div style="display: flex; align-items: last baseline;">
+      <h3 style="font-family: initial;">$<%= @space.price_per_hour %></h3>
+      <h6 style="color: #383838ab; font-style: italic;">Per Hour (Min. <%= @space.minimum_rental_duration %> hr)</h6>
     </div>
 
-    <!--<div class="field">
-      <label for="selected_date">Selected Date</label>
-      <input type="text" id="selected_date" name="selected_date" readonly>
-    </div>-->
     <div class="field">
       <label for="start_time">Start Time</label>
-      <select id="start_time" name="start_time">
+      <select id="start_time" name="start_time" onchange="calculatePrice()">
         <% generate_time_options(@space.available_from, @space.available_to).each do |time| %>
           <option value="<%= time.strftime("%H:%M") %>"><%= time.strftime("%I:%M %p") %></option>
         <% end %>
       </select>
     </div>
-     <div class="field">
+
+    <div class="field">
       <label for="end_time">End Time</label>
-      <select id="end_time" name="end_time">
+      <select id="end_time" name="end_time" onchange="calculatePrice()">
         <% generate_time_options(@space.available_from, @space.available_to).each do |time| %>
           <option value="<%= time.strftime("%H:%M") %>"><%= time.strftime("%I:%M %p") %></option>
         <% end %>
       </select>
     </div>
-<!--<%= render 'simple_calendar/calendar_view' %>
-<input type="datetime-local">-->
-<div class="date-selection">
-  <label for="booking_date" class="date-label">Select Booking Date:</label>
-  <input type="text" id="booking_date" name="booking_date" class="date-picker">
-</div>
-
-
+ <div class="field">
+      <label for="guest_number">Number of Guests</label>
+      <input type="number" id="guest_number" name="guest_number" min="1" max="<%= @space.capacity %>" oninput="validateGuests()">
+      <small id="guest-error" style="color: red; display: none;">The number of guests cannot exceed the capacity of <%= @space.capacity %> guests.</small>
+    </div>
+    <div class="date-selection">
+      <label for="booking_date" class="date-label">Select Booking Date:</label>
+      <input type="text" id="booking_date" name="booking_date" class="date-picker">
+    </div>
+<hr>
+    <div id="price-calculation" style="font-family: sans-serif;color: #000000d6;font-size: 1rem;display: grid;grid-template-columns: 1fr auto;font-weight: 550 !important;">
+      <!-- Calculated price will be displayed here -->
+    </div>
 
   </form>
 </div>
