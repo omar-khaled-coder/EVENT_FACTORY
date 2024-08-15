@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_27_093046) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_15_005912) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -40,6 +40,21 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_27_093046) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "bookings", force: :cascade do |t|
+    t.bigint "space_id"
+    t.bigint "user_id"
+    t.bigint "owner_id"
+    t.date "start_date"
+    t.date "end_date"
+    t.time "start_hour"
+    t.time "end_hour"
+    t.decimal "price"
+    t.string "payment_status", default: "pending"
+    t.string "booking_status", default: "pending"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "spaces", force: :cascade do |t|
