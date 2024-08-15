@@ -33,6 +33,7 @@ class SpacesController < ApplicationController
   # GET /spaces/1 or /spaces/1.json
   def show
     @space = Space.find(params[:id])
+    @booking = Booking.new # Initialize a new Booking instance
     @selected_date = params[:booking_date] if params[:booking_date].present?
     if @space.geocoded?
       @marker =
@@ -51,6 +52,7 @@ class SpacesController < ApplicationController
     format.html
     format.js { render partial: 'simple_calendar/month_calendar', locals: { start_date: start_date, events: [] } }
   end
+
 
 
   end

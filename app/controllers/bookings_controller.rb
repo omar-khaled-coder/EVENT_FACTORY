@@ -12,12 +12,19 @@ class BookingsController < ApplicationController
 
   # GET /bookings/new
   def new
-    @booking = Booking.new
+    @space = Space.find(params[:space_id])
+    @booking = Booking.new(
+      space_id: @space.id,
+      user_id: current_user.id,
+      owner_id: @space.user_id,
+      start_date: params[:booking_date],
+      start_hour: params[:start_time],
+      end_hour: params[:end_time],
+      guest_number: params[:guest_number]
+    )
   end
 
-  # GET /bookings/1/edit
-  def edit
-  end
+
 
   # POST /bookings or /bookings.json
   def create
@@ -33,6 +40,12 @@ class BookingsController < ApplicationController
       end
     end
   end
+
+
+   # GET /bookings/1/edit
+   def edit
+   end
+
 
   # PATCH/PUT /bookings/1 or /bookings/1.json
   def update
@@ -65,6 +78,6 @@ class BookingsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def booking_params
-      params.require(:booking).permit(:space_id, :user_id, :owner_id, :start_date, :end_date, :start_hour, :end_hour, :price, :payment_status, :booking_status)
+      params.require(:booking).permit(:space_id, :user_id, :owner_id, :start_date, :end_date, :start_hour, :end_hour, :price, :payment_status, :booking_status, :guest_number)
     end
 end
