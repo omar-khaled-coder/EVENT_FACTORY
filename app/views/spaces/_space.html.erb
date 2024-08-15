@@ -288,7 +288,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     <!-- Form Section -->
 <div class="form-section col-12 col-lg-6">
-  <form>
+  <%= form_with url: new_booking_path, method: :get, local: true do %>
     <div style="display: flex; align-items: last baseline;">
       <h3 style="font-family: initial;">$<%= @space.price_per_hour %></h3>
       <h6 style="color: #383838ab; font-style: italic;">Per Hour (Min. <%= @space.minimum_rental_duration %> hr)</h6>
@@ -311,22 +311,28 @@ document.addEventListener("DOMContentLoaded", function() {
         <% end %>
       </select>
     </div>
- <div class="field">
+
+    <div class="field">
       <label for="guest_number">Number of Guests</label>
       <input type="number" id="guest_number" name="guest_number" min="1" max="<%= @space.capacity %>" oninput="validateGuests()">
       <small id="guest-error" style="color: red; display: none;">The number of guests cannot exceed the capacity of <%= @space.capacity %> guests.</small>
     </div>
+
     <div class="date-selection">
       <label for="booking_date" class="date-label">Select Booking Date:</label>
       <input type="text" id="booking_date" name="booking_date" class="date-picker">
     </div>
-<hr>
+
+    <hr>
     <div id="price-calculation" style="font-family: sans-serif;color: #000000d6;font-size: 1rem;display: grid;grid-template-columns: 1fr auto;font-weight: 550 !important;">
       <!-- Calculated price will be displayed here -->
     </div>
+    <hr>
 
-  </form>
+    <%= submit_tag 'Book your event', class: 'btn btn-info' %>
+  <% end %>
 </div>
+
 
   </div>
 </div>
@@ -335,7 +341,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 
-<div class="field">
+ <!--<div class="field">
         <label for="start_time">Start Time</label>
         <select id="start_time" name="start_time">
           <% generate_time_options(@space.available_from, @space.available_to).each do |time| %>
@@ -353,7 +359,7 @@ document.addEventListener("DOMContentLoaded", function() {
         </select>
       </div>
 
-    <!--<%= month_calendar do |date| %>
+   <%= month_calendar do |date| %>
           <% if @space.start_date <= date && @space.end_date >= date && date >= Date.today %>
             <%= link_to date.day, "select_date_path(date: date, space_id: @space.id)", class: 'available-day' %>
           <% else %>
