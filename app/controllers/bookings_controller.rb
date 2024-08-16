@@ -20,7 +20,10 @@ class BookingsController < ApplicationController
       start_date: params[:booking_date],
       start_hour: params[:start_time],
       end_hour: params[:end_time],
-      guest_number: params[:guest_number]
+      guest_number: params[:guest_number],
+      price: params[:price] # assuming you pass the price as a parameter
+
+
     )
   end
   # GET /bookings/1/edit

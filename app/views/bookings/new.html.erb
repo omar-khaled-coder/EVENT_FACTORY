@@ -1,29 +1,69 @@
 <h1>New Booking</h1>
 
 <%= simple_form_for(@booking) do |f| %>
-  <%= f.error_notification %>
   <div class="form-inputs">
     <%= f.input :space_id, as: :hidden %>
     <%= f.input :start_date, as: :string, label: "Booking Date" %>
-    <%= f.input :start_hour, as: :select, collection: generate_time_options(@space.available_from, @space.available_to).map { |time| [time.strftime("%I:%M %p"), time.strftime("%H:%M")] }, label: "Start Time" %>
-    <%= f.input :end_hour, as: :select, collection: generate_time_options(@space.available_from, @space.available_to).map { |time| [time.strftime("%I:%M %p"), time.strftime("%H:%M")] }, label: "End Time" %>
-
+    <%= f.input :start_hour, as: :select, collection: generate_time_options(@space.available_from, @space.available_to).map { |time| [time.strftime("%I:%M %p"), time.strftime("%H:%M")] }, label: "Start Time", input_html: { id: "start_time" } %>
+    <%= f.input :end_hour, as: :select, collection: generate_time_options(@space.available_from, @space.available_to).map { |time| [time.strftime("%I:%M %p"), time.strftime("%H:%M")] }, label: "End Time", input_html: { id: "end_time" } %>
     <div class="field">
       <%= f.label :guest_number, "Number of Guests" %>
       <%= f.number_field :guest_number, min: 1, max: @space.capacity %>
     </div>
   </div>
 
+  <div id="price-calculation" style="font-family: sans-serif;color: #000000d6;font-size: 1rem;display: grid;grid-template-columns: 1fr auto;font-weight: 550 !important;">
+    <!-- Calculated price will be displayed here -->
+  </div>
+
+  <!-- Hidden field to store the calculated price -->
+  <%= f.hidden_field :price, id: "booking_price" %>
+
   <div class="form-actions">
     <%= f.submit "Confirm Booking" %>
   </div>
 <% end %>
-
-
-
 
 <br>
 
 <div>
   <%= link_to "Back to bookings", bookings_path %>
 </div>
+
+<!-- JavaScript for Price Calculation -->
+<script>
+
+    function calculatePrice() {
+      const startTime = document.getElementById("start_time").value;
+      const endTime = document.getElementById("end_time").value;
+      const pricePerHour = <%= @space.price_per_hour %>;
+      const minHours = <%= @space.minimum_rental_duration %>;
+
+      if (startTime && endTime) {
+        const start = new Date(`1970-01-01T${startTime}:00`);
+        const end = new Date(`1970-01-01T${endTime}:00`);
+        const hours = (end - start) / (1000 * 60 * 60);
+
+        const calculatedHours = hours < minHours ? minHours : hours;
+        const spacePrice = pricePerHour * calculatedHours;
+        const estimatedPrice = spacePrice; // Add any additional fees here if necessary
+
+        // Update the price display
+        document.getElementById("price-calculation").innerHTML = `
+          <p>Space price: $ ${pricePerHour} x ${calculatedHours} hrs: $ ${spacePrice.toFixed(2)}</p>
+          <p>Estimated price: $ ${estimatedPrice.toFixed(2)}</p>
+        `;
+
+        // Set the hidden price field value
+        document.getElementById("booking_price").value = estimatedPrice.toFixed(2);
+      }
+    }
+
+    // Attach event listeners
+    document.getElementById("start_time").addEventListener("change", calculatePrice);
+    document.getElementById("end_time").addEventListener("change", calculatePrice);
+
+    // Call the calculation function immediately after the page loads
+    calculatePrice();
+
+</script>
