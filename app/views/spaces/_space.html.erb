@@ -323,13 +323,20 @@ document.addEventListener("DOMContentLoaded", function() {
       <input type="text" id="booking_date" name="booking_date" class="date-picker">
     </div>
 
+    <!-- Hidden fields to pass data to the new booking page -->
+    <%= hidden_field_tag :space_id, @space.id %>
+    <%= hidden_field_tag :hidden_start_time, nil, id: 'hidden_start_time' %>
+    <%= hidden_field_tag :hidden_end_time, nil, id: 'hidden_end_time' %>
+    <%= hidden_field_tag :hidden_guest_number, nil, id: 'hidden_guest_number' %>
+    <%= hidden_field_tag :hidden_booking_date, nil, id: 'hidden_booking_date' %>
+
     <hr>
     <div id="price-calculation" style="font-family: sans-serif;color: #000000d6;font-size: 1rem;display: grid;grid-template-columns: 1fr auto;font-weight: 550 !important;">
       <!-- Calculated price will be displayed here -->
     </div>
     <hr>
 
-    <%= submit_tag 'Book your event', class: 'btn btn-info' %>
+    <%= submit_tag 'Proceed to Confirmation', class: 'btn btn-info' %>
   <% end %>
 </div>
 
