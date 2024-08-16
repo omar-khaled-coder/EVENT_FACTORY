@@ -23,4 +23,3 @@ class User < ApplicationRecord
   has_many :owned_bookings, through: :spaces, source: :bookings # A User can have many bookings through owned spaces
 
 end
-console
