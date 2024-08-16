@@ -16,35 +16,29 @@ class BookingsController < ApplicationController
     @booking = Booking.new(
       space_id: @space.id,
       user_id: current_user.id,
-      owner_id: @space.user_id,
+      owner_id: @space.owner_id,
       start_date: params[:booking_date],
       start_hour: params[:start_time],
       end_hour: params[:end_time],
       guest_number: params[:guest_number]
     )
   end
-
-
+  # GET /bookings/1/edit
+  def edit
+  end
 
   # POST /bookings or /bookings.json
   def create
-    @booking = Booking.new(booking_params)
+    @space = Space.find(params[:booking][:space_id])
+    @booking = Booking.new(booking_params.merge(user_id: current_user.id, owner_id: @space.owner_id))
 
-    respond_to do |format|
-      if @booking.save
-        format.html { redirect_to booking_url(@booking), notice: "Booking was successfully created." }
-        format.json { render :show, status: :created, location: @booking }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @booking.errors, status: :unprocessable_entity }
-      end
+    if @booking.save
+      redirect_to @booking, notice: 'Booking was successfully created.'
+    else
+      render :new, status: :unprocessable_entity
     end
   end
 
-
-   # GET /bookings/1/edit
-   def edit
-   end
 
 
   # PATCH/PUT /bookings/1 or /bookings/1.json
