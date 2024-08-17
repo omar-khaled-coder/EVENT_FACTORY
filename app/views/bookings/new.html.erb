@@ -1,69 +1,69 @@
 <div class="container">
-    <h1>New Booking</h1>
+    <h1>Create your event</h1>
 
-<div class="row">
-  <!-- Display the space image with the owner's picture overlayed in the lower left corner -->
-  <% if @space.images.attached? %>
-    <div class="imagewidth position-relative col-12 col-lg-12" style="overflow: hidden;">
-      <%= image_tag @space.images.first, class: "img-cover", alt: "Space Image", style: "width: 100%; height: 100%; object-fit: cover;" %>
+    <div class="row">
+      <!-- Display the space image with the owner's picture overlayed in the lower left corner -->
+      <% if @space.images.attached? %>
+        <div class="imagewidth position-relative col-12 col-lg-12" style="overflow: hidden;">
+          <%= image_tag @space.images.first, class: "img-cover", alt: "Space Image", style: "width: 100%; height: 100%; object-fit: cover;" %>
 
-      <!-- Owner's picture -->
-      <div class="owner-picture position-absolute" style="bottom: 10px; left: 10px;">
-        <%= image_tag @space.owner.profile_picture, class: "rounded-circle", alt: "Owner Picture", style: "width: 50px; height: 50px; border: 2px solid white;" %>
-      </div>
-    </div>
-  <% end %>
-</div>
-
-<style>
-.imagewidth {
-  width: 70%; /* 70% width for larger screens */
-  height: auto; /* Let the height adjust automatically */
-  margin: 0 auto; /* Center the image horizontally */
-}
-
-@media (max-width: 576px) { /* For small screens like iPhone 12 Pro */
-  .imagewidth {
-    width: 100%; /* 100% width on small screens */
-    height: auto; /* Adjust the height automatically */
-  }
-}
-</style>
-
-
-
-
-<div class="row">
-    <%= simple_form_for(@booking) do |f| %>
-      <div class="form-inputs">
-        <%= f.input :space_id, as: :hidden %>
-        <%= f.input :start_date, as: :string, label: "Booking Date" %>
-        <%= f.input :start_hour, as: :select, collection: generate_time_options(@space.available_from, @space.available_to).map { |time| [time.strftime("%I:%M %p"), time.strftime("%H:%M")] }, label: "Start Time", input_html: { id: "start_time" } %>
-        <%= f.input :end_hour, as: :select, collection: generate_time_options(@space.available_from, @space.available_to).map { |time| [time.strftime("%I:%M %p"), time.strftime("%H:%M")] }, label: "End Time", input_html: { id: "end_time" } %>
-        <div class="field">
-          <%= f.label :guest_number, "Number of Guests" %>
-          <%= f.number_field :guest_number, min: 1, max: @space.capacity %>
+          <!-- Owner's picture -->
+          <div class="owner-picture position-absolute" style="bottom: 10px; right: 20px;">
+            <%= image_tag @space.owner.profile_picture, class: "rounded-circle", alt: "Owner Picture", style: "width: 50px; height: 50px; border: 2px solid white;" %>
+          </div>
         </div>
-      </div>
-
-      <div id="price-calculation" style="font-family: sans-serif;color: #000000d6;font-size: 1rem;display: grid;grid-template-columns: 1fr auto;font-weight: 550 !important;">
-        <!-- Calculated price will be displayed here -->
-      </div>
-
-      <!-- Hidden field to store the calculated price -->
-      <%= f.hidden_field :price, id: "booking_price" %>
-
-      <div class="form-actions">
-        <%= f.submit "Confirm Booking" %>
-      </div>
-    <% end %>
-
-    <br>
-
-    <div>
-      <%= link_to "Back to bookings", bookings_path %>
+      <% end %>
     </div>
-</div>
+
+    <style>
+      .imagewidth {
+        width: 80%; /* 70% width for larger screens */
+        height: 350px; /* Let the height adjust automatically */
+        margin: 0 auto; /* Center the image horizontally */
+      }
+
+      @media (max-width: 576px) { /* For small screens like iPhone 12 Pro */
+        .imagewidth {
+          width: 97%; /* 100% width on small screens */
+          height: auto; /* Adjust the height automatically */
+        }
+      }
+    </style>
+
+
+
+
+    <div class="row">
+        <%= simple_form_for(@booking) do |f| %>
+          <div class="form-inputs col-12 col-lg-12"">
+            <%= f.input :space_id, as: :hidden %>
+            <%= f.input :start_date, as: :string, label: "Booking Date" %>
+            <%= f.input :start_hour, as: :select, collection: generate_time_options(@space.available_from, @space.available_to).map { |time| [time.strftime("%I:%M %p"), time.strftime("%H:%M")] }, label: "Start Time", input_html: { id: "start_time" } %>
+            <%= f.input :end_hour, as: :select, collection: generate_time_options(@space.available_from, @space.available_to).map { |time| [time.strftime("%I:%M %p"), time.strftime("%H:%M")] }, label: "End Time", input_html: { id: "end_time" } %>
+            <div class="field">
+              <%= f.label :guest_number, "Number of Guests" %>
+              <%= f.number_field :guest_number, min: 1, max: @space.capacity %>
+            </div>
+          </div>
+
+          <div id="price-calculation" style="font-family: sans-serif;color: #000000d6;font-size: 1rem;display: grid;grid-template-columns: 1fr auto;font-weight: 550 !important;">
+            <!-- Calculated price will be displayed here -->
+          </div>
+
+          <!-- Hidden field to store the calculated price -->
+          <%= f.hidden_field :price, id: "booking_price" %>
+
+          <div class="form-actions">
+            <%= f.submit "Confirm Booking" %>
+          </div>
+        <% end %>
+
+        <br>
+
+        <div>
+          <%= link_to "Back to bookings", bookings_path %>
+        </div>
+    </div>
 </div>
 
 
