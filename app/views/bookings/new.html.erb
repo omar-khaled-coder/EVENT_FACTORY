@@ -65,10 +65,11 @@
             <%= f.input :start_date, as: :string, label: "Booking Date" %>
             <%= f.input :start_hour, as: :select, collection: generate_time_options(@space.available_from, @space.available_to).map { |time| [time.strftime("%I:%M %p"), time.strftime("%H:%M")] }, label: "Start Time", input_html: { id: "start_time" } %>
             <%= f.input :end_hour, as: :select, collection: generate_time_options(@space.available_from, @space.available_to).map { |time| [time.strftime("%I:%M %p"), time.strftime("%H:%M")] }, label: "End Time", input_html: { id: "end_time" } %>
-            <div class="field">
-              <%= f.label :guest_number, "Number of Guests" %>
-              <%= f.number_field :guest_number, min: 1, max: @space.capacity %>
-            </div>
+           <div class="field">
+  <%= f.label :guest_number, "Number of Guests" %>
+  <%= f.number_field :guest_number, min: 1, max: @space.capacity, id: "guest_number" %>
+  <span id="guest_number_error" style="color: red; font-size: 0.9em;"></span>
+</div>
           </div>
 
           <div id="price-calculation" style="font-family: sans-serif;color: #000000d6;font-size: 1rem;display: grid;grid-template-columns: 1fr auto;font-weight: 550 !important;">
@@ -95,6 +96,25 @@
 
 <!-- JavaScript for Price Calculation -->
 <script>
+  const guestNumberInput = document.getElementById("guest_number");
+  const guestNumberError = document.getElementById("guest_number_error");
+  const maxCapacity = <%= @space.capacity %>;
+  const minCapacity = 1;
+
+  guestNumberInput.addEventListener("input", function() {
+    let value = parseInt(this.value);
+
+    if (value > maxCapacity) {
+      guestNumberError.textContent = `The number of guests cannot exceed ${maxCapacity}.`;
+      this.value = maxCapacity;
+    } else if (value < minCapacity) {
+      guestNumberError.textContent = `The number of guests cannot be less than ${minCapacity}.`;
+      this.value = minCapacity;
+    } else {
+      guestNumberError.textContent = ''; // Clear the error message if within the valid range
+    }
+  });
+
 
     function calculatePrice() {
       const startTime = document.getElementById("start_time").value;
@@ -114,7 +134,7 @@
         // Update the price display
         document.getElementById("price-calculation").innerHTML = `
           <p>Space price: $ ${pricePerHour} x ${calculatedHours} hrs: </p> <p>$ ${spacePrice.toFixed(2)}</p>
-<p>Estimated price: </p> <p> $ ${estimatedPrice.toFixed(2)}</p>
+          <p>Estimated price: </p> <p> $ ${estimatedPrice.toFixed(2)}</p>
         `;
 
         // Set the hidden price field value
