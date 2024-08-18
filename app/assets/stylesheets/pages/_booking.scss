@@ -1,12 +1,12 @@
 .imagewidth {
-  width: 70%; /* 70% width for larger screens */
-  height: auto; /* Let the height adjust automatically */
+  width: 80%; /* 70% width for larger screens */
+  height: 350px; /* Let the height adjust automatically */
   margin: 0 auto; /* Center the image horizontally */
 }
 
 @media (max-width: 576px) { /* For small screens like iPhone 12 Pro */
   .imagewidth {
-    width: 100%; /* 100% width on small screens */
+    width: 97%; /* 100% width on small screens */
     height: auto; /* Adjust the height automatically */
   }
 }

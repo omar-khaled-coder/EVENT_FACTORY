@@ -16,14 +16,38 @@
     </div>
 
     <style>
+      .formborders{
+       /* border: 2px solid #8080808c;*/
+        border-radius: 10px;
+        background: #e2e2e299;
+        padding: 30px;
+        margin-top: 10px;
+        box-shadow: 0px 0px 15px;
+      }
+
+      .formwidth{
+        width: 74%;
+        height: 350px;
+        margin: 0 auto;
+
+        margin-top: 10px;; /* Center the image horizontally */
+      }
       .imagewidth {
-        width: 80%; /* 70% width for larger screens */
+        width: 75%; /* 70% width for larger screens */
         height: 350px; /* Let the height adjust automatically */
         margin: 0 auto; /* Center the image horizontally */
+        box-shadow: 1px 2px 15px;
+  padding: 0px;
+  border-radius: 15px;
       }
 
       @media (max-width: 576px) { /* For small screens like iPhone 12 Pro */
         .imagewidth {
+          width: 90%; /* 100% width on small screens */
+          height: auto; /* Adjust the height automatically */
+        }
+
+        .formwidth {
           width: 97%; /* 100% width on small screens */
           height: auto; /* Adjust the height automatically */
         }
@@ -33,7 +57,8 @@
 
 
 
-    <div class="row">
+    <div class="row formwidth">
+      <div class="formborders">
         <%= simple_form_for(@booking) do |f| %>
           <div class="form-inputs col-12 col-lg-12"">
             <%= f.input :space_id, as: :hidden %>
@@ -54,14 +79,15 @@
           <%= f.hidden_field :price, id: "booking_price" %>
 
           <div class="form-actions">
-            <%= f.submit "Confirm Booking" %>
+            <%= f.submit "Confirm Booking",class:"btn btn-warning" %>
           </div>
         <% end %>
+        </div>
 
         <br>
 
         <div>
-          <%= link_to "Back to bookings", bookings_path %>
+          <%= link_to "Back to bookings", bookings_path  %>
         </div>
     </div>
 </div>
@@ -87,8 +113,8 @@
 
         // Update the price display
         document.getElementById("price-calculation").innerHTML = `
-          <p>Space price: $ ${pricePerHour} x ${calculatedHours} hrs: $ ${spacePrice.toFixed(2)}</p>
-          <p>Estimated price: $ ${estimatedPrice.toFixed(2)}</p>
+          <p>Space price: $ ${pricePerHour} x ${calculatedHours} hrs: </p> <p>$ ${spacePrice.toFixed(2)}</p>
+<p>Estimated price: </p> <p> $ ${estimatedPrice.toFixed(2)}</p>
         `;
 
         // Set the hidden price field value
