@@ -11,6 +11,7 @@ Rails.application.routes.draw do
 
   get "/user_profile", to: "pages#user_profile"
   get "/space_requests", to: "pages#space_requests"
+  get 'policies', to: 'pages#policies'
 
 # config/routes.rb
 resources :spaces do

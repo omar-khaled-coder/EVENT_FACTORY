@@ -25,6 +25,9 @@ class PagesController < ApplicationController
     redirect_to space_requests_path, notice: "Space rejected with comments."
   end
 
+  def policies
+  end
+
   private
 
   def user_params
