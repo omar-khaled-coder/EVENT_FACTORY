@@ -61,6 +61,9 @@
     <div class="row formwidth">
       <div class="formborders">
         <%= simple_form_for(@booking) do |f| %>
+        <%= f.error_notification %>
+  <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
+
           <div class="form-inputs col-12 col-lg-12"">
             <%= f.input :space_id, as: :hidden %>
             <%= f.input :start_date, as: :string, label: "Booking Date", input_html: { readonly: true } %>
@@ -89,6 +92,19 @@
           <%= f.hidden_field :price, id: "booking_price" %>
 
           <hr>
+
+          <div class="field <%= 'field_with_errors' if f.object.errors[:responsibility].present? %>">
+            <%= f.check_box :responsibility, required: true %>
+            <%= f.label :responsibility, "By booking this space I confirm that I am solely responsible for adhering to state and local regulations regarding COVID-19 policies when visiting or using this space." %>
+
+            <!-- Display the specific error message next to the checkbox -->
+            <% if f.object.errors[:responsibility].present? %>
+              <div class="error_message" style="color: red;">
+                <%= f.object.errors[:responsibility].first %>
+              </div>
+            <% end %>
+          </div>
+
           <div class="form-actions" style="justify-content: space-evenly;display: flex;">
             <%= f.submit "Send Booking Request",class:"btn btn-warning" %>
           </div>
