@@ -26,7 +26,7 @@
       }
 
       .formwidth{
-        width: 42%;
+        width: 49%;
         height: 350px;
         margin: 0 auto;
 
@@ -95,20 +95,25 @@
 
           <div class="field <%= 'field_with_errors' if f.object.errors[:responsibility].present? %>">
 
-            <%= f.check_box :responsibility, required: true %><%= f.label :responsibility, "By booking this space I confirm that I am solely responsible for adhering to state and local regulations regarding COVID-19 policies when visiting or using this space." %>
-
-            <!-- Display the specific error message next to the checkbox -->
-            <% if f.object.errors[:responsibility].present? %>
-              <div class="error_message" style="color: red;">
-                <%= f.object.errors[:responsibility].first %>
+              <div class="form-check align-items-center">
+                <%= f.check_box :responsibility, required: true, class: "form-check-input me-2", style: "border-color: #00000061;border-radius: 5px;" %>
+                <%= f.label :responsibility, "By booking this space I confirm that I am solely responsible for adhering to state and local regulations regarding COVID-19 policies when visiting or using this space.", class: "form-check-label", style: "font-weight: normal;color: #000000d9;font-size: 15px;" %>
               </div>
-            <% end %>
+
+              <!-- Display the specific error message next to the checkbox -->
+              <% if f.object.errors[:responsibility].present? %>
+                <div class="error_message" style="color: red;">
+                  <%= f.object.errors[:responsibility].first %>
+                </div>
+              <% end %>
+
           </div>
 
           <div class="form-actions" style="justify-content: space-evenly;display: flex;">
-            <%= f.submit "Send Booking Request",class:"btn btn-warning" %>
+            <%= f.submit "Send Booking Request",class:"btn btn-warning", style: "width: 100%;font-size: 18px;background-color: #ff9b00;" %>
           </div>
-          <%= link_to 'Cancellation and Payment Policies', policies_path %>
+          <br>
+         <p style="font-size: 14px;text-align: center;"> By clicking Send Booking Request, you agree to Event Factory’s Terms of Service & Privacy Policy, which includes the <%= link_to 'Cancellation and Payment Policies', policies_path %></p>
 
         <% end %>
         </div>
