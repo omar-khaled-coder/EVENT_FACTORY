@@ -92,6 +92,16 @@
           <%= f.hidden_field :price, id: "booking_price" %>
 
           <hr>
+          <br>
+
+          <p> <strong> Cancellation Policy:</strong><br>
+
+            <strong> Full Refund:</strong> If the booking is canceled during the first 48h after creating the booking. <br>
+              <strong>50% Refund: </strong>If the booking is canceled within 14 days before the event date.<br>
+            <strong>  No Refund:</strong> If the booking is canceled within 7 days of the event date.<br>
+          </p>
+
+          <hr>
 
           <div class="field <%= 'field_with_errors' if f.object.errors[:responsibility].present? %>">
 
