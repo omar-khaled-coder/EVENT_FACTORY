@@ -58,139 +58,80 @@
 
 
 
-    <div class="row formwidth">
-      <div class="formborders">
-        <%= simple_form_for(@booking) do |f| %>
-        <%= f.error_notification %>
-  <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
+   <div class="row formwidth" data-controller="booking" data-booking-max-capacity-value="<%= @space.capacity %>" data-booking-min-capacity-value="1" data-booking-price-per-hour-value="<%= @space.price_per_hour %>" data-booking-min-hours-value="<%= @space.minimum_rental_duration %>">
+ data-controller="booking"
+     data-booking-max-capacity-value="<%= @space.capacity %>"
+     data-booking-min-capacity-value="1"
+     data-booking-price-per-hour-value="<%= @space.price_per_hour %>"
+     data-booking-min-hours-value="<%= @space.minimum_rental_duration %>">
+  <div class="formborders">
+    <%= simple_form_for(@booking) do |f| %>
+    <%= f.error_notification %>
+    <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
 
-          <div class="form-inputs col-12 col-lg-12"">
-            <%= f.input :space_id, as: :hidden %>
-            <%= f.input :start_date, as: :string, label: "Booking Date", input_html: { readonly: true } %>
-            <%= f.input :start_hour, as: :select, collection: generate_time_options(@space.available_from, @space.available_to).map { |time| [time.strftime("%I:%M %p"), time.strftime("%H:%M")] }, label: "Start Time", input_html: { id: "start_time" } %>
-            <%= f.input :end_hour, as: :select, collection: generate_time_options(@space.available_from, @space.available_to).map { |time| [time.strftime("%I:%M %p"), time.strftime("%H:%M")] }, label: "End Time", input_html: { id: "end_time" } %>
-           <div class="field">
-              <%= f.label :guest_number, "Number of Guests" %>
-              <%= f.number_field :guest_number, min: 1, max: @space.capacity, id: "guest_number" %>
-              <span id="guest_number_error" style="color: red; font-size: 0.9em;"></span>
-            </div>
+    <div class="form-inputs col-12 col-lg-12">
+      <%= f.input :space_id, as: :hidden %>
+      <%= f.input :start_date, as: :string, label: "Booking Date", input_html: { readonly: true } %>
+      <%= f.input :start_hour, as: :select, collection: generate_time_options(@space.available_from, @space.available_to).map { |time| [time.strftime("%I:%M %p"), time.strftime("%H:%M")] }, label: "Start Time", input_html: { "data-booking-target": "startTime", "data-action": "change->booking#calculatePrice" } %>
+      <%= f.input :end_hour, as: :select, collection: generate_time_options(@space.available_from, @space.available_to).map { |time| [time.strftime("%I:%M %p"), time.strftime("%H:%M")] }, label: "End Time", input_html: { "data-booking-target": "endTime", "data-action": "change->booking#calculatePrice" } %>
+      <div class="field">
+        <%= f.label :guest_number, "Number of Guests" %>
+        <%= f.number_field :guest_number, min: 1, max: @space.capacity, id: "guest_number", "data-booking-target": "guestNumber", "data-action": "input->booking#validateGuestNumber" %>
+        <span id="guest_number_error" data-booking-target="guestNumberError" style="color: red; font-size: 0.9em;"></span>
+      </div>
 
-            <div class="field">
-              <%= f.label :event_type, "Event Type" %>
-              <%= f.select :event_type, options_for_select(@space.space_type.reject(&:blank?)) %>
-            </div>
+      <div id="price-calculation" data-booking-target="priceCalculation" style="font-family: sans-serif;color: #000000d6;font-size: 1rem;display: grid;grid-template-columns: 1fr auto;font-weight: 550 !important;">
+        <!-- Calculated price will be displayed here -->
+      </div>
 
-            <hr>
+      <%= f.hidden_field :price, id: "booking_price", "data-booking-target": "bookingPrice" %>
 
+      <hr>
+      <br>
+
+      <p> <strong> Cancellation Policy:</strong><br>
+        <strong> Full Refund:</strong> If the booking is canceled during the first 48h after creating the booking. <br>
+        <strong>50% Refund: </strong>If the booking is canceled within 14 days before the event date.<br>
+        <strong>  No Refund:</strong> If the booking is canceled within 7 days of the event date.<br>
+      </p>
+
+      <hr>
+
+      <div class="field <%= 'field_with_errors' if f.object.errors[:responsibility].present? %>">
+        <div class="form-check align-items-center">
+          <%= f.check_box :responsibility, required: true, class: "form-check-input me-2", style: "border-color: #00000061;border-radius: 5px;" %>
+          <%= f.label :responsibility, "By booking this space I confirm that I am solely responsible for adhering to state and local regulations regarding COVID-19 policies when visiting or using this space.", class: "form-check-label", style: "font-weight: normal;color: #000000d9;font-size: 15px;" %>
+        </div>
+
+        <% if f.object.errors[:responsibility].present? %>
+          <div class="error_message" style="color: red;">
+            <%= f.object.errors[:responsibility].first %>
           </div>
-
-          <div id="price-calculation" style="font-family: sans-serif;color: #000000d6;font-size: 1rem;display: grid;grid-template-columns: 1fr auto;font-weight: 550 !important;">
-            <!-- Calculated price will be displayed here -->
-          </div>
-
-          <!-- Hidden field to store the calculated price -->
-          <%= f.hidden_field :price, id: "booking_price" %>
-
-          <hr>
-          <br>
-
-          <p> <strong> Cancellation Policy:</strong><br>
-
-            <strong> Full Refund:</strong> If the booking is canceled during the first 48h after creating the booking. <br>
-              <strong>50% Refund: </strong>If the booking is canceled within 14 days before the event date.<br>
-            <strong>  No Refund:</strong> If the booking is canceled within 7 days of the event date.<br>
-          </p>
-
-          <hr>
-
-          <div class="field <%= 'field_with_errors' if f.object.errors[:responsibility].present? %>">
-
-              <div class="form-check align-items-center">
-                <%= f.check_box :responsibility, required: true, class: "form-check-input me-2", style: "border-color: #00000061;border-radius: 5px;" %>
-                <%= f.label :responsibility, "By booking this space I confirm that I am solely responsible for adhering to state and local regulations regarding COVID-19 policies when visiting or using this space.", class: "form-check-label", style: "font-weight: normal;color: #000000d9;font-size: 15px;" %>
-              </div>
-
-              <!-- Display the specific error message next to the checkbox -->
-              <% if f.object.errors[:responsibility].present? %>
-                <div class="error_message" style="color: red;">
-                  <%= f.object.errors[:responsibility].first %>
-                </div>
-              <% end %>
-
-          </div>
-
-          <div class="form-actions" style="justify-content: space-evenly;display: flex;">
-            <%= f.submit "Send Booking Request",class:"btn btn-warning", style: "width: 100%;font-size: 18px;background-color: #ff9b00;" %>
-          </div>
-          <br>
-         <p style="font-size: 14px;text-align: center;"> By clicking Send Booking Request, you agree to Event Factory’s Terms of Service & Privacy Policy, which includes the <%= link_to 'Cancellation and Payment Policies', policies_path %></p>
-
         <% end %>
-        </div>
+      </div>
 
-        <br>
+      <div class="form-actions" style="justify-content: space-evenly;display: flex;">
+        <%= f.submit "Send Booking Request",class:"btn btn-warning", style: "width: 100%;font-size: 18px;background-color: #ff9b00;" %>
+      </div>
+      <br>
+      <p style="font-size: 14px;text-align: center;"> By clicking Send Booking Request, you agree to Event Factory’s Terms of Service & Privacy Policy, which includes the <%= link_to 'Cancellation and Payment Policies', policies_path %></p>
 
-        <div>
-         <%= link_to "Back to Space", space_path(@space) %>
+    <% end %>
+  </div>
 
-        </div>
-    </div>
+  <br>
+
+  <div>
+    <%= link_to "Back to Space", space_path(@space) %>
+  </div>
 </div>
-
-
-<!-- JavaScript for Price Calculation -->
-<script>
-  const guestNumberInput = document.getElementById("guest_number");
-  const guestNumberError = document.getElementById("guest_number_error");
-  const maxCapacity = <%= @space.capacity %>;
-  const minCapacity = 1;
-
-  guestNumberInput.addEventListener("input", function() {
-    let value = parseInt(this.value);
-
-    if (value > maxCapacity) {
-      guestNumberError.textContent = `The number of guests cannot exceed ${maxCapacity}.`;
-      this.value = maxCapacity;
-    } else if (value < minCapacity) {
-      guestNumberError.textContent = `The number of guests cannot be less than ${minCapacity}.`;
-      this.value = minCapacity;
-    } else {
-      guestNumberError.textContent = ''; // Clear the error message if within the valid range
-    }
-  });
-
-
-    function calculatePrice() {
-      const startTime = document.getElementById("start_time").value;
-      const endTime = document.getElementById("end_time").value;
-      const pricePerHour = <%= @space.price_per_hour %>;
-      const minHours = <%= @space.minimum_rental_duration %>;
-
-      if (startTime && endTime) {
-        const start = new Date(`1970-01-01T${startTime}:00`);
-        const end = new Date(`1970-01-01T${endTime}:00`);
-        const hours = (end - start) / (1000 * 60 * 60);
-
-        const calculatedHours = hours < minHours ? minHours : hours;
-        const spacePrice = pricePerHour * calculatedHours;
-        const estimatedPrice = spacePrice; // Add any additional fees here if necessary
-
-        // Update the price display
-        document.getElementById("price-calculation").innerHTML = `
-          <p>Space price: $ ${pricePerHour} x ${calculatedHours} hrs: </p> <p>$ ${spacePrice.toFixed(2)}</p>
-          <p>Estimated price: </p> <p> $ ${estimatedPrice.toFixed(2)}</p>
-        `;
-
-        // Set the hidden price field value
-        document.getElementById("booking_price").value = estimatedPrice.toFixed(2);
-      }
-    }
-
-    // Attach event listeners
-    document.getElementById("start_time").addEventListener("change", calculatePrice);
-    document.getElementById("end_time").addEventListener("change", calculatePrice);
-
-    // Call the calculation function immediately after the page loads
-    calculatePrice();
-
-</script>
+<p>Max Capacity: <%= @space.capacity %></p>
+<p>Price Per Hour: <%= @space.price_per_hour %></p>
+<p>Minimum Rental Duration: <%= @space.minimum_rental_duration %></p>
+<%= content_tag :div, nil, class: 'row formwidth', data: {
+  controller: "booking",
+  booking_max_capacity_value: @space.capacity,
+  booking_min_capacity_value: 1,
+  booking_price_per_hour_value: @space.price_per_hour,
+  booking_min_hours_value: @space.minimum_rental_duration
+} %>
