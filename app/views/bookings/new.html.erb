@@ -16,38 +16,30 @@
     </div>
 
     <style>
-      .formborders{
-       /* border: 2px solid #8080808c;*/
+      .formborders {
         border-radius: 10px;
         background: #e2e2e299;
         padding: 30px;
         margin-top: 10px;
         box-shadow: 0px 0px 15px;
       }
-
-      .formwidth{
-        width: 49%;
-        height: 350px;
+      .formwidth {
+        width: 56%;
         margin: 0 auto;
-
-        margin-top: 10px;; /* Center the image horizontally */
+        margin-top: 10px;
       }
-
       .imagewidth {
-        width: 75%; /* 70% width for larger screens */
-        height: 350px; /* Let the height adjust automatically */
-        margin: 0 auto; /* Center the image horizontally */
+        width: 75%;
+        height: auto;
+        margin: 0 auto;
         box-shadow: 1px 2px 15px;
         padding: 0px;
         border-radius: 15px;
       }
-
-      @media (max-width: 576px) { /* For small screens like iPhone 12 Pro */
+      @media (max-width: 576px) {
         .imagewidth {
-          width: 90%; /* 100% width on small screens */
-          height: auto; /* Adjust the height automatically */
+          width: 90%;
         }
-
         .formwidth {
           width: 97%; /* 100% width on small screens */
           height: auto; /* Adjust the height automatically */
@@ -55,83 +47,66 @@
       }
     </style>
 
+    <div class="row formwidth" data-controller="booking" data-booking-max-capacity-value="<%= @space.capacity %>" data-booking-min-capacity-value="1" data-booking-price-per-hour-value="<%= @space.price_per_hour %>" data-booking-min-hours-value="<%= @space.minimum_rental_duration %>">
+        <div class="formborders">
+            <%= simple_form_for(@booking) do |f| %>
+                <%= f.error_notification %>
+                <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
 
+                <div class="form-inputs col-12 col-lg-12">
+                    <%= f.input :space_id, as: :hidden %>
+                    <%= f.input :start_date, as: :string, label: "Booking Date", input_html: { readonly: true } %>
+                    <%= f.input :start_hour, as: :select, collection: generate_time_options(@space.available_from, @space.available_to).map { |time| [time.strftime("%I:%M %p"), time.strftime("%H:%M")] }, label: "Start Time", input_html: { "data-booking-target": "startTime", "data-action": "change->booking#calculatePrice" } %>
+                    <%= f.input :end_hour, as: :select, collection: generate_time_options(@space.available_from, @space.available_to).map { |time| [time.strftime("%I:%M %p"), time.strftime("%H:%M")] }, label: "End Time", input_html: { "data-booking-target": "endTime", "data-action": "change->booking#calculatePrice" } %>
+                    <div class="field">
+                        <%= f.label :guest_number, "Number of Guests" %>
+                        <%= f.number_field :guest_number, min: 1, max: @space.capacity, id: "guest_number", "data-booking-target": "guestNumber", "data-action": "input->booking#validateGuestNumber" %>
+                        <span id="guest_number_error" data-booking-target="guestNumberError" style="color: red; font-size: 0.9em;"></span>
+                    </div>
 
+                    <div id="price-calculation" data-booking-target="priceCalculation" style="font-family: sans-serif;color: #000000d6;font-size: 1rem;display: grid;grid-template-columns: 1fr auto;font-weight: 550 !important;">
+                        <!-- Calculated price will be displayed here -->
+                    </div>
 
-   <div class="row formwidth" data-controller="booking" data-booking-max-capacity-value="<%= @space.capacity %>" data-booking-min-capacity-value="1" data-booking-price-per-hour-value="<%= @space.price_per_hour %>" data-booking-min-hours-value="<%= @space.minimum_rental_duration %>">
- data-controller="booking"
-     data-booking-max-capacity-value="<%= @space.capacity %>"
-     data-booking-min-capacity-value="1"
-     data-booking-price-per-hour-value="<%= @space.price_per_hour %>"
-     data-booking-min-hours-value="<%= @space.minimum_rental_duration %>">
-  <div class="formborders">
-    <%= simple_form_for(@booking) do |f| %>
-    <%= f.error_notification %>
-    <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
+                    <%= f.hidden_field :price, id: "booking_price", "data-booking-target": "bookingPrice" %>
 
-    <div class="form-inputs col-12 col-lg-12">
-      <%= f.input :space_id, as: :hidden %>
-      <%= f.input :start_date, as: :string, label: "Booking Date", input_html: { readonly: true } %>
-      <%= f.input :start_hour, as: :select, collection: generate_time_options(@space.available_from, @space.available_to).map { |time| [time.strftime("%I:%M %p"), time.strftime("%H:%M")] }, label: "Start Time", input_html: { "data-booking-target": "startTime", "data-action": "change->booking#calculatePrice" } %>
-      <%= f.input :end_hour, as: :select, collection: generate_time_options(@space.available_from, @space.available_to).map { |time| [time.strftime("%I:%M %p"), time.strftime("%H:%M")] }, label: "End Time", input_html: { "data-booking-target": "endTime", "data-action": "change->booking#calculatePrice" } %>
-      <div class="field">
-        <%= f.label :guest_number, "Number of Guests" %>
-        <%= f.number_field :guest_number, min: 1, max: @space.capacity, id: "guest_number", "data-booking-target": "guestNumber", "data-action": "input->booking#validateGuestNumber" %>
-        <span id="guest_number_error" data-booking-target="guestNumberError" style="color: red; font-size: 0.9em;"></span>
-      </div>
+                    <hr>
+                    <br>
 
-      <div id="price-calculation" data-booking-target="priceCalculation" style="font-family: sans-serif;color: #000000d6;font-size: 1rem;display: grid;grid-template-columns: 1fr auto;font-weight: 550 !important;">
-        <!-- Calculated price will be displayed here -->
-      </div>
+                    <p><strong> Cancellation Policy:</strong><br>
+                        <strong> Full Refund:</strong> If the booking is canceled during the first 48h after creating the booking. <br>
+                        <strong>50% Refund: </strong>If the booking is canceled within 14 days before the event date.<br>
+                        <strong> No Refund:</strong> If the booking is canceled within 7 days of the event date.<br>
+                    </p>
 
-      <%= f.hidden_field :price, id: "booking_price", "data-booking-target": "bookingPrice" %>
+                    <hr>
 
-      <hr>
-      <br>
+                    <div class="field <%= 'field_with_errors' if f.object.errors[:responsibility].present? %>">
+                        <div class="form-check align-items-center">
+                            <%= f.check_box :responsibility, required: true, class: "form-check-input me-2", style: "border-color: #00000061;border-radius: 5px;" %>
+                            <%= f.label :responsibility, "By booking this space I confirm that I am solely responsible for adhering to state and local regulations regarding COVID-19 policies when visiting or using this space.", class: "form-check-label", style: "font-weight: normal;color: #000000d9;font-size: 15px;" %>
+                        </div>
 
-      <p> <strong> Cancellation Policy:</strong><br>
-        <strong> Full Refund:</strong> If the booking is canceled during the first 48h after creating the booking. <br>
-        <strong>50% Refund: </strong>If the booking is canceled within 14 days before the event date.<br>
-        <strong>  No Refund:</strong> If the booking is canceled within 7 days of the event date.<br>
-      </p>
+                        <% if f.object.errors[:responsibility].present? %>
+                            <div class="error_message" style="color: red;">
+                                <%= f.object.errors[:responsibility].first %>
+                            </div>
+                        <% end %>
+                    </div>
 
-      <hr>
-
-      <div class="field <%= 'field_with_errors' if f.object.errors[:responsibility].present? %>">
-        <div class="form-check align-items-center">
-          <%= f.check_box :responsibility, required: true, class: "form-check-input me-2", style: "border-color: #00000061;border-radius: 5px;" %>
-          <%= f.label :responsibility, "By booking this space I confirm that I am solely responsible for adhering to state and local regulations regarding COVID-19 policies when visiting or using this space.", class: "form-check-label", style: "font-weight: normal;color: #000000d9;font-size: 15px;" %>
+                    <div class="form-actions" style="justify-content: space-evenly;display: flex;">
+                        <%= f.submit "Send Booking Request", class: "btn btn-warning", style: "width: 100%;font-size: 18px;background-color: #ff9b00;" %>
+                    </div>
+                    <br>
+                    <p style="font-size: 14px;text-align: center;"> By clicking Send Booking Request, you agree to Event Factory’s Terms of Service & Privacy Policy, which includes the <%= link_to 'Cancellation and Payment Policies', policies_path %></p>
+            <% end %>
         </div>
+    </div> <!-- Closing div for row formwidth -->
 
-        <% if f.object.errors[:responsibility].present? %>
-          <div class="error_message" style="color: red;">
-            <%= f.object.errors[:responsibility].first %>
-          </div>
-        <% end %>
-      </div>
+    <br>
 
-      <div class="form-actions" style="justify-content: space-evenly;display: flex;">
-        <%= f.submit "Send Booking Request",class:"btn btn-warning", style: "width: 100%;font-size: 18px;background-color: #ff9b00;" %>
-      </div>
-      <br>
-      <p style="font-size: 14px;text-align: center;"> By clicking Send Booking Request, you agree to Event Factory’s Terms of Service & Privacy Policy, which includes the <%= link_to 'Cancellation and Payment Policies', policies_path %></p>
-
-    <% end %>
-  </div>
-
-  <br>
-
-  <div>
-    <%= link_to "Back to Space", space_path(@space) %>
-  </div>
+    <div>
+        <%= link_to "Back to Space", space_path(@space) %>
+    </div>
+</div> <!-- Closing tag for main container -->
 </div>
-<p>Max Capacity: <%= @space.capacity %></p>
-<p>Price Per Hour: <%= @space.price_per_hour %></p>
-<p>Minimum Rental Duration: <%= @space.minimum_rental_duration %></p>
-<%= content_tag :div, nil, class: 'row formwidth', data: {
-  controller: "booking",
-  booking_max_capacity_value: @space.capacity,
-  booking_min_capacity_value: 1,
-  booking_price_per_hour_value: @space.price_per_hour,
-  booking_min_hours_value: @space.minimum_rental_duration
-} %>
