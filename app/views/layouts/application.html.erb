@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<%= render "shared/navbar" %>
 <html>
   <head>
     <title>EventFactory</title>
@@ -7,19 +6,19 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+<%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-
-
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   </head>
 
   <body>
+    <%= render "shared/navbar" %>
+    <%= render "shared/flashes" %>
+
     <%= yield %>
-     <%= javascript_include_tag "https://maps.googleapis.com/maps/api/js?libraries=places&key=#{ENV['GOOGLE_API_BROWSER_KEY']}" %>
 
-
+    <%= javascript_include_tag "https://maps.googleapis.com/maps/api/js?libraries=places&key=#{ENV['GOOGLE_API_BROWSER_KEY']}" %>
+    <%= render 'layouts/footer' %>
   </body>
 </html>
-<%= render "shared/flashes" %>
