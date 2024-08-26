@@ -1,5 +1,5 @@
 .footer {
-  background-color: #343a40;
+  background-color: #343a40 !important;
   color: white;
   padding: 20px 0;
 }
@@ -25,4 +25,19 @@
 .footer .container {
   max-width: 960px;
   margin: auto;
+}
+.footer-section {
+  padding: 20px;
+}
+
+.footer-section:not(:last-child) {
+  border-right: 1px solid #ffffff; /* Adjust the color and thickness as needed */
+}
+
+@media (max-width: 768px) {
+  .footer-section {
+      border-right: none; /* Remove vertical lines on small screens */
+      border-bottom: 1px solid #ffffff; /* Optional: add a bottom border for small screens */
+      margin-bottom: 10px;
+  }
 }

@@ -5,7 +5,7 @@
       <!-- Display the space image with the owner's picture overlayed in the lower left corner -->
       <% if @space.images.attached? %>
         <div class="imagewidth position-relative col-12 col-lg-12" style="overflow: hidden;">
-          <%= image_tag @space.images.first, class: "img-cover", alt: "Space Image", style: "width: 100%; height: 100%; object-fit: cover;" %>
+          <%= image_tag @space.images.first, class: "img-cover", alt: "Space Image", style: "width: 100%; height: 350px; object-fit: cover;" %>
 
           <!-- Owner's picture -->
           <div class="owner-picture position-absolute" style="bottom: 10px; right: 20px;">
