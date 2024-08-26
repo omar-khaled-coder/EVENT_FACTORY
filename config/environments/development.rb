@@ -73,4 +73,13 @@ Rails.application.configure do
 
   # Raise error when a before_action's only/except options reference missing actions
   config.action_controller.raise_on_missing_callback_actions = true
+
+  # Enable debugging mode for assets. This prevents asset concatenation and preprocessing.
+  config.assets.debug = true
+
+  # Expands the lines which load the assets. Useful for debugging.
+  config.assets.raise_runtime_errors = true
+
+  # Ensures that SCSS files are dynamically compiled.
+  config.assets.compile = true
 end

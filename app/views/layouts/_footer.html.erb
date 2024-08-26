@@ -5,20 +5,23 @@
         <h5>About Us</h5>
         <p>Event Factory is your one-stop platform for hosting and finding events in the best venues.</p>
       </div>
-      <div class="col-md-4">
-        <h5>Quick Links</h5>
-        <ul class="list-unstyled">
-          <li><%= link_to 'Home', root_path %></li>
+      <div class="col-md-4 footer-section">
+    <h5>Quick Links</h5>
+    <ul class="list-unstyled">
+        <li><%= link_to 'Home', root_path %></li>
+        <li><%= link_to 'About Us', "#" %></li>
+        <li><%= link_to 'Contact', "#" %></li>
+        <li><%= link_to 'Terms of Service', policies_path %></li>
+        <li><%= link_to 'Privacy Policy', policies_path %></li>
+    </ul>
+</div>
 
-        </ul>
-      </div>
-      <div class="col-md-4">
-        <h5>Contact Us</h5>
-        <p>Email: support@eventfactory.com</p>
-        <p>Phone: +1 (555) 123-4567</p>
-        <p>Address: 123 Event Factory St, New York, NY 10001</p>
-      </div>
-    </div>
+<div class="col-md-4 footer-section">
+    <h5>Contact Us</h5>
+    <p>Email: support@eventfactory.com</p>
+    <p>Phone: +1 (555) 123-4567</p>
+    <p>Address: 123 Event Factory St, New York, NY 10001</p>
+</div>
     <div class="row">
       <div class="col-12 text-center">
         <p class="mb-0">&copy; <%= Time.now.year %> Event Factory. All rights reserved.</p>
