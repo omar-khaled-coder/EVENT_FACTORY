@@ -1,14 +1,34 @@
 <p style="color: green"><%= notice %></p>
+<div class="container">
+<h1>My Bookings</h1>
 
-<h1>Bookings</h1>
-
-<div id="bookings">
-  <% @bookings.each do |booking| %>
-    <%= render booking %>
-    <p>
-      <%= link_to "Show this booking", booking %>
-    </p>
+<h2>Upcoming Bookings</h2>
+<div id="future_bookings" class="col-12 col-lg-12">
+  <% if @future_bookings.any? %>
+    <% @future_bookings.each do |booking| %>
+      <%= render booking %>
+      <p>
+        <%= link_to "Show this booking", booking %>
+      </p>
+    <% end %>
+  <% else %>
+    <p>You have no upcoming bookings.</p>
+  <% end %>
+</div>
+<hr>
+<h2>Previous Bookings</h2>
+<div id="past_bookings">
+  <% if @past_bookings.any? %>
+    <% @past_bookings.each do |booking| %>
+      <%= render booking %>
+      <p>
+        <%= link_to "Show this booking", booking %>
+      </p>
+    <% end %>
+  <% else %>
+    <p>You have no previous bookings.</p>
   <% end %>
 </div>
 
 <%= link_to "New booking", new_booking_path %>
+</div>

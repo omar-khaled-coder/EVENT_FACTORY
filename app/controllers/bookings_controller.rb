@@ -3,7 +3,8 @@ class BookingsController < ApplicationController
 
   # GET /bookings or /bookings.json
   def index
-    @bookings = Booking.all
+    @future_bookings = current_user.bookings.where('start_date >= ?', Date.today).order(start_date: :asc)
+    @past_bookings = current_user.bookings.where('start_date < ?', Date.today).order(start_date: :desc)
   end
 
   # GET /bookings/1 or /bookings/1.json
