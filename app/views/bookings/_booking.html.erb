@@ -4,45 +4,67 @@
   </div>
   <div class="card-body">
     <div class="row">
-      <div class="detail-item">
-        <strong>Space:</strong> <%= booking.space.title %>
+      <div class="col-md-4">
+        <!-- Display the space image with the owner's picture overlayed -->
+        <% if booking.space.images.attached? %>
+          <div class="image-container">
+            <%= image_tag booking.space.images.first, class: "img-cover", alt: "Space Image" %>
+            <div class="owner-picture">
+              <%= image_tag booking.owner.profile_picture, class: "rounded-circle owner-image", alt: "Owner Picture" %>
+            </div>
+          </div>
+        <% end %>
       </div>
-       <div class="detail-item">
-        <strong>Owner:</strong> <%= booking.owner.first_name %>
-      </div>
-    </div>
-    <div class="row">
+      <div class="col-md-8">
+        <!-- Booking Details -->
+        <div class="row">
+          <div class="detail-item">
+            <strong>Space:</strong> <%= booking.space.title %>
+          </div>
+          <div class="detail-item">
+            <strong>Owner:</strong> <%= booking.owner.first_name %>
+          </div>
 
-      <div class="detail-item">
-        <strong>Start date:</strong> <%= booking.start_date.strftime("%B %d, %Y") %>
-      </div>
-      <div class="detail-item">
-        <strong>End date:</strong> <%= booking.start_date.strftime("%B %d, %Y") %>
-      </div>
-    </div>
-    <div class="row">
+          <div class="detail-item">
+            <strong>Price:</strong> $<%= booking.price %>
+          </div>
+        </div>
+        <div class="row">
+          <div class="detail-item">
+            <strong>Start date:</strong> <%= booking.start_date.strftime("%B %d, %Y") %>
+          </div>
+          <div class="detail-item">
+            <strong>End date:</strong> <%= booking.start_date.strftime("%B %d, %Y") %>
+          </div>
 
-      <div class="detail-item">
-        <strong>Start hour:</strong> <%= booking.start_hour.strftime("%I:%M %p") %>
-      </div>
-      <div class="detail-item">
-        <strong>End hour:</strong> <%= booking.end_hour.strftime("%I:%M %p") %>
-      </div>
-    </div>
-    <div class="row">
+           <div class="detail-item">
+            <strong>Payment status:</strong>
+            <span class="status <%= booking.payment_status %>"><%= booking.payment_status.capitalize %></span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="detail-item">
+            <strong>Start hour:</strong> <%= booking.start_hour.strftime("%I:%M %p") %>
+          </div>
+          <div class="detail-item">
+            <strong>End hour:</strong> <%= booking.end_hour.strftime("%I:%M %p") %>
+          </div>
 
-      <div class="detail-item">
-        <strong>Price:</strong> $<%= booking.price %>
-      </div>
-    </div>
-    <div class="row">
-      <div class="detail-item">
-        <strong>Payment status:</strong>
-        <span class="status <%= booking.payment_status %>"><%= booking.payment_status.capitalize %></span>
-      </div>
-      <div class="detail-item">
-        <strong>Booking status:</strong>
-        <span class="status <%= booking.booking_status %>"><%= booking.booking_status.capitalize %></span>
+          <div class="detail-item">
+            <strong>Booking status:</strong>
+            <span class="status <%= booking.booking_status %>"><%= booking.booking_status.capitalize %></span>
+          </div>
+        </div>
+        <div class="row">
+
+        </div>
+        <div class="row">
+
+
+        </div>
+        <div class="booking-link">
+          <%= link_to "Show this booking", booking, class: "btn btn-primary" %>
+        </div>
       </div>
     </div>
   </div>
@@ -52,28 +74,29 @@
   .cardlayout {
     display: flex;
     flex-direction: column;
-    background: #ffffff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+    background: #f9f9f9;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
     margin: 20px auto;
-    padding: 20px;
-    max-width: 800px;
-    border: 1px solid #ddd;
+    padding: 0;
+    max-width: 100%;
+    border: 1px solid #e0e0e0;
   }
 
   .card-header {
     background: #343a40;
     color: #ffffff;
-    padding: 10px 15px;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-    font-size: 1.2rem;
+    padding: 15px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    font-size: 1.5rem;
     font-weight: bold;
     text-align: center;
+    margin-bottom: 0;
   }
 
   .card-body {
-    padding: 15px;
+    padding: 20px;
   }
 
   .row {
@@ -82,21 +105,63 @@
     margin-bottom: 10px;
   }
 
+  .col-md-4, .col-md-8 {
+    padding: 10px;
+  }
+
+  .image-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .img-cover {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  .owner-picture {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    border: 2px solid white;
+    border-radius: 50%;
+  }
+
+  .owner-image {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+
   .detail-item {
     flex: 1;
     padding: 5px;
     font-size: 1rem;
     word-wrap: break-word;
+    color: #333;
+  }
+
+  .booking-link {
+    text-align: center;
+    margin-top: 15px;
   }
 
   .status {
-    padding: 2px 8px;
+    padding: 5px 10px;
     border-radius: 4px;
     font-weight: bold;
+    display: inline-block;
+    margin-top: 5px;
   }
 
   .status.pending {
-    background-color: #ffcc00;
+    background-color: #ffc107;
     color: #ffffff;
   }
 
@@ -108,5 +173,20 @@
   .status.canceled {
     background-color: #dc3545;
     color: #ffffff;
+  }
+
+  .btn-primary {
+    background-color: #007bff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+  }
+
+  .btn-primary:hover {
+    background-color: #0056b3;
   }
 </style>
