@@ -7,9 +7,7 @@
   <% if @future_bookings.any? %>
     <% @future_bookings.each do |booking| %>
       <%= render booking %>
-      <p>
 
-      </p>
     <% end %>
   <% else %>
     <p>You have no upcoming bookings.</p>
