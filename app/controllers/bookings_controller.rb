@@ -9,6 +9,13 @@ class BookingsController < ApplicationController
 
   # GET /bookings/1 or /bookings/1.json
   def show
+    @booking = Booking.find(params[:id])
+    @space = @booking.space
+    @marker = {
+     lat: @booking.space.latitude,
+     lng: @booking.space.longitude
+    }
+
   end
 
   # GET /bookings/new
