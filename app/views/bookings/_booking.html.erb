@@ -1,8 +1,8 @@
-<div class="cardlayout" id="<%= dom_id booking %>">
-  <div class="card-header">
+<div class="bookinglayout" id="<%= dom_id booking %>">
+  <div class="showcard-header">
     <h3>Booking Details</h3>
   </div>
-  <div class="card-body">
+  <div class="showcard-body">
     <div class="row">
       <div class="col-md-4">
         <!-- Display the space image with the owner's picture overlayed -->
@@ -71,7 +71,7 @@
 </div>
 
 <style>
-  .cardlayout {
+  .bookinglayout {
     display: flex;
     flex-direction: column;
     background: #f9f9f9;
@@ -83,19 +83,19 @@
     border: 1px solid #e0e0e0;
   }
 
-  .card-header {
+  .showcard-header {
     background: #343a40;
     color: #ffffff;
     padding: 15px;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
+    border-top-left-radius: 10px !important;
+    border-top-right-radius: 10px !important;
     font-size: 1.5rem;
     font-weight: bold;
     text-align: center;
     margin-bottom: 0;
   }
 
-  .card-body {
+  .showcard-body {
     padding: 20px;
   }
 
