@@ -1,5 +1,10 @@
 Rails.application.routes.draw do
-  resources :bookings
+  resources :bookings do
+    member do
+      patch :accept
+      patch :decline
+    end
+  end
   resources :spaces
   devise_for :users
   root to: "pages#home"
@@ -12,6 +17,9 @@ Rails.application.routes.draw do
   get "/user_profile", to: "pages#user_profile"
   get "/space_requests", to: "pages#space_requests"
   get 'policies', to: 'pages#policies'
+
+    # Route for owner's dashboard
+  get 'owner_dashboard', to: 'bookings#owner_dashboard', as: 'owner_dashboard'
 
 # config/routes.rb
 resources :spaces do

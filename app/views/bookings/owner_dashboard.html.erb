@@ -1,0 +1,22 @@
+<% @bookings.each do |booking| %>
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title"><%= booking.space.title %></h5>
+        <p class="card-text">Start Date: <%= booking.start_date.strftime("%B %d, %Y") %></p>
+        <p class="card-text">End Date: <%= booking.start_date.strftime("%B %d, %Y") %></p>
+       <% if booking.booking_status == 'pending' %>
+      <p>
+  <%= link_to "Accept", accept_booking_path(booking), data: { turbo_method: :patch }, class: "btn btn-primary" %>
+</p>
+<p>
+  <%= link_to "Decline", decline_booking_path(booking), data: { turbo_method: :patch }, class: "btn btn-danger" %>
+</p>
+
+        <% else %>
+          <p>Status: <%= booking.booking_status.capitalize %></p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% end %>
