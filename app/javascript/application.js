@@ -6,3 +6,5 @@ import "bootstrap"
 import './imagesshow';
 //import flatpickr from "flatpickr";
 //import "flatpickr/dist/flatpickr.css";
+import { Turbo } from "@hotwired/turbo-rails";
+Turbo.start();

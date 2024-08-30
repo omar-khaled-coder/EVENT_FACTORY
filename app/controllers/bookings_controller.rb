@@ -1,6 +1,5 @@
 class BookingsController < ApplicationController
-  before_action :set_booking, only: %i[ show edit update destroy ]
-
+  before_action :set_booking, only: [:show, :edit, :update, :destroy, :accept, :decline]
   # GET /bookings or /bookings.json
   def index
     @future_bookings = current_user.bookings.where('start_date >= ?', Date.today).order(start_date: :asc)
@@ -17,7 +16,19 @@ class BookingsController < ApplicationController
     }
 
   end
+  def owner_dashboard
+    @spaces = current_user.spaces
+    @bookings = Booking.where(space: @spaces).order(start_date: :asc)
+  end
 
+
+  def accept
+    update_status('confirmed')
+  end
+
+  def decline
+    update_status('declined')
+  end
   # GET /bookings/new
   def new
     @space = Space.find(params[:space_id])
@@ -80,7 +91,13 @@ class BookingsController < ApplicationController
     def set_booking
       @booking = Booking.find(params[:id])
     end
-
+    def update_status(new_status)
+      if @booking.update(booking_status: new_status)
+        redirect_to owner_dashboard_path, notice: "Booking status updated to #{new_status}."
+      else
+        redirect_to owner_dashboard_path, alert: 'Failed to update booking status.'
+      end
+    end
     # Only allow a list of trusted parameters through.
     def booking_params
       params.require(:booking).permit(:space_id, :user_id, :owner_id, :start_date, :end_date, :start_hour, :end_hour, :price, :payment_status, :booking_status, :guest_number, :event_type, :responsibility)

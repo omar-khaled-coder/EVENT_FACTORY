@@ -21,5 +21,7 @@ class User < ApplicationRecord
   has_many :spaces, foreign_key: 'owner_id'
   has_many :bookings, dependent: :destroy # A User can have many bookings
   has_many :owned_bookings, through: :spaces, source: :bookings # A User can have many bookings through owned spaces
-
+  def owner?
+    spaces.exists? # Checks if the user owns any spaces
+  end
 end
