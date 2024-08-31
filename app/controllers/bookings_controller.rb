@@ -18,7 +18,9 @@ class BookingsController < ApplicationController
   end
   def owner_dashboard
     @spaces = current_user.spaces
-    @bookings = Booking.where(space: @spaces).order(start_date: :asc)
+
+    @upcoming_bookings = Booking.where(space: @spaces).where('start_date >= ?', Date.today).order(start_date: :asc)
+    @previous_bookings = Booking.where(space: @spaces).where('start_date < ?', Date.today).order(start_date: :desc)
   end
 
 

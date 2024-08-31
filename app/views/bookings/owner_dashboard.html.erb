@@ -1,22 +1,146 @@
-<% @bookings.each do |booking| %>
-  <div class="col-md-4">
-    <div class="card">
-      <div class="card-body">
-        <h5 class="card-title"><%= booking.space.title %></h5>
-        <p class="card-text">Start Date: <%= booking.start_date.strftime("%B %d, %Y") %></p>
-        <p class="card-text">End Date: <%= booking.start_date.strftime("%B %d, %Y") %></p>
-       <% if booking.booking_status == 'pending' %>
-      <p>
-  <%= link_to "Accept", accept_booking_path(booking), data: { turbo_method: :patch }, class: "btn btn-primary" %>
-</p>
-<p>
-  <%= link_to "Decline", decline_booking_path(booking), data: { turbo_method: :patch }, class: "btn btn-danger" %>
-</p>
+<div class="container">
+  <h2 class="a11y-hidden">Booking Tabs</h2>
+  <!-- Tab Navigation -->
+  <div class="tab-list" role="tablist">
+    <a class="tab-link active" title="Upcoming Bookings" role="tab" aria-selected="true" aria-controls="panel-upcoming" id="tab-upcoming" href="#panel-upcoming">
+      <span class="tab-label">Upcoming Bookings</span>
+    </a>
+    <a class="tab-link" title="Previous Bookings" role="tab" aria-selected="false" aria-controls="panel-previous" id="tab-previous" href="#panel-previous">
+      <span class="tab-label">Previous Bookings</span>
+    </a>
+  </div>
 
-        <% else %>
-          <p>Status: <%= booking.booking_status.capitalize %></p>
+  <!-- Tab Panels -->
+  <div class="tab-content">
+    <!-- Upcoming Bookings Panel -->
+    <div id="panel-upcoming" class="tab-panel active" role="tabpanel" aria-labelledby="tab-upcoming">
+      <div class="row">
+        <% @upcoming_bookings.each do |booking| %>
+          <div class="col-md-4">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title"><%= booking.space.title %></h5>
+                <p class="card-text">Start Date: <%= booking.start_date.strftime("%B %d, %Y") %></p>
+                <p class="card-text">End Date: <%= booking.start_date.strftime("%B %d, %Y") %></p>
+                <% if booking.booking_status == 'pending' %>
+                  <p>
+                    <%= link_to "Accept", accept_booking_path(booking), data: { turbo_method: :patch }, class: "btn btn-primary" %>
+                  </p>
+                  <p>
+                    <%= link_to "Decline", decline_booking_path(booking), data: { turbo_method: :patch }, class: "btn btn-danger" %>
+                  </p>
+                <% else %>
+                  <p>Status: <%= booking.booking_status.capitalize %></p>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Previous Bookings Panel -->
+    <div id="panel-previous" class="tab-panel" role="tabpanel" aria-labelledby="tab-previous">
+      <div class="row">
+        <% @previous_bookings.each do |booking| %>
+          <div class="col-md-4">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title"><%= booking.space.title %></h5>
+                <p class="card-text">Start Date: <%= booking.start_date.strftime("%B %d, %Y") %></p>
+                <p class="card-text">End Date: <%= booking.start_date.strftime("%B %d, %Y") %></p>
+                <p>Status: <%= booking.booking_status.capitalize %></p>
+              </div>
+            </div>
+          </div>
         <% end %>
       </div>
     </div>
   </div>
-<% end %>
+</div>
+
+<style>
+  /* Accessibility hidden class */
+  .a11y-hidden {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  /* General styling for the tab list container */
+  .tab-list {
+display: flex;
+  margin-bottom: 16px;
+  background-color: #a1a0a03d;
+  padding: 8px;
+  border-radius: 5px;
+  margin-top: 10px;
+  box-shadow: 0px 0px 9px;
+  }
+
+  /* Styling each tab */
+  .tab-link {
+    padding: 10px 20px;
+    text-decoration: none;
+    color: #333;
+    border: 1px solid transparent;
+    border-bottom: none;
+    background-color: #f8f8f8;
+    margin-right: 5px;
+    transition: background-color 0.3s ease;
+  }
+
+  .tab-link:hover {
+    background-color: #e0e0e0;
+  }
+
+  .tab-link.active,
+  .tab-link[aria-selected="true"] {
+    background-color: #ff8706de;
+    border-color: #ddd #ddd #ffffff #ddd;
+    border-radius: 4px 4px 0 0;
+    font-weight: bold;
+  }
+
+  /* Tab content */
+  .tab-content {
+   border: 1px solid #ddd;
+  padding: 20px;
+  background-color: #fff;
+  margin-bottom: 20px;
+  box-shadow: 0px 0px 9px;
+  border-radius: 7px;
+  }
+
+  .tab-panel {
+    display: none;
+  }
+
+  .tab-panel.active {
+    display: block;
+  }
+</style>
+
+<script>
+  document.querySelectorAll('.tab-link').forEach(function (tab) {
+    tab.addEventListener('click', function (event) {
+      event.preventDefault();
+
+      // Remove 'active' class from all tabs and panels
+      document.querySelectorAll('.tab-link').forEach(function (t) {
+        t.classList.remove('active');
+        t.setAttribute('aria-selected', 'false');
+      });
+      document.querySelectorAll('.tab-panel').forEach(function (panel) {
+        panel.classList.remove('active');
+      });
+
+      // Add 'active' class to the clicked tab and corresponding panel
+      this.classList.add('active');
+      this.setAttribute('aria-selected', 'true');
+      document.getElementById(this.getAttribute('aria-controls')).classList.add('active');
+    });
+  });
+</script>
