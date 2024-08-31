@@ -22,7 +22,7 @@
 }
 
 
-.card {
+.spacecard {
   width: calc(25% - 20px);
   border: 1px solid #ccc;
   border-radius: 10px;
@@ -86,7 +86,7 @@
 
 /* Responsive Design */
 @media (min-width: 576px) {
-  .card {
+  .spacecard {
     width: calc(100% - 20px);
   }
 }

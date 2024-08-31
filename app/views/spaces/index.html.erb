@@ -6,7 +6,7 @@
   <div class="cards-container">
     <% @spaces.each do |space| %>
       <% if space.accepted? %>
-        <div class="card">
+        <div class="spacecard">
           <div class="card-body">
             <% if space.images.attached? %>
               <div class="space-images" id="space-images-<%= space.id %>">
