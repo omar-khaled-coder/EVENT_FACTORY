@@ -17,21 +17,34 @@
       <div class="row" style="flex-direction: column;">
         <% @upcoming_bookings.each do |booking| %>
           <div class="col-12 col-lg-12">
-            <div class="card">
+            <div class="card booking-card">
               <div class="card-body">
-                <h5 class="card-title"><%= booking.space.title %></h5>
-                <p class="card-text">Start Date: <%= booking.start_date.strftime("%B %d, %Y") %></p>
-                <p class="card-text">End Date: <%= booking.start_date.strftime("%B %d, %Y") %></p>
-                <% if booking.booking_status == 'pending' %>
-                  <p>
-                    <%= link_to "Accept", accept_booking_path(booking), data: { turbo_method: :patch }, class: "btn btn-primary" %>
-                  </p>
-                  <p>
-                    <%= link_to "Decline", decline_booking_path(booking), data: { turbo_method: :patch }, class: "btn btn-danger" %>
-                  </p>
-                <% else %>
-                  <p>Status: <%= booking.booking_status.capitalize %></p>
-                <% end %>
+                <div class="booking-content">
+                  <% if booking.space.images.attached? %>
+                    <div class="image-dashcontainer">
+                      <%= image_tag booking.space.images.first, class: "img-dashcover", alt: "Space Image" %>
+                    </div>
+                  <% end %>
+                  <div class="booking-details">
+                    <h5 class="card-title"><%= booking.space.title %></h5>
+                    <p class="card-text"><strong>Booked by:</strong> <%= booking.user.first_name %> <%= booking.user.last_name %></p>
+                    <p class="card-text"><strong>Start Date:</strong> <%= booking.start_date.strftime("%B %d, %Y") %> at <%= booking.start_hour.strftime("%I:%M %p") %></p>
+                    <p class="card-text"><strong>End Date:</strong> <%= booking.start_date.strftime("%B %d, %Y") %> at <%= booking.end_hour.strftime("%I:%M %p") %></p>
+                    <p class="card-text"><strong>Guests:</strong> <%= booking.guest_number %></p>
+                    <p class="card-text"><strong>Total Price:</strong> $<%= booking.price %></p>
+
+                    <p><strong>Status:</strong> <span class="status <%= booking.booking_status.downcase %>"><%= booking.booking_status.capitalize %></span></p>
+                    <% if booking.booking_status == 'pending' %>
+                      <div class="action-buttons">
+                        <%= link_to "Accept", accept_booking_path(booking), data: { turbo_method: :patch }, class: "btn btn-success" %>
+                        <%= link_to "Decline", decline_booking_path(booking), data: { turbo_method: :patch }, class: "btn btn-danger" %>
+                      </div>
+                    <% end %>
+                    <div class="booking-link">
+                      <%= link_to "Show this booking", booking, class: "btn btn-primary" %>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
             <hr>
@@ -45,12 +58,29 @@
       <div class="row" style="flex-direction: column;">
         <% @previous_bookings.each do |booking| %>
           <div class="col-12 col-lg-12">
-            <div class="card">
+            <div class="card booking-card">
               <div class="card-body">
-                <h5 class="card-title"><%= booking.space.title %></h5>
-                <p class="card-text">Start Date: <%= booking.start_date.strftime("%B %d, %Y") %></p>
-                <p class="card-text">End Date: <%= booking.start_date.strftime("%B %d, %Y") %></p>
-                <p>Status: <%= booking.booking_status.capitalize %></p>
+                <div class="booking-content">
+                  <% if booking.space.images.attached? %>
+                    <div class="image-dashcontainer">
+                      <%= image_tag booking.space.images.first, class: "img-dashcover", alt: "Space Image" %>
+                    </div>
+                  <% end %>
+                  <div class="booking-details">
+                    <h5 class="card-title"><%= booking.space.title %></h5>
+                    <p class="card-text"><strong>Booked by:</strong> <%= booking.user.first_name %> <%= booking.user.last_name %></p>
+                    <p class="card-text"><strong>Start Date:</strong> <%= booking.start_date.strftime("%B %d, %Y") %> at <%= booking.start_hour.strftime("%I:%M %p") %></p>
+                    <p class="card-text"><strong>End Date:</strong> <%= booking.start_date.strftime("%B %d, %Y") %> at <%= booking.end_hour.strftime("%I:%M %p") %></p>
+                    <p class="card-text"><strong>Guests:</strong> <%= booking.guest_number %></p>
+                    <p class="card-text"><strong>Total Price:</strong> $<%= booking.price %></p>
+
+                    <p><strong>Status:</strong> <span class="status <%= booking.booking_status.downcase %>"><%= booking.booking_status.capitalize %></span></p>
+
+                    <div class="booking-link">
+                      <%= link_to "Show this booking", booking, class: "btn btn-primary" %>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
             <hr>
@@ -73,13 +103,13 @@
 
   /* General styling for the tab list container */
   .tab-list {
-display: flex;
-  margin-bottom: 16px;
-  background-color: #a1a0a03d;
-  padding: 8px;
-  border-radius: 5px;
-  margin-top: 20px;
-  box-shadow: 0px 0px 9px;
+    display: flex;
+    margin-bottom: 16px;
+    background-color: #f4f4f4;
+    padding: 8px;
+    border-radius: 8px;
+    margin-top: 20px;
+    box-shadow: 0px 0px 9px;
   }
 
   /* Styling each tab */
@@ -88,10 +118,10 @@ display: flex;
     text-decoration: none;
     color: #333;
     border: 1px solid transparent;
-    border-bottom: none;
     background-color: #f8f8f8;
-    margin-right: 5px;
+    margin-right: 8px;
     transition: background-color 0.3s ease;
+    border-radius: 6px;
   }
 
   .tab-link:hover {
@@ -101,19 +131,19 @@ display: flex;
   .tab-link.active,
   .tab-link[aria-selected="true"] {
     background-color: #ff8706de;
-    border-color: #ddd #ddd #ffffff #ddd;
-    border-radius: 4px 4px 0 0;
+    border-radius: 6px;
     font-weight: bold;
+    box-shadow: 0px 0px 6px;
   }
 
   /* Tab content */
   .tab-content {
-   border: 1px solid #ddd;
-  padding: 20px;
-  background-color: #fff;
-  margin-bottom: 20px;
-  box-shadow: 0px 0px 9px;
-  border-radius: 7px;
+    border: 1px solid #ddd;
+    padding: 20px;
+    background-color: #fff;
+    margin-bottom: 20px;
+    box-shadow: 0px 0px 9px;
+    border-radius: 7px;
   }
 
   .tab-panel {
@@ -122,6 +152,91 @@ display: flex;
 
   .tab-panel.active {
     display: block;
+  }
+
+  /* Card styling */
+  .booking-card {
+    box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    margin-bottom: 20px;
+    border: 1px solid #e0e0e0;
+    overflow: hidden;
+  }
+
+  .card-body {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 0 0 5px 5px;
+  }
+
+  .booking-content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  @media (min-width: 768px) {
+    .booking-content {
+      flex-direction: row;
+      align-items: flex-start;
+    }
+
+    .image-dashcontainer {
+      width: 30%;
+      margin-right: 20px;
+    }
+
+    .booking-details {
+      width: 65%;
+      display: grid;
+      grid-template-columns: 1fr auto;
+    }
+  }
+
+  .image-dashcontainer {
+    /*width: 100%;*/
+    height: auto;
+    border-radius: 5px;
+    overflow: hidden;
+  }
+
+  .img-dashcover {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 5px;
+  }
+
+  .booking-details {
+    padding: 10px;
+  }
+
+  .booking-link {
+    margin-top: 10px;
+  }
+
+  .action-buttons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .status {
+    font-weight: bold;
+    padding: 5px;
+    border-radius: 4px;
+    color: #ffffff;
+  }
+
+  .status.pending {
+    background-color: #ffc107;
+  }
+
+  .status.confirmed {
+    background-color: #28a745;
+  }
+
+  .status.declined {
+    background-color: #dc3545;
   }
 </style>
 
