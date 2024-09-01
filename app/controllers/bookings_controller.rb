@@ -1,5 +1,5 @@
 class BookingsController < ApplicationController
-  before_action :set_booking, only: [:show, :edit, :update, :destroy, :accept, :decline]
+  before_action :set_booking, only: [:show, :edit, :update, :destroy, :accept, :decline, :cancel]
   # GET /bookings or /bookings.json
   def index
     @future_bookings = current_user.bookings.where('start_date >= ?', Date.today).order(start_date: :asc)
@@ -19,8 +19,17 @@ class BookingsController < ApplicationController
   def owner_dashboard
     @spaces = current_user.spaces
 
-    @upcoming_bookings = Booking.where(space: @spaces).where('start_date >= ?', Date.today).order(start_date: :asc)
-    @previous_bookings = Booking.where(space: @spaces).where('start_date < ?', Date.today).order(start_date: :desc)
+    @upcoming_bookings = Booking.where(space: @spaces)
+    .where('start_date >= ?', Date.today)
+    .where.not(booking_status: 'canceled')
+    .order(start_date: :asc)
+
+# Filter previous bookings, excluding canceled ones
+@previous_bookings = Booking.where(space: @spaces)
+    .where('start_date < ?', Date.today)
+    .where.not(booking_status: 'canceled')
+    .order(start_date: :desc)
+    @canceled_bookings = Booking.where(space: @spaces, booking_status: 'canceled').order(start_date: :desc)
   end
 
 
@@ -31,6 +40,15 @@ class BookingsController < ApplicationController
   def decline
     update_status('declined')
   end
+
+  def cancel
+    if current_user == @booking.user || current_user == @booking.owner
+      update_status('canceled')
+    else
+      redirect_to bookings_path, alert: 'You are not authorized to cancel this booking.'
+    end
+  end
+
   # GET /bookings/new
   def new
     @space = Space.find(params[:space_id])

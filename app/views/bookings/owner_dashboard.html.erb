@@ -8,6 +8,9 @@
     <a class="tab-link" title="Previous Bookings" role="tab" aria-selected="false" aria-controls="panel-previous" id="tab-previous" href="#panel-previous">
       <span class="tab-label">Previous Bookings</span>
     </a>
+    <a class="tab-link" title="Canceled Bookings" role="tab" aria-selected="false" aria-controls="panel-canceled" id="tab-canceled" href="#panel-canceled">
+      <span class="tab-label">Canceled Bookings</span>
+    </a>
   </div>
 
   <!-- Tab Panels -->
@@ -32,7 +35,7 @@
                     <p class="card-text"><strong>End Date:</strong> <%= booking.start_date.strftime("%B %d, %Y") %> at <%= booking.end_hour.strftime("%I:%M %p") %></p>
                     <p class="card-text"><strong>Guests:</strong> <%= booking.guest_number %></p>
                     <p class="card-text"><strong>Total Price:</strong> $<%= booking.price %></p>
-
+                    <p class="card-text"><strong>Payment Status:</strong> <span class="status <%= booking.payment_status.downcase %>"><%= booking.payment_status.capitalize %></span></p>
                     <p><strong>Status:</strong> <span class="status <%= booking.booking_status.downcase %>"><%= booking.booking_status.capitalize %></span></p>
                     <% if booking.booking_status == 'pending' %>
                       <div class="action-buttons">
@@ -73,7 +76,7 @@
                     <p class="card-text"><strong>End Date:</strong> <%= booking.start_date.strftime("%B %d, %Y") %> at <%= booking.end_hour.strftime("%I:%M %p") %></p>
                     <p class="card-text"><strong>Guests:</strong> <%= booking.guest_number %></p>
                     <p class="card-text"><strong>Total Price:</strong> $<%= booking.price %></p>
-
+                    <p class="card-text"><strong>Payment Status:</strong> <span class="status <%= booking.payment_status.downcase %>"><%= booking.payment_status.capitalize %></span></p>
                     <p><strong>Status:</strong> <span class="status <%= booking.booking_status.downcase %>"><%= booking.booking_status.capitalize %></span></p>
 
                     <div class="booking-link">
@@ -88,6 +91,42 @@
         <% end %>
       </div>
     </div>
+
+     <!-- Canceled Bookings Panel -->
+    <div id="panel-canceled" class="tab-panel" role="tabpanel" aria-labelledby="tab-canceled">
+      <div class="row" style="flex-direction: column;">
+        <% @canceled_bookings.each do |booking| %>
+          <div class="col-12 col-lg-12">
+            <div class="card booking-card">
+              <div class="card-body">
+                <div class="booking-content">
+                  <% if booking.space.images.attached? %>
+                    <div class="image-dashcontainer">
+                      <%= image_tag booking.space.images.first, class: "img-dashcover", alt: "Space Image" %>
+                    </div>
+                  <% end %>
+                  <div class="booking-details">
+                    <h5 class="card-title"><%= booking.space.title %></h5>
+                    <p class="card-text"><strong>Booked by:</strong> <%= booking.user.first_name %> <%= booking.user.last_name %></p>
+                    <p class="card-text"><strong>Start Date:</strong> <%= booking.start_date.strftime("%B %d, %Y") %> at <%= booking.start_hour.strftime("%I:%M %p") %></p>
+                    <p class="card-text"><strong>End Date:</strong> <%= booking.start_date.strftime("%B %d, %Y") %> at <%= booking.end_hour.strftime("%I:%M %p") %></p>
+                    <p class="card-text"><strong>Guests:</strong> <%= booking.guest_number %></p>
+                    <p class="card-text"><strong>Total Price:</strong> $<%= booking.price %></p>
+                    <p class="card-text"><strong>Payment Status:</strong> <span class="status <%= booking.payment_status.downcase %>"><%= booking.payment_status.capitalize %></span></p>
+                    <p><strong>Status:</strong> <span class="status canceled">Canceled</span></p>
+                    <div class="booking-link">
+                      <%= link_to "Show this booking", booking, class: "btn btn-primary" %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -238,26 +277,32 @@
   .status.declined {
     background-color: #dc3545;
   }
+
+  .status.canceled {
+  background-color: #dc3545;
+  color: #ffffff;
+}
 </style>
 
 <script>
-  document.querySelectorAll('.tab-link').forEach(function (tab) {
-    tab.addEventListener('click', function (event) {
-      event.preventDefault();
+ document.querySelectorAll('.tab-link').forEach(function (tab) {
+  tab.addEventListener('click', function (event) {
+    event.preventDefault();
 
-      // Remove 'active' class from all tabs and panels
-      document.querySelectorAll('.tab-link').forEach(function (t) {
-        t.classList.remove('active');
-        t.setAttribute('aria-selected', 'false');
-      });
-      document.querySelectorAll('.tab-panel').forEach(function (panel) {
-        panel.classList.remove('active');
-      });
-
-      // Add 'active' class to the clicked tab and corresponding panel
-      this.classList.add('active');
-      this.setAttribute('aria-selected', 'true');
-      document.getElementById(this.getAttribute('aria-controls')).classList.add('active');
+    // Remove 'active' class from all tabs and panels
+    document.querySelectorAll('.tab-link').forEach(function (t) {
+      t.classList.remove('active');
+      t.setAttribute('aria-selected', 'false');
     });
+    document.querySelectorAll('.tab-panel').forEach(function (panel) {
+      panel.classList.remove('active');
+    });
+
+    // Add 'active' class to the clicked tab and corresponding panel
+    this.classList.add('active');
+    this.setAttribute('aria-selected', 'true');
+    document.getElementById(this.getAttribute('aria-controls')).classList.add('active');
   });
+});
+
 </script>
