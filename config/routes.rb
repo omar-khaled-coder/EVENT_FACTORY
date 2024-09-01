@@ -3,6 +3,7 @@ Rails.application.routes.draw do
     member do
       patch :accept
       patch :decline
+      patch :cancel
     end
   end
   resources :spaces
