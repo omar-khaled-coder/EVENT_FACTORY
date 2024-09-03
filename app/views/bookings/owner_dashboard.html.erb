@@ -15,50 +15,61 @@
 
   <!-- Tab Panels -->
   <div class="tab-content">
-    <!-- Upcoming Bookings Panel -->
-    <div id="panel-upcoming" class="tab-panel active" role="tabpanel" aria-labelledby="tab-upcoming">
-      <div class="row" style="flex-direction: column;">
-        <% @upcoming_bookings.each do |booking| %>
-          <div class="col-12 col-lg-12">
-            <div class="card booking-card">
-              <div class="card-body">
-                <div class="booking-content">
-                  <% if booking.space.images.attached? %>
-                    <div class="image-dashcontainer">
-                      <%= image_tag booking.space.images.first, class: "img-dashcover", alt: "Space Image" %>
+   <!-- Upcoming Bookings Panel -->
+<div id="panel-upcoming" class="tab-panel active" role="tabpanel" aria-labelledby="tab-upcoming">
+  <div class="row" style="flex-direction: column;">
+    <% if @upcoming_bookings.any? %>
+      <% @upcoming_bookings.each do |booking| %>
+        <div class="col-12 col-lg-12">
+          <div class="card booking-card">
+            <div class="card-body">
+              <div class="booking-content">
+                <% if booking.space.images.attached? %>
+                  <div class="image-dashcontainer">
+                    <%= image_tag booking.space.images.first, class: "img-dashcover", alt: "Space Image" %>
+                  </div>
+                <% end %>
+                <div class="booking-details">
+                  <h5 class="card-title"><%= booking.space.title %></h5>
+                  <p class="card-text"><strong>Booked by:</strong> <%= booking.user.first_name %> <%= booking.user.last_name %></p>
+                  <p class="card-text"><strong>Start Date:</strong> <%= booking.start_date.strftime("%B %d, %Y") %> at <%= booking.start_hour.strftime("%I:%M %p") %></p>
+                  <p class="card-text"><strong>End Date:</strong> <%= booking.start_date.strftime("%B %d, %Y") %> at <%= booking.end_hour.strftime("%I:%M %p") %></p>
+                  <p class="card-text"><strong>Guests:</strong> <%= booking.guest_number %></p>
+                  <p class="card-text"><strong>Total Price:</strong> $<%= booking.price %></p>
+                  <p class="card-text"><strong>Payment Status:</strong> <span class="status <%= booking.payment_status.downcase %>"><%= booking.payment_status.capitalize %></span></p>
+                  <p><strong>Status:</strong> <span class="status <%= booking.booking_status.downcase %>"><%= booking.booking_status.capitalize %></span></p>
+                  <% if booking.booking_status == 'pending' %>
+                    <div class="action-buttons">
+                      <%= link_to "Accept", accept_booking_path(booking), data: { turbo_method: :patch }, class: "btn btn-success" %>
+                      <%= link_to "Decline", decline_booking_path(booking), data: { turbo_method: :patch }, class: "btn btn-danger" %>
                     </div>
                   <% end %>
-                  <div class="booking-details">
-                    <h5 class="card-title"><%= booking.space.title %></h5>
-                    <p class="card-text"><strong>Booked by:</strong> <%= booking.user.first_name %> <%= booking.user.last_name %></p>
-                    <p class="card-text"><strong>Start Date:</strong> <%= booking.start_date.strftime("%B %d, %Y") %> at <%= booking.start_hour.strftime("%I:%M %p") %></p>
-                    <p class="card-text"><strong>End Date:</strong> <%= booking.start_date.strftime("%B %d, %Y") %> at <%= booking.end_hour.strftime("%I:%M %p") %></p>
-                    <p class="card-text"><strong>Guests:</strong> <%= booking.guest_number %></p>
-                    <p class="card-text"><strong>Total Price:</strong> $<%= booking.price %></p>
-                    <p class="card-text"><strong>Payment Status:</strong> <span class="status <%= booking.payment_status.downcase %>"><%= booking.payment_status.capitalize %></span></p>
-                    <p><strong>Status:</strong> <span class="status <%= booking.booking_status.downcase %>"><%= booking.booking_status.capitalize %></span></p>
-                    <% if booking.booking_status == 'pending' %>
-                      <div class="action-buttons">
-                        <%= link_to "Accept", accept_booking_path(booking), data: { turbo_method: :patch }, class: "btn btn-success" %>
-                        <%= link_to "Decline", decline_booking_path(booking), data: { turbo_method: :patch }, class: "btn btn-danger" %>
-                      </div>
-                    <% end %>
-                    <div class="booking-link">
-                      <%= link_to "Show this booking", booking, class: "btn btn-primary" %>
-                    </div>
+                  <div class="booking-link">
+                    <%= link_to "Show this booking", booking, class: "btn btn-primary" %>
                   </div>
                 </div>
               </div>
             </div>
-            <hr>
           </div>
-        <% end %>
+          <hr>
+        </div>
+      <% end %>
+    <% else %>
+      <!-- Display this message if there are no upcoming bookings -->
+      <div class="col-12">
+        <p style="text-align: center; color: #555; font-size: 1.2em; margin-top: 20px;">
+          No upcoming bookings found.
+        </p>
       </div>
-    </div>
+    <% end %>
+  </div>
+</div>
+
 
     <!-- Previous Bookings Panel -->
     <div id="panel-previous" class="tab-panel" role="tabpanel" aria-labelledby="tab-previous">
       <div class="row" style="flex-direction: column;">
+        <% if @previous_bookings.any? %>
         <% @previous_bookings.each do |booking| %>
           <div class="col-12 col-lg-12">
             <div class="card booking-card">
@@ -89,6 +100,14 @@
             <hr>
           </div>
         <% end %>
+         <% else %>
+      <!-- Display this message if there are no upcoming bookings -->
+      <div class="col-12">
+        <p style="text-align: center; color: #555; font-size: 1.2em; margin-top: 20px;">
+          No Previous bookings found.
+        </p>
+      </div>
+    <% end %>
       </div>
     </div>
 
