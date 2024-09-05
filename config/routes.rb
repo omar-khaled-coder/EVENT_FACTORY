@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :messages
+  resources :chatrooms
   resources :bookings do
     member do
       patch :accept
@@ -27,6 +29,9 @@ resources :spaces do
   get 'select_date', on: :member
 end
 
+resources :chatrooms, only: [:index, :show, :create] do
+  resources :messages, only: [:create]
+end
   patch "/spaces/:id/approve", to: "pages#approve", as: :approve_space
   patch "/spaces/:id/reject", to: "pages#reject", as: :reject_space
 

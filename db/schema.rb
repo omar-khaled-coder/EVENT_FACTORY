@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_08_19_092416) do
+ActiveRecord::Schema[7.1].define(version: 2024_09_05_101734) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -61,6 +61,27 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_19_092416) do
     t.index ["owner_id"], name: "index_bookings_on_owner_id"
     t.index ["space_id"], name: "index_bookings_on_space_id"
     t.index ["user_id"], name: "index_bookings_on_user_id"
+  end
+
+  create_table "chatrooms", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "owner_id", null: false
+    t.bigint "space_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["owner_id"], name: "index_chatrooms_on_owner_id"
+    t.index ["space_id"], name: "index_chatrooms_on_space_id"
+    t.index ["user_id"], name: "index_chatrooms_on_user_id"
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.bigint "chatroom_id", null: false
+    t.bigint "user_id", null: false
+    t.text "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["chatroom_id"], name: "index_messages_on_chatroom_id"
+    t.index ["user_id"], name: "index_messages_on_user_id"
   end
 
   create_table "spaces", force: :cascade do |t|
@@ -116,5 +137,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_19_092416) do
   add_foreign_key "bookings", "spaces"
   add_foreign_key "bookings", "users"
   add_foreign_key "bookings", "users", column: "owner_id"
+  add_foreign_key "chatrooms", "spaces"
+  add_foreign_key "chatrooms", "users"
+  add_foreign_key "chatrooms", "users", column: "owner_id"
+  add_foreign_key "messages", "chatrooms"
+  add_foreign_key "messages", "users"
   add_foreign_key "spaces", "users", column: "owner_id"
 end
