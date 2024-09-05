@@ -3,8 +3,8 @@ class PagesController < ApplicationController
   end
 
   def user_profile
-    @user = current_user
-    @spaces = @user.spaces
+    @user = User.find(params[:id])  # Find user by ID from the URL
+        @spaces = @user.spaces
   end
 
   def space_requests
