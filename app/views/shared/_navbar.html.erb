@@ -35,7 +35,8 @@
             <% end %>
           </a>
             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-              <%= link_to "Profile", user_profile_path, class: "dropdown-item" %>
+              <%= link_to "Profile", user_profile_path(current_user.id), class: "dropdown-item" %>
+
               <% if current_user&.owner? %>
 
             <%= link_to 'Owner Dashboard', owner_dashboard_path, class: 'nav-link' %>

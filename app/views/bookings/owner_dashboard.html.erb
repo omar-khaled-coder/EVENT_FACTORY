@@ -31,7 +31,11 @@
                 <% end %>
                 <div class="booking-details">
                   <h5 class="card-title"><%= booking.space.title %></h5>
-                  <p class="card-text"><strong>Booked by:</strong> <%= booking.user.first_name %> <%= booking.user.last_name %></p>
+<p class="card-text">
+  <strong>Booked by:</strong>
+  <%= link_to "#{booking.user.first_name} #{booking.user.last_name}", user_profile_path(booking.user.id), class: "profile-link" %>
+</p>
+
                   <p class="card-text"><strong>Start Date:</strong> <%= booking.start_date.strftime("%B %d, %Y") %> at <%= booking.start_hour.strftime("%I:%M %p") %></p>
                   <p class="card-text"><strong>End Date:</strong> <%= booking.start_date.strftime("%B %d, %Y") %> at <%= booking.end_hour.strftime("%I:%M %p") %></p>
                   <p class="card-text"><strong>Guests:</strong> <%= booking.guest_number %></p>
@@ -82,7 +86,11 @@
                   <% end %>
                   <div class="booking-details">
                     <h5 class="card-title"><%= booking.space.title %></h5>
-                    <p class="card-text"><strong>Booked by:</strong> <%= booking.user.first_name %> <%= booking.user.last_name %></p>
+<p class="card-text">
+  <strong>Booked by:</strong>
+  <%= link_to "#{booking.user.first_name} #{booking.user.last_name}", user_profile_path(booking.user.id), class: "profile-link" %>
+</p>
+
                     <p class="card-text"><strong>Start Date:</strong> <%= booking.start_date.strftime("%B %d, %Y") %> at <%= booking.start_hour.strftime("%I:%M %p") %></p>
                     <p class="card-text"><strong>End Date:</strong> <%= booking.start_date.strftime("%B %d, %Y") %> at <%= booking.end_hour.strftime("%I:%M %p") %></p>
                     <p class="card-text"><strong>Guests:</strong> <%= booking.guest_number %></p>
