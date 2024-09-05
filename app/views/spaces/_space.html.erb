@@ -162,6 +162,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
     <div style="display: block ruby;">
       <%= image_tag space.owner.profile_picture, class: "avatar-show"  %> <h5>Hosted by |<h5>  <%= space.owner.first_name %>
+<%= button_to "Message Owner", chatrooms_path(chatroom: { user_id: current_user.id, owner_id: @space.owner.id, space_id: @space.id }), method: :post %>
+
     </div>
 
     <hr>
