@@ -31,10 +31,10 @@
                 <% end %>
                 <div class="booking-details">
                   <h5 class="card-title"><%= booking.space.title %></h5>
-<p class="card-text">
-  <strong>Booked by:</strong>
-  <%= link_to "#{booking.user.first_name} #{booking.user.last_name}", user_profile_path(booking.user.id), class: "profile-link" %>
-</p>
+                  <p class="card-text">
+                    <strong>Booked by:</strong>
+                    <%= link_to "#{booking.user.first_name} #{booking.user.last_name}", user_profile_path(booking.user.id), class: "profile-link" %>
+                  </p>
 
                   <p class="card-text"><strong>Start Date:</strong> <%= booking.start_date.strftime("%B %d, %Y") %> at <%= booking.start_hour.strftime("%I:%M %p") %></p>
                   <p class="card-text"><strong>End Date:</strong> <%= booking.start_date.strftime("%B %d, %Y") %> at <%= booking.end_hour.strftime("%I:%M %p") %></p>
@@ -50,6 +50,10 @@
                   <% end %>
                   <div class="booking-link">
                     <%= link_to "Show this booking", booking, class: "btn btn-primary" %>
+
+                  </div>
+                   <div class="booking-link">
+                    <%= button_to "Message Customer", chatrooms_path(chatroom: { user_id: booking.user.id, owner_id: current_user.id, space_id: booking.space.id }), class: "btn btn-secondary", method: :post %>
                   </div>
                 </div>
               </div>
@@ -101,6 +105,9 @@
                     <div class="booking-link">
                       <%= link_to "Show this booking", booking, class: "btn btn-primary" %>
                     </div>
+                     <div class="booking-link">
+                    <%= button_to "Message Customer", chatrooms_path(chatroom: { user_id: booking.user.id, owner_id: current_user.id, space_id: booking.space.id }), class: "btn btn-secondary", method: :post %>
+                  </div>
                   </div>
                 </div>
               </div>
@@ -144,6 +151,9 @@
                     <div class="booking-link">
                       <%= link_to "Show this booking", booking, class: "btn btn-primary" %>
                     </div>
+                     <div class="booking-link">
+                    <%= button_to "Message Customer", chatrooms_path(chatroom: { user_id: booking.user.id, owner_id: current_user.id, space_id: booking.space.id }), class: "btn btn-secondary", method: :post %>
+                  </div>
                   </div>
                 </div>
               </div>
