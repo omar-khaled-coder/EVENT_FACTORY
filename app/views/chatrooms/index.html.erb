@@ -1,29 +1,42 @@
 <p style="color: green"><%= notice %></p>
 
-<h1>Chatrooms</h1>
+<h1 class="page-title">Your Chatrooms</h1>
 
 <div id="chatrooms">
   <% if @chatrooms.any? %>
     <% @chatrooms.each do |chatroom| %>
       <div class="chatroom-card">
-        <h2>
-          Chat with
-          <% if current_user == chatroom.owner %>
-            <%= chatroom.user&.first_name || "Unknown User" %>
-          <% else %>
-            <%= chatroom.owner&.first_name || "Unknown Owner" %>
-          <% end %>
-        </h2>
-        <div class="chatroom-info">
-          <p>Messages: <%= chatroom.messages.count %></p>
+        <div class="chatroom-header">
+          <div class="chatroom-avatar-container">
+            <% if current_user == chatroom.owner %>
+              <%= image_tag(chatroom.user&.profile_picture.attached? ? chatroom.user.profile_picture : 'default-avatar.png', alt: "User Avatar", class: "chatroom-avatar") %>
+            <% else %>
+              <%= image_tag(chatroom.owner&.profile_picture.attached? ? chatroom.owner.profile_picture : 'default-avatar.png', alt: "Owner Avatar", class: "chatroom-avatar") %>
+            <% end %>
+          </div>
+          <div class="chatroom-title">
+            <h3>
+              <% if current_user == chatroom.owner %>
+                <%= chatroom.user&.first_name || "Unknown User" %>
+              <% else %>
+                <%= chatroom.owner&.first_name || "Unknown Owner" %>
+              <% end %>
+            </h3>
+          </div>
         </div>
-        <p>
+
+        <div class="chatroom-info">
+          <p><strong>Messages:</strong> <%= chatroom.messages.count %></p>
+          <p><strong>Space:</strong> <%= chatroom.space.title %></p>
+        </div>
+
+        <div class="chatroom-actions">
           <%= link_to "Open Chat", chatroom_path(chatroom), class: "btn btn-primary" %>
-        </p>
+        </div>
       </div>
     <% end %>
   <% else %>
-    <p>No chatrooms available</p>
+    <p class="no-chatrooms-message">You don't have any chatrooms yet.</p>
   <% end %>
 </div>
 
@@ -32,53 +45,109 @@
 </div>
 
 <style>
+  /* Global styles */
+  body {
+    font-family: 'Arial', sans-serif;
+  }
+
+  .page-title {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 2rem;
+    color: #333;
+  }
+
   #chatrooms {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px;
-  margin-top: 20px;
-}
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin: 30px 0;
+    padding: 0 20px;
+  }
 
-.chatroom-card {
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
-}
+  .chatroom-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
 
-.chatroom-card:hover {
-  transform: translateY(-5px);
-}
+  .chatroom-card:hover {
+    transform: translateY(-5px);
+  }
 
-.chatroom-card h2 {
-  font-size: 1.5rem;
-  margin-bottom: 10px;
-}
+  .chatroom-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+  }
 
-.chatroom-info {
-  margin-bottom: 15px;
-}
+  .chatroom-avatar-container {
+    flex-shrink: 0;
+  }
 
-.btn {
-  padding: 10px 15px;
-  text-decoration: none;
-  color: white;
-  border-radius: 5px;
-  display: inline-block;
-}
+  .chatroom-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 15px;
+  }
 
-.btn-primary {
-  background-color: #007bff;
-}
+  .chatroom-title h3 {
+    margin: 0;
+    font-size: 1.3rem;
+    color: #555;
+  }
 
-.btn-success {
-  background-color: #28a745;
-}
+  .chatroom-info {
+    margin: 10px 0;
+    color: #777;
+  }
 
-.new-chatroom-link {
-  margin-top: 30px;
-  text-align: center;
-}
+  .chatroom-actions {
+    margin-top: 15px;
+    text-align: right;
+  }
+
+  .btn {
+    padding: 10px 20px;
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+  }
+
+  .btn-primary {
+    background-color: #007bff;
+  }
+
+  .btn-primary:hover {
+    background-color: #0056b3;
+  }
+
+  .btn-success {
+    background-color: #28a745;
+  }
+
+  .btn-success:hover {
+    background-color: #218838;
+  }
+
+  .new-chatroom-link {
+    margin-top: 30px;
+    text-align: center;
+  }
+
+  .no-chatrooms-message {
+    text-align: center;
+    color: #777;
+    font-size: 1.1rem;
+  }
 </style>
