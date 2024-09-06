@@ -1,18 +1,182 @@
-<h2>Chat with <%= chatroom.owner&.first_name || "Unknown Owner" %></h2>
-
-<div class="messages">
-  <% messages.each do |message| %>
-    <p><strong><%= message.user.first_name %>:</strong> <%= message.content %></p>
-  <% end %>
+<div class="chatroom-container">
+  <div class="chat-header">
+  <h2>
+    Chat with
+    <% if current_user == @chatroom.owner %>
+      <%= @chatroom.user&.first_name || "Unknown User" %>
+    <% else %>
+      <%= @chatroom.owner&.first_name || "Unknown Owner" %>
+    <% end %>
+  </h2>
 </div>
 
 
-<%= form_with model: [chatroom, @message], local: true do |f| %>
-  <div>
-    <%= f.label :content, "Type your message" %><br>
-    <%= f.text_area :content %>
+  <div class="messages-container">
+    <% @messages.each do |message| %>
+      <div class="message <%= message.user == current_user ? 'sent' : 'received' %>">
+        <div class="avatar">
+          <%= image_tag(message.user.profile_picture.attached? ? message.user.profile_picture : 'default-avatar.png', alt: "User Avatar") %>
+        </div>
+        <div class="message-content">
+          <p class="message-text"><%= message.content %></p>
+          <span class="message-time"><%= message.created_at.localtime.strftime("%I:%M %p") %></span>
+        </div>
+      </div>
+    <% end %>
   </div>
-  <div>
-    <%= f.submit "Send" %>
-  </div>
-<% end %>
+
+ <div class="message-form">
+  <%= form_with model: [@chatroom, @message], local: true, id: "message-form" do |f| %>
+    <div class="input-container">
+      <%= f.text_area :content, placeholder: "Type your message...", class: "message-input", rows: 1, id: "message-content" %>
+      <%= f.submit "Send", class: "send-button", id: "send-button", disabled: true %>
+    </div>
+    <p id="error-message" style="color: red; display: none;">Message cannot be empty.</p>
+  <% end %>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const messageContent = document.getElementById("message-content");
+    const sendButton = document.getElementById("send-button");
+    const errorMessage = document.getElementById("error-message");
+
+    // Enable/Disable send button based on input
+    messageContent.addEventListener("input", function() {
+      if (messageContent.value.trim() === "") {
+        sendButton.disabled = true; // Disable button if input is empty
+        errorMessage.style.display = "block"; // Show error message
+      } else {
+        sendButton.disabled = false; // Enable button if input is not empty
+        errorMessage.style.display = "none"; // Hide error message
+      }
+    });
+  });
+</script>
+
+</div>
+
+
+
+<style>
+ /* General chatroom container styling */
+.chatroom-container {
+  width: 97%;
+  max-width: 900px;
+  margin: 20px auto;
+  background-color: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  height: 90vh;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Chat header */
+.chat-header {
+  padding: 15px;
+  background-color: #2a2b2d;
+  color: white;
+  text-align: center;
+  border-radius: 10px 10px 0 0;
+  font-weight: bold;
+}
+
+/* Messages container */
+.messages-container {
+  flex: 1;
+  padding: 20px;
+  overflow-y: scroll;
+  background-color: #f0f0f5;
+}
+
+/* Individual message styling */
+.message {
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 15px;
+}
+
+.message.sent {
+  justify-content: flex-end;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+.message-content {
+  max-width: 60%;
+  background-color: #fff;
+  padding: 10px 15px;
+  border-radius: 15px;
+  position: relative;
+  font-size: 14px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.message.sent .message-content {
+  background-color: #dcf8c6;
+}
+
+.message-text {
+  margin: 0;
+  word-wrap: break-word;
+}
+
+.message-time {
+  display: block;
+  font-size: 12px;
+  color: #666;
+  margin-top: 5px;
+  text-align: right;
+}
+
+/* Message form at the bottom */
+.message-form {
+  padding: 15px;
+  background-color: #fff;
+  border-top: 1px solid #e0e0e0;
+  border-radius: 0 0 10px 10px;
+  position: sticky;
+  bottom: 0;
+}
+
+.input-container {
+  display: flex;
+  align-items: center;
+}
+
+.message-input {
+  flex: 1;
+  padding: 10px;
+  border-radius: 25px;
+  border: 1px solid #ddd;
+  margin-right: 10px;
+  font-size: 14px;
+}
+
+.send-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.send-button:hover {
+  background-color: #0056b3;
+}
+
+</style>
