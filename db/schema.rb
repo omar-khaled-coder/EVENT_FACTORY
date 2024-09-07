@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_09_05_101734) do
+ActiveRecord::Schema[7.1].define(version: 2024_09_07_113317) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -69,6 +69,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_05_101734) do
     t.bigint "space_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "owner_last_viewed_at"
+    t.datetime "user_last_viewed_at"
     t.index ["owner_id"], name: "index_chatrooms_on_owner_id"
     t.index ["space_id"], name: "index_chatrooms_on_space_id"
     t.index ["user_id"], name: "index_chatrooms_on_user_id"
