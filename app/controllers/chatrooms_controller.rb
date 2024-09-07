@@ -3,16 +3,28 @@ class ChatroomsController < ApplicationController
 
   # GET /chatrooms or /chatrooms.json
   def index
-    @chatrooms = Chatroom.where("user_id = ? OR owner_id = ?", current_user.id, current_user.id)
-        @message = Message.new
+    @chatrooms = Chatroom.where("chatrooms.user_id = :user_id OR chatrooms.owner_id = :user_id", user_id: current_user.id)
+                         .left_joins(:messages)
+                         .group("chatrooms.id")
+                         .order(Arel.sql("COALESCE(MAX(messages.created_at), chatrooms.updated_at) DESC"))
+    @message = Message.new
   end
+
 
   # GET /chatrooms/1 or /chatrooms/1.json
   def show
     @chatroom = Chatroom.find(params[:id])
     @message = Message.new
     @messages = @chatroom.messages.order(created_at: :asc)
+
+    # Update last viewed time for the current user
+    if current_user == @chatroom.owner
+      @chatroom.update(owner_last_viewed_at: Time.current)
+    else
+      @chatroom.update(user_last_viewed_at: Time.current)
+    end
   end
+
 
   # GET /chatrooms/new
   def new
