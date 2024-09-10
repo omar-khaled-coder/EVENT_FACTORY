@@ -1,7 +1,7 @@
 class Space < ApplicationRecord
   belongs_to :owner, class_name: 'User'
   has_many :bookings, dependent: :destroy # A Space can have many bookings
-
+  has_many :reviews
   #validates :status, inclusion: { in: %w[pending accepted declined] }
 
   enum status: { pending: 'pending', accepted: 'accepted', declined: 'declined' }

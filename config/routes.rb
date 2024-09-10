@@ -28,6 +28,9 @@ Rails.application.routes.draw do
 resources :spaces do
   get 'select_date', on: :member
 end
+resources :spaces do
+  resources :reviews, only: [:new, :create]
+end
 
 resources :chatrooms, only: [:index, :show, :create] do
   resources :messages, only: [:create]
