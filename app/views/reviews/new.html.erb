@@ -3,7 +3,7 @@
 <%= form_with model: @review, url: space_reviews_path(@space), local: true do |f| %>
   <div>
     <%= f.label :rating, "Rating (1-5)" %>
-    <%= f.number_field :rating, in: 1..5, step: 1 %>
+    <%= f.select :rating, options_for_select([1, 2, 3, 4, 5]), {}, class: 'star-rating' %>
   </div>
 
   <div>
@@ -12,6 +12,6 @@
   </div>
 
   <div>
-    <%= f.submit "Submit Review" %>
+    <%= f.submit "Submit Review", class: "btn btn-primary" %>
   </div>
 <% end %>

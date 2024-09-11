@@ -51,9 +51,9 @@
           </div>
 
           <div class="detail-item">
-  <strong>Booking status:</strong>
-  <span class="status <%= booking.booking_status.downcase %>"><%= booking.booking_status.capitalize %></span>
-</div>
+            <strong>Booking status:</strong>
+            <span class="status <%= booking.booking_status.downcase %>"><%= booking.booking_status.capitalize %></span>
+          </div>
 
         </div>
         <div class="row">
@@ -66,6 +66,15 @@
         <div class="booking-link">
           <%= link_to "Show this booking", booking, class: "btn btn-primary" %>
           <%= button_to "Message Owner", chatrooms_path(chatroom: { user_id: current_user.id, owner_id: booking.space.owner.id, space_id: booking.space.id }), class: "btn btn-secondary", method: :post %>
+          <% if booking.booking_status == 'confirmed' && (booking.start_date < Date.today || (booking.start_date == Date.today && booking.end_hour < Time.current)) %>
+  <% if booking.space.reviews.where(user: current_user).empty? %>
+    <%= link_to "Leave a Review", new_space_review_path(booking.space), class: "btn btn-success" %>
+  <% else %>
+    <p>You have already reviewed this space.</p>
+  <% end %>
+<% else %>
+  <p>Review not available until the event is completed.</p>
+<% end %>
 
         </div>
       </div>

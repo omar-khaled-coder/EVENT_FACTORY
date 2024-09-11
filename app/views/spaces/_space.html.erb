@@ -237,6 +237,34 @@ document.addEventListener("DOMContentLoaded", function() {
 
     <hr>
 
+<h3>Reviews</h3>
+<% if @space.reviews.any? %>
+  <p>Average Rating: <%= @space.reviews.average(:rating).round(2) %></p>
+
+  <% @space.reviews.each do |review| %>
+    <div>
+      <strong><%= review.user.first_name %> rated:</strong>
+      <div class="star-rating">
+        <% review.rating.times do %>
+          <span class="star">&#9733;</span> <!-- Filled star -->
+        <% end %>
+        <% (5 - review.rating).times do %>
+          <span class="star">&#9734;</span> <!-- Empty star -->
+        <% end %>
+      </div>
+      <p><%= review.comment %></p>
+    </div>
+  <% end %>
+<% else %>
+  <p>No reviews yet.</p>
+<% end %>
+
+<style>
+  .star-rating .star {
+    color: #ffcc00;
+    font-size: 20px;
+  }
+</style>
 
       <p>
         <strong>State:</strong>
