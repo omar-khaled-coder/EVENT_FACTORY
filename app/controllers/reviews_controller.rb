@@ -28,7 +28,11 @@ class ReviewsController < ApplicationController
   end
 
   def check_booking_completed
-    booking = Booking.find_by(user: current_user, space: @space, booking_status: 'completed')
-    redirect_to @space, alert: 'You can only review spaces after completing a booking.' unless booking
+    @booking = Booking.find_by(space: @space, user: current_user, booking_status: 'confirmed')
+
+    # Check if the event is completed
+    if @booking.nil? || @booking.start_date > Date.today || (@booking.start_date == Date.today && @booking.end_hour > Time.current)
+      redirect_to space_path(@space), alert: "You can only review this space after your event is completed."
+    end
   end
 end
