@@ -236,35 +236,104 @@ document.addEventListener("DOMContentLoaded", function() {
     </div>
 
     <hr>
+<div>
+  <h3>Reviews</h3>
+  <% if @space.reviews.any? %>
+    <p>Average Rating: <%= @space.reviews.average(:rating).round(2) %></p>
 
-<h3>Reviews</h3>
-<% if @space.reviews.any? %>
-  <p>Average Rating: <%= @space.reviews.average(:rating).round(2) %></p>
+    <% @space.reviews.each do |review| %>
+      <div class="review-item">
+        <!-- User Info with Avatar, Name, and Account Age -->
+        <div class="user-info">
+          <%= image_tag review.user.profile_picture.attached? ? review.user.profile_picture : 'default-avatar.png', class: "user-avatar", alt: "User Avatar" %>
+          <div>
+            <strong><%= review.user.first_name %></strong>
+            <span class="user-created-at">- Member since <%= review.user.created_at.strftime("%B %Y") %></span>
+          </div>
+        </div>
 
-  <% @space.reviews.each do |review| %>
-    <div>
-      <strong><%= review.user.first_name %> rated:</strong>
-      <div class="star-rating">
-        <% review.rating.times do %>
-          <span class="star">&#9733;</span> <!-- Filled star -->
-        <% end %>
-        <% (5 - review.rating).times do %>
-          <span class="star">&#9734;</span> <!-- Empty star -->
-        <% end %>
+        <!-- Star Rating with Review Date -->
+        <div class="star-rating">
+          <% review.rating.times do %>
+            <span class="star">&#9733;</span> <!-- Filled star -->
+          <% end %>
+          <% (5 - review.rating).times do %>
+            <span class="star">&#9734;</span> <!-- Empty star -->
+          <% end %>
+
+          <span class="review-date">- Reviewed on <%= review.created_at.strftime("%B %d, %Y") %></span>
+        </div>
+
+        <!-- Review Comment -->
+        <p class="review-comment"><%= review.comment %></p>
       </div>
-      <p><%= review.comment %></p>
-    </div>
+      <hr>
+    <% end %>
+  <% else %>
+    <p>No reviews yet.</p>
   <% end %>
-<% else %>
-  <p>No reviews yet.</p>
-<% end %>
+</div>
 
 <style>
+  .review-item {
+    display: flex;
+    flex-direction: column;
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+  }
+
+  .user-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+
+  .user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+    object-fit: cover;
+  }
+
+  .user-info div {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .user-created-at {
+    font-size: 0.85rem;
+    color: #666;
+  }
+
+  .star-rating {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+  }
+
   .star-rating .star {
     color: #ffcc00;
     font-size: 20px;
   }
+
+  .review-date {
+    font-size: 0.85rem;
+    color: #999;
+    margin-left: 10px;
+  }
+
+  .review-comment {
+    font-size: 1rem;
+    color: #333;
+    margin-left: 50px;
+  }
 </style>
+
+
 
       <p>
         <strong>State:</strong>
