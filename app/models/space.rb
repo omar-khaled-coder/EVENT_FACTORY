@@ -27,3 +27,4 @@ class Space < ApplicationRecord
     end
   end
 end
+console
