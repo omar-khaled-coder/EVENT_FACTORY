@@ -9,7 +9,10 @@ module ApplicationHelper
     "Studio" => "fas fa-microphone",
     "Office" => "fas fa-briefcase",
     "Conference Room" => "fas fa-users",
-    "Shooting Location" => "fa-solid fa-camera"
+    "Shooting Location" => "fa-solid fa-camera",
+    "Event Venue" => "fa-solid fa-house",
+    "Co-working Space" => "fa-regular fa-building",
+    "Classroom" => "fa-solid fa-people-roof"
     # Add other space types and their corresponding icons here
   }
 
@@ -27,6 +30,18 @@ module ApplicationHelper
       'fas fa-swimming-pool'
     when 'bathrooms'
       'fas fa-restroom'
+    when 'kitchen'
+      "fa-solid fa-kitchen-set"
+    when 'snacks'
+      "fa-solid fa-cookie-bite"
+    when "private entrance"
+      "fa-solid fa-dungeon"
+    when 'sink'
+      "fa-solid fa-sink"
+    when "air conditioning"
+      "fa-solid fa-wind"
+    when 'heat'
+      "fa-solid fa-temperature-arrow-up"
     # Add more cases for other amenities
     else
       'fas fa-check' # Default icon
