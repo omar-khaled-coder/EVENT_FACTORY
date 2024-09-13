@@ -1,32 +1,128 @@
 <h1>Space Requests</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th>Description</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @spaces.each do |space| %>
-      <tr>
-        <td><%= space.title %></td>
-        <td><%= space.description %></td>
-        <td>
-          <%= form_with url: approve_space_path(space), method: :patch do |f| %>
-            <%= f.hidden_field :comments, value: "Approved by admin" %>
-            <%= f.submit "Approve" %>
-          <% end %>
-          <%= form_with url: reject_space_path(space), method: :patch do |f| %>
-            <%= f.text_area :comments, placeholder: "Add comments" %>
-            <%= f.submit "Reject" %>
-          <% end %>
-        </td>
-      </tr>
-      <p>
-      <%= link_to "Show this space", space %>
-    </p>
-    <% end %>
-  </tbody>
-</table>
+<div class="spaces-container">
+  <% @spaces.each do |space| %>
+    <div class="space-card">
+      <div class="space-header">
+        <h3><%= space.title %></h3>
+        <p class="space-description"><%= space.description.truncate(100) %></p>
+      </div>
+
+      <div class="space-actions">
+        <!-- Combined Approve/Reject Form -->
+        <%= form_with url: approve_space_path(space), method: :patch, local: true, class: "space-form" do |f| %>
+          <!-- Text area for admin comment -->
+          <%= f.text_area :admin_comment, placeholder: "Add comment (optional)", class: "form-control" %>
+
+          <!-- Buttons for both Approve and Reject actions -->
+          <div class="action-buttons">
+            <%= f.submit "Approve", class: "btn btn-success", formaction: approve_space_path(space) %>
+            <%= f.submit "Reject", class: "btn btn-danger", formaction: reject_space_path(space) %>
+          </div>
+        <% end %>
+
+        <!-- Show Space Link -->
+        <%= link_to "Show this space", space, class: "btn btn-info btn-show" %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<style>
+  .spaces-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
+  }
+
+  .space-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .space-card:hover {
+    transform: translateY(-5px);
+  }
+
+  .space-header h3 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #333;
+  }
+
+  .space-description {
+    font-size: 0.9rem;
+    color: #777;
+    margin-top: 5px;
+  }
+
+  .space-actions {
+    margin-top: 15px;
+  }
+
+  .space-form {
+    margin-top: 15px;
+  }
+
+  .form-control {
+    margin-bottom: 10px;
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    font-size: 0.9rem;
+  }
+
+  .action-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .btn {
+    padding: 10px 20px;
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+    text-align: center;
+  }
+
+  .btn-success {
+    background-color: #28a745;
+  }
+
+  .btn-success:hover {
+    background-color: #218838;
+  }
+
+  .btn-danger {
+    background-color: #dc3545;
+  }
+
+  .btn-danger:hover {
+    background-color: #c82333;
+  }
+
+  .btn-info {
+    background-color: #17a2b8;
+  }
+
+  .btn-info:hover {
+    background-color: #138496;
+  }
+
+  .btn-show {
+    width: 100%;
+    margin-top: 10px;
+  }
+</style>
