@@ -160,11 +160,56 @@ document.addEventListener("DOMContentLoaded", function() {
 
     <hr>
 
-    <div style="display: block ruby;">
-      <%= image_tag space.owner.profile_picture, class: "avatar-show"  %> <h5>Hosted by |<h5>  <%= space.owner.first_name %>
-<%= button_to "Message Owner", chatrooms_path(chatroom: { user_id: current_user.id, owner_id: @space.owner.id, space_id: @space.id }), method: :post %>
+<div class="hosted-by-container">
+  <%= image_tag space.owner.profile_picture, class: "avatar-show" %>
+  <div class="hosted-by-info">
+    <h5>Hosted by | <%= space.owner.first_name %></h5>
+    <%= button_to "Message Owner", chatrooms_path(chatroom: { user_id: current_user.id, owner_id: @space.owner.id, space_id: @space.id }), method: :post, class: "btn btn-primary" %>
+  </div>
+</div>
 
-    </div>
+<style>
+  .hosted-by-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+
+  .avatar-show {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+    object-fit: cover;
+  }
+
+  .hosted-by-info {
+    display: flex;
+    align-items: center;
+  }
+
+  .hosted-by-info h5 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-right: 15px;
+  }
+
+  .btn-primary {
+    padding: 8px 15px;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+  }
+
+  .btn-primary:hover {
+    background-color: #0056b3;
+  }
+</style>
+
 
     <hr>
 
@@ -333,55 +378,6 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 </style>
 
-
-
-      <p>
-        <strong>State:</strong>
-        <%= space.state %>
-      </p>
-
-
-
-      <p>
-        <strong>Postal code:</strong>
-        <%= space.postal_code %>
-      </p>
-
-
-
-      <p>
-        <strong>Capacity:</strong>
-        <%= space.capacity %>
-      </p>
-
-
-
-
-
-      <p>
-        <strong>Price per day:</strong>
-        <%= space.price_per_day %>
-      </p>
-
-      <p>
-        <strong>Start date:</strong>
-        <%= space.start_date %>
-      </p>
-
-      <p>
-        <strong>End date:</strong>
-        <%= space.end_date %>
-      </p>
-
-      <p>
-        <strong>Is hourly available:</strong>
-        <%= space.is_hourly_available %>
-      </p>
-
-      <p>
-        <strong>Is daily available:</strong>
-        <%= space.is_daily_available %>
-      </p>
     </div>
 
 
