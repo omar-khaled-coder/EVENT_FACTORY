@@ -6,30 +6,52 @@
   <div class="cards-container">
     <% @spaces.each do |space| %>
       <% if space.accepted? %>
-        <div class="spacecard">
-          <div class="card-body">
-            <% if space.images.attached? %>
-              <div class="space-images" id="space-images-<%= space.id %>">
-                <% space.images.each_with_index do |image, index| %>
-                  <%= image_tag image, class: "card-img-top #{'hidden' if index != 0}", data: { index: index } %>
-                <% end %>
-                <div class="image-nav">
-                  <a href="javascript:void(0)" class="prev" onclick="changeImage(-1, <%= space.id %>)">&#10094;</a>
-                  <a href="javascript:void(0)" class="next" onclick="changeImage(1, <%= space.id %>)">&#10095;</a>
+        <%= link_to space, class: "spacecard-link" do %>
+          <div class="spacecard">
+            <div class="card-body">
+              <% if space.images.attached? %>
+                <div id="carouselExample-<%= space.id %>" class="carousel slide" data-bs-ride="false">
+                  <div class="carousel-inner">
+                    <% space.images.each_with_index do |image, index| %>
+                      <div class="carousel-item <%= 'active' if index == 0 %>">
+                        <%= image_tag url_for(image), class: "d-block w-100 carousel-image", alt: "Space Image" %>
+                      </div>
+                    <% end %>
+                  </div>
+                  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample-<%= space.id %>" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                  </button>
+                  <button class="carousel-control-next" type="button" data-bs-target="#carouselExample-<%= space.id %>" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                  </button>
+                </div>
+              <% end %>
+
+              <!-- Space Title and Rating -->
+              <div class="space-info" style="display: flex; justify-content: space-between;">
+                <h5 class="card-title"><%= space.title %></h5>
+                <% avg_rating = space.reviews.any? ? space.reviews.average(:rating).round(1) : "No Rating" %>
+                <div class="rating" style="display: flex; align-items: center;">
+                  <span class="stars">&#9733;</span> <!-- Single star -->
+                  <span class="avg-rating" style="margin-left: 5px;"><%= avg_rating %></span>
                 </div>
               </div>
-            <% end %>
 
-            <h5 class="card-title"><%= space.title %></h5>
-            <p class="card-text"><strong>City:</strong> <%= space.city %></p>
-            <p class="card-text"><strong>Capacity:</strong> <%= space.capacity %></p>
-            <p class="card-text"><strong>Price per Hour:</strong> <%= number_to_currency(space.price_per_hour) %></p>
+              <!-- City and Country -->
+              <div class="location-info">
+                <p class="card-text" style="color: #6c6c6c;"> <%= space.city %> | <%= country_name(space.country) %></p>
+              </div>
 
-            <p>
-              <%= link_to "Show this space", space, class: "btn btn-primary" %>
-            </p>
+              <!-- Price and Capacity -->
+              <div class="price-info" style="display: flex; justify-content: space-between;">
+                <p class="card-text"> <%= number_to_currency(space.price_per_hour) %> per Hour</p>
+                <p class="card-text"><i class="fa-regular fa-user"></i> <%= space.capacity %> MAX</p>
+              </div>
+            </div>
           </div>
-        </div>
+        <% end %>
       <% end %>
     <% end %>
   </div>
@@ -40,42 +62,94 @@
   </div>
 </div>
 
-
-
 <%= link_to "New space", new_space_path, class: "btn btn-success" %>
 
-<script>
-  function changeImage(n, spaceId) {
-    const imagesContainer = document.getElementById(`space-images-${spaceId}`);
-    const images = imagesContainer.getElementsByTagName('img');
-    let currentIndex;
-
-    for (let i = 0; i < images.length; i++) {
-      if (!images[i].classList.contains('hidden')) {
-        currentIndex = i;
-        break;
-      }
-    }
-
-    let newIndex = currentIndex + n;
-    if (newIndex >= images.length) {
-      newIndex = 0;
-    } else if (newIndex < 0) {
-      newIndex = images.length - 1;
-    }
-
-    images[currentIndex].classList.add('hidden');
-    images[newIndex].classList.remove('hidden');
+<style>
+  #spaces {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 20px;
   }
 
-  // Initialize all images for each space
-  document.addEventListener('DOMContentLoaded', () => {
-    const spaces = document.querySelectorAll('.space-images');
-    spaces.forEach(space => {
-      const images = space.getElementsByTagName('img');
-      if (images.length > 0) {
-        images[0].classList.remove('hidden');
-      }
-    });
-  });
-</script>
+  .cards-container {
+    display: grid;
+    gap: 20px;
+    flex: 1;
+    grid-template-columns: repeat(3, 1fr); /* Three cards per row */
+  }
+
+  .spacecard-link {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .spacecard {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    cursor: pointer;
+  }
+
+  .spacecard:hover {
+    transform: translateY(-5px);
+  }
+
+  .card-body {
+    padding: 15px;
+  }
+
+  .card-title {
+    font-size: 1.25em;
+    margin-right: 10px;
+  }
+
+  .rating {
+    display: inline-block;
+    font-size: 1rem;
+    color: #ffcc00;
+    margin-left: 10px;
+  }
+
+  .stars {
+    font-size: 0.9rem;
+    color: #ffcc00;
+  }
+
+  .location-info, .price-info {
+  }
+
+  .carousel-image {
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+
+  /* Responsive Design for Mobile */
+  @media (max-width: 768px) {
+    .cards-container {
+      grid-template-columns: 1fr 1fr; /* Two columns for tablets */
+    }
+  }
+
+  @media (max-width: 576px) {
+    .cards-container {
+      grid-template-columns: 1fr; /* One column for phones */
+    }
+
+    #map_index {
+      display: none; /* Hide map on small screens */
+    }
+  }
+
+  #map_index {
+    flex: 0 0 30%;
+    height: 100vh;
+    position: -webkit-sticky !important; /* For Safari */
+    position: sticky !important;
+    top: 0;
+    background: white;
+  }
+</style>
