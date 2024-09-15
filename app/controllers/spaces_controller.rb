@@ -3,7 +3,24 @@ class SpacesController < ApplicationController
 
   # GET /spaces or /spaces.json
   def index
-    @spaces = Space.accepted
+    @spaces = Space.where(status: 'accepted') # Assuming you're only searching among accepted spaces
+
+    # Search by city
+    if params[:city].present?
+      @spaces = @spaces.where("city ILIKE ? OR state ILIKE ? OR country ILIKE ?", "%#{params[:city]}%", "%#{params[:city]}%", "%#{params[:city]}%")
+    end
+
+
+    # Search by country
+    if params[:country].present?
+      @spaces = @spaces.where("COALESCE(country, '') ILIKE ?", "%#{params[:country]}%")
+    end
+
+    # Search by space type
+    if params[:space_type].present?
+      space_types = Array(params[:space_type])
+      @spaces = @spaces.where("space_type && ARRAY[?]::text[]", space_types)
+    end
 
     # The `geocoded` scope filters only spaces with coordinates
     #@spaces = Space.where.not(latitude: nil, longitude: nil)
@@ -18,6 +35,7 @@ class SpacesController < ApplicationController
       }
     end
   end
+
   def select_date
     @space = Space.find(params[:id])
     @selected_date = params[:date]
