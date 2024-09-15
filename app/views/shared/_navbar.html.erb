@@ -3,6 +3,20 @@
     <%= link_to root_path , class: "navbar-brand" ,style: "display: block ruby;" do %>
       <%= image_tag "logo.png" %> <h4 style="font-style: italic;font-family: initial;">Event Factory </h4>
     <% end %>
+<div class="search-bar">
+ <%= form_with url: spaces_path, method: :get, local: true do %>
+  <%= label_tag :city %>
+  <%= text_field_tag :city, params[:city] %>
+
+
+
+  <%= label_tag :space_type, "Space Type" %>
+      <%= select_tag :space_type, options_for_select(["Event Venue", "Co-working Space", "Studio", "Classroom"], params[:space_type]), prompt: "Select Space Type"  %>
+
+  <%= submit_tag "Search", class: "btn btn-primary" %>
+<% end %>
+
+</div>
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
