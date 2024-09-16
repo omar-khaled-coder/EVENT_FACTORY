@@ -4,19 +4,17 @@
       <%= image_tag "logo.png" %> <h4 style="font-style: italic;font-family: initial;">Event Factory </h4>
     <% end %>
 <div class="search-bar">
- <%= form_with url: spaces_path, method: :get, local: true do %>
-  <%= label_tag :city %>
-  <%= text_field_tag :city, params[:city] %>
+  <%= form_with url: spaces_path, method: :get, local: true, class: "search-form-inline" do %>
+    <%= text_field_tag :city, params[:city], class: "form-control-inline", placeholder: "City" %>
 
+    <%= select_tag :space_type, options_for_select(["Event Venue", "Co-working Space", "Studio", "Classroom"], params[:space_type]), prompt: "Space Type", class: "form-select-inline" %>
 
-
-  <%= label_tag :space_type, "Space Type" %>
-      <%= select_tag :space_type, options_for_select(["Event Venue", "Co-working Space", "Studio", "Classroom"], params[:space_type]), prompt: "Select Space Type"  %>
-
-  <%= submit_tag "Search", class: "btn btn-primary" %>
-<% end %>
-
+  <button type="submit" class="btn btn-primary search-btn-inline">
+      <i class="fa-solid fa-magnifying-glass"></i> <!-- Font Awesome search icon -->
+    </button>
+  <% end %>
 </div>
+
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
