@@ -11,3 +11,66 @@
   width: 45px;
   border-radius: 50px;
 }
+
+/* Styling the search bar container */
+.search-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  background-color: #f9f9f9; /* Optional background */
+  border-radius: 50px;
+  transition: box-shadow 0.3s ease; /* Smooth hover transition */
+}
+
+/* Hover effect for search bar */
+.search-bar:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Inline form styling */
+.search-form-inline {
+  display: flex;
+  align-items: center;
+}
+
+/* Inline text input */
+.form-control-inline {
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  border-radius: 40px;
+  margin-right: 10px;
+}
+
+/* Inline select box */
+.form-select-inline {
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  border-radius: 40px;
+  margin-right: 10px;
+}
+
+/* Submit button styling */
+.search-btn-inline {
+  background-color: #ff5a5f; /* Airbnb-like primary color */
+  border: none;
+  color: white;
+  padding: 5px 15px;
+  font-size: 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Hover effect for the submit button */
+.search-btn-inline:hover {
+  background-color: #e14c4c;
+}
+
+/* Styling the search icon */
+.search-btn-inline i {
+  font-size: 16px !important;
+}
