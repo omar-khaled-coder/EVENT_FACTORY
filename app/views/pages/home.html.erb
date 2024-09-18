@@ -1,179 +1,204 @@
-<!-- app/views/pages/home.html.erb -->
 <div class="hero-section">
   <div class="hero-content">
-    <h1>Find Unique Spaces for Your Next Event</h1>
-    <form class="search-bar">
-      <input type="text" placeholder="Where do you need a space?" class="search-input">
-      <button type="submit" class="search-button">Search</button>
-    </form>
-  </div>
-</div>
-
-<div class="featured-spaces-section">
-  <h2>Explore Featured Spaces</h2>
-  <div class="featured-grid">
-    <% @spaces.each do |space| %>
-     <div class="space-card">
-  <%= link_to space_path(space) do %>
-    <% if space.images.attached? %>
-      <%= image_tag space.images.first, class: "space-image", alt: "Space Image" %>
-    <% else %>
-      <%= image_tag 'default-space-image.jpg', class: "space-image", alt: "Default Space Image" %> <!-- Fallback image -->
-    <% end %>
-    <h3><%= space.title %></h3>
-    <p><%= space.city %> | <%= country_name(space.country) %></p>
-    <p><%= number_to_currency(space.price_per_hour) %> per hour</p>
-  <% end %>
-</div>
-
+    <h1>Find Your Perfect Space</h1>
+    <%= form_with url: spaces_path, method: :get, local: true, class: "search-form" do %>
+      <%= text_field_tag :city, params[:city], placeholder: "Search by city", class: "search-input" %>
+      <%= select_tag :space_type, options_for_select(["Event Venue", "Co-working Space", "Studio", "Classroom"], params[:space_type]), prompt: "Space Type", class: "search-select" %>
+      <button type="submit" class="search-btn">
+        <i class="fa-solid fa-magnifying-glass"></i>
+      </button>
     <% end %>
   </div>
 </div>
 
-<div class="categories-section">
-  <h2>Explore Spaces by Type</h2>
-  <div class="categories-grid">
-    <div class="category-card">
-      <%= link_to "Event Venues", spaces_path(space_type: "Event Venue") %>
-      <%= image_tag "event-venue.jpg", alt: "Event Venue" %>
-    </div>
-    <div class="category-card">
-      <%= link_to "Co-working Spaces", spaces_path(space_type: "Co-working Space") %>
-      <%= image_tag "coworking-space.jpg", alt: "Co-working Space" %>
-    </div>
-    <!-- Add more categories as needed -->
+
+<!-- Space Types Section -->
+<div class="space-types">
+  <h2>Explore Space Types</h2>
+  <div class="space-type-grid">
+    <% ["Event Venue", "Co-working Space", "Studio", "Classroom"].each do |space_type| %>
+      <%= link_to spaces_path(space_type: space_type), class: "space-type-card #{space_type.parameterize}" do %>
+        <div class="space-type-content">
+          <h3><%= space_type %></h3>
+        </div>
+      <% end %>
+    <% end %>
   </div>
 </div>
 
-<div class="become-host-section">
-  <h2>Become a Host</h2>
-  <p>Share your space and earn extra income by hosting guests for events.</p>
-  <%= link_to "List Your Space", new_space_path, class: "btn btn-primary" %>
-</div>
 
+<!-- Add more sections like categories, testimonials, etc. -->
 
 <style>
  /* Hero Section */
 .hero-section {
-  background-image: url('/assets/hero-bg.jpg'); /* Replace with your own image */
+  position: relative;
+  background-image: url('/assets/hero-background.jpg'); /* Replace with the correct image path */
   background-size: cover;
   background-position: center;
-  height: 100vh;
+  height: 400px; /* Adjust height as needed */
   display: flex;
-  align-items: center;
   justify-content: center;
-  color: white;
+  align-items: center;
+  background-size: 23%;
+}
+
+.hero-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Overlay to darken the background */
+  z-index: 1;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
   text-align: center;
+  color: #fff; /* Text color for better contrast */
+  padding: 0 20px; /* Padding for smaller screens */
 }
 
 .hero-content h1 {
-  font-size: 3rem;
+  font-size: 36px; /* Keep original size for larger screens */
   margin-bottom: 20px;
 }
 
-.search-bar {
+.search-form {
   display: flex;
-  gap: 10px;
+  justify-content: center;
 }
 
-.search-input {
-  padding: 15px;
-  font-size: 1.2rem;
-  width: 400px;
-}
-
-.search-button {
-  padding: 15px 30px;
-  font-size: 1.2rem;
-  background-color: #ff385c;
-  color: white;
+.search-input, .search-select {
+  margin-right: 10px;
+  padding: 10px;
+  font-size: 16px;
   border: none;
-  cursor: pointer;
+  border-radius: 4px;
 }
 
-/* Featured Spaces Section */
-.featured-spaces-section {
-  padding: 50px;
-  text-align: center;
-}
-
-.featured-grid {
-  display: grid;
-  gap: 20px;
-  grid-template-columns: repeat(3, 1fr); /* 3 columns per row */
-}
-
-.space-card {
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-}
-
-.space-card img {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-}
-
-.space-card h3 {
-  font-size: 1.25rem;
-  margin: 10px 0;
-}
-
-/* Categories Section */
-.categories-section {
-  padding: 50px;
-  text-align: center;
-}
-
-.categories-grid {
-  display: flex;
-  gap: 20px;
-}
-
-.category-card {
-  flex: 1;
-  text-align: center;
-  border-radius: 10px;
-  overflow: hidden;
-  background-color: #f8f8f8;
-}
-
-.category-card img {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-}
-
-/* Become a Host Section */
-.become-host-section {
-  background-color: #f8f8f8;
-  padding: 50px;
-  text-align: center;
-}
-
-.btn-primary {
+.search-btn {
+  background-color: #ff5a5f;
+  border: none;
   padding: 10px 20px;
-  font-size: 1.2rem;
-  background-color: #ff385c;
   color: white;
-  border: none;
   cursor: pointer;
 }
 
-/* Footer Section */
-.footer-section {
-  background-color: #333;
-  padding: 30px;
-  text-align: center;
-  color: white;
+.search-btn:hover {
+  background-color: #e14c4c;
 }
 
-.footer-links a {
-  color: white;
-  margin: 0 15px;
+/* Space Types */
+.space-types {
+  padding: 50px 20px;
+  text-align: center;
+}
+
+.space-type-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.space-type-card {
+  position: relative;
+  border-radius: 8px;
+  width: 200px;
+  height: 150px;
   text-decoration: none;
+  color: #fff;
+  text-align: center;
+  overflow: hidden;
+  transition: transform 0.3s, box-shadow 0.3s;
+  background-size: cover;
+  background-position: center;
+}
+
+.space-type-card:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4); /* Overlay to darken the background */
+  z-index: 1;
+}
+
+.space-type-content {
+  position: relative;
+  z-index: 2;
+}
+
+.space-type-content h3 {
+  margin: 0;
+  font-size: 18px;
+  line-height: 150px; /* Vertically center text */
+}
+
+.space-type-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Specific background images for each space type */
+.space-type-card.event-venue {
+  background-image: url('/assets/event-venue.jpg'); /* Replace with your image path */
+}
+
+.space-type-card.co-working-space {
+  background-image: url('/assets/coworking-space.jpg'); /* Replace with your image path */
+}
+
+.space-type-card.studio {
+  background-image: url('/assets/studio.jpg'); /* Replace with your image path */
+}
+
+.space-type-card.classroom {
+  background-image: url('/assets/classroom.jpg'); /* Replace with your image path */
+}
+
+/* Media Queries for iPhone 12 Pro and other mobile devices */
+@media (max-width: 390px) {
+  .hero-section {
+    height: 300px; /* Adjust height for smaller screens */
+    background-size: 100%;
+  }
+
+  .hero-content h1 {
+    font-size: 24px; /* Adjust font size */
+  }
+
+  .search-form {
+    flex-direction: column; /* Stack elements vertically */
+    align-items: center; /* Center elements */
+  }
+
+  .search-input, .search-select, .search-btn {
+    margin-right: 0;
+    margin-bottom: 10px; /* Add space between elements */
+    width: 100%; /* Full width on small screens */
+    max-width: 250px; /* Limit max width */
+  }
+
+  .search-btn {
+    max-width: 100px; /* Limit button width */
+  }
+
+  .space-type-card {
+    max-width: 150px; /* Adjust card width for smaller screens */
+    height: 120px; /* Adjust card height */
+  }
+
+  .space-type-content h3 {
+    font-size: 16px; /* Adjust text size */
+    line-height: 120px; /* Adjust line height */
+  }
 }
 
 </style>
