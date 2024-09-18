@@ -16,7 +16,8 @@
 <div class="space-types">
   <h2>Explore Space Types</h2>
   <div class="space-type-grid">
-    <% ["Event Venue", "Co-working Space", "Studio", "Classroom"].each do |space_type| %>
+    <% ["Event Venue", "Co-working Space", "Studio","Wedding", "Shooting Location", "Pop-ups", "Rooftop", "Ceremony", "Prom Party", "Bachelor/Bachelorette Party", "Anniversary Party", "Conference",
+        "Workshop", "Classroom", "BirthDay parties", "Launch Event", "Art Show", "Meeting", "Corporate Event", "Media Event", "Outdoor Event",].each do |space_type| %>
       <%= link_to spaces_path(space_type: space_type), class: "space-type-card #{space_type.parameterize}" do %>
         <div class="space-type-content">
           <h3><%= space_type %></h3>
@@ -26,6 +27,11 @@
   </div>
 </div>
 
+<div class="how-it-works">
+  <h2> How it Works </h2>
+  <div>
+  </div>
+</div>
 
 <!-- Add more sections like categories, testimonials, etc. -->
 
@@ -164,7 +170,7 @@
 }
 
 /* Media Queries for iPhone 12 Pro and other mobile devices */
-@media (max-width: 390px) {
+@media (max-width: 915px) {
   .hero-section {
     height: 300px; /* Adjust height for smaller screens */
     background-size: 100%;
@@ -199,6 +205,11 @@
     font-size: 16px; /* Adjust text size */
     line-height: 120px; /* Adjust line height */
   }
+}
+.how-it-works{
+  text-align: center;
+  position: relative;
+  margin-top: 30px;
 }
 
 </style>
