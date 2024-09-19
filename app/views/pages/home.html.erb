@@ -16,7 +16,7 @@
 <div class="space-types">
   <h2>Explore Space Types</h2>
   <div class="space-type-grid">
-    <% ["Event Venue", "Co-working Space", "Studio","Wedding", "Shooting Location", "Pop-ups", "Rooftop", "Ceremony", "Prom Party", "Bachelor/Bachelorette Party", "Anniversary Party", "Conference",
+    <% ["Event Venue", "Co-working Space", "Studio","Wedding", "Shooting Location", "Rooftop", "Ceremony", "Prom Party", "Conference",
         "Workshop", "Classroom", "BirthDay parties", "Launch Event", "Art Show", "Meeting", "Corporate Event", "Media Event", "Outdoor Event",].each do |space_type| %>
       <%= link_to spaces_path(space_type: space_type), class: "space-type-card #{space_type.parameterize}" do %>
         <div class="space-type-content">
@@ -29,8 +29,35 @@
 
 <div class="how-it-works">
   <h2> How it Works </h2>
-  <div>
+
+  <div class="splaces-slider">
+
+    <ul class="slides">
+      <li class="how-it-works-step">
+        <%= image_tag "Find the perfect space.jpeg", style: "width: 132px;border-radius: 20px;margin-bottom: 15px;" %>
+        <h2>Find the perfect space</h2>
+        <p>
+          Browse the marketplace and tailor your search to your activity needs.
+        </p>
+      </li>
+      <li class="how-it-works-step">
+        <%= image_tag "Book it with ease.jpeg", style: "width: 132px;border-radius: 20px;margin-bottom: 15px;" %>
+        <h2>Book it with ease</h2>
+        <p>
+           Once you find a perfect match, book the space and pay online through our easy-to-use payment system.
+        </p>
+      </li>
+      <li class="how-it-works-step">
+        <%= image_tag "Meet, make or create.jpeg", style: "width: 132px;border-radius: 20px;margin-bottom: 15px;" %>
+        <h2>Meet, make or create</h2>
+        <p>
+          Create a memorable experience in a memorable space, and enjoy!
+        </p>
+      </li>
+    </ul>
+
   </div>
+
 </div>
 
 <!-- Add more sections like categories, testimonials, etc. -->
@@ -169,6 +196,61 @@
   background-image: url('/assets/classroom.jpg'); /* Replace with your image path */
 }
 
+.space-type-card.wedding {
+  background-image: url('/assets/wedding.jpg'); /* Replace with your image path */
+}
+
+.space-type-card.shooting-location {
+  background-image: url('/assets/shooting-Location.jpg'); /* Replace with your image path */
+}
+
+.space-type-card.rooftop {
+  background-image: url('/assets/rooftop.jpg'); /* Replace with your image path */
+}
+
+.space-type-card.ceremony {
+  background-image: url('/assets/ceremony.jpg'); /* Replace with your image path */
+}
+
+.space-type-card.prom-party {
+  background-image: url('/assets/prom-Party.jpg'); /* Replace with your image path */
+}
+
+.space-type-card.conference {
+  background-image: url('/assets/conference.jpg'); /* Replace with your image path */
+}
+
+.space-type-card.workshop {
+  background-image: url('/assets/workshop.jpg'); /* Replace with your image path */
+}
+
+.space-type-card.birthday-parties {
+  background-image: url('/assets/birthday-parties.jpg'); /* Replace with your image path */
+}
+
+.space-type-card.launch-event {
+  background-image: url('/assets/launch-event.jpg'); /* Replace with your image path */
+}
+
+.space-type-card.art-show {
+  background-image: url('/assets/art-show.jpg'); /* Replace with your image path */
+}
+
+.space-type-card.meeting {
+  background-image: url('/assets/meeting.jpg'); /* Replace with your image path */
+}
+
+.space-type-card.corporate-event {
+  background-image: url('/assets/corporate-event.jpg'); /* Replace with your image path */
+}
+
+.space-type-card.media-event {
+  background-image: url('/assets/media-event.jpg'); /* Replace with your image path */
+}
+
+.space-type-card.outdoor-event {
+  background-image: url('/assets/outdoor-event.jpg'); /* Replace with your image path */
+}
 /* Media Queries for iPhone 12 Pro and other mobile devices */
 @media (max-width: 915px) {
   .hero-section {
@@ -212,4 +294,30 @@
   margin-top: 30px;
 }
 
+.splaces-slider{
+  font-family: ProximaNova;
+  font-size: 16px;
+  color: #000000;
+}
+
+.slides{
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.how-it-works-step{
+  width: 33%;
+  padding: 15px 0px;
+  display: inline-block;
+  position: relative;
+  color: #262629;
+  vertical-align: top;
+}
+
+.p-how-it-works .how-it-works-step img {
+  margin-bottom: 26px;
+  position: relative;
+  z-index: 1;
+}
 </style>
