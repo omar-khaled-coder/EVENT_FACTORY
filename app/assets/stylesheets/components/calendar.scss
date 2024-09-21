@@ -1,36 +1,72 @@
-.highlight {
-  background-color: #dff0d8; /* Light green background for available dates */
-  border: 1px solid #c3e6cb; /* Green border */
-}
-
-.available-day {
-  background-color: #90ee90; // Light green color
-  cursor: pointer;
-  border: 1px solid #008000; // Optional: to make it more distinct
-}
-
 .simple-calendar {
   table {
-    min-height: 25vh;
-    width: 69% !important;
+    width: 100%;
+    min-height: 80vh;
+    border-collapse: collapse;
   }
+
+  th {
+    background-color: #2C3E50;
+    color: white;
+    padding: 10px;
+    font-weight: 600;
+    text-align: center;
+  }
+
+  td {
+    padding: 15px;
+    border: 1px solid #E5E5E5;
+    vertical-align: top;
+    text-align: left;
+  }
+
   .today {
-    background-color: #FAF3DD;
+    background-color: #FAF3DD;  /* Highlight today's date */
+    border: 2px solid #FFB703;
   }
-  .day{
-    height: 35px !important;
+
+  .calendar-day {
+    position: relative;
+    padding: 10px;
+    background-color: #F4F4F9;
+    border-radius: 8px;
+    min-height: 120px;
   }
-}
 
-.meeting {
-  color: white;
-  padding: 8px 24px;
-  border-radius: 4px;
-  background: #1EDD88;
-  transition: background 0.3s ease;
-}
+  .date-label {
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+    color: #333;
+  }
 
-.meeting:hover {
-  background: #1BCB7F;
-  color: white;
+  .no-bookings {
+    color: #777;
+    font-style: italic;
+    margin-top: 10px;
+  }
+
+  .meeting {
+    background-color: #1EDD88;
+    padding: 12px 16px;
+    border-radius: 6px;
+    color: white;
+    margin-bottom: 8px;
+    transition: background 0.3s ease;
+
+    &:hover {
+      background-color: #1BCB7F;
+      color: #fff;
+    }
+
+    .booking-status {
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+
+    .booking-time {
+      font-size: 0.9rem;
+      color: #fff;
+    }
+  }
 }
