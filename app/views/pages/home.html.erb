@@ -28,7 +28,7 @@
 </div>
 
 <div class="how-it-works">
-  <h2> How it Works </h2>
+  <h2 style="font-family: Georgia;font-size: 38px;color: black;"> How it Works </h2>
 
   <div class="splaces-slider">
 
@@ -68,7 +68,11 @@
       Make the most of your space with our Tools
       Stay organized, manage leads, and track your earnings - all in one place.
     </p>
-    <%= link_to "List Your space", new_space_path, class: "btn btn-success", style: "background-color: #ffce4b;font-size: 18px;width: 210px;height: 50px;text-align: center;line-height: 40px;color: #262629;border: none;display: block;text-decoration: none;margin: 0px auto;font-weight: bold;" %>
+      <% if user_signed_in? %>
+        <%= link_to "List Your Space", new_space_path, class: "btn btn-success", style: "background-color: #ffce4b;font-size: 18px;width: 210px;height: 50px;text-align: center;line-height: 40px;color: #262629;border: none;display: block;text-decoration: none;margin: 0px auto;font-weight: bold;" %>
+      <% else %>
+        <%= link_to "List Your Space", new_user_session_path, class: "btn btn-success", style: "background-color: #ffce4b;font-size: 18px;width: 210px;height: 50px;text-align: center;line-height: 40px;color: #262629;border: none;display: block;text-decoration: none;margin: 0px auto;font-weight: bold;" %>
+      <% end %>
   </div>
 
 </div>
