@@ -11,6 +11,11 @@
     <a class="tab-link" title="Canceled Bookings" role="tab" aria-selected="false" aria-controls="panel-canceled" id="tab-canceled" href="#panel-canceled">
       <span class="tab-label">Canceled Bookings</span>
     </a>
+
+    <a class="tab-link" title="Calendar" role="tab" aria-selected="false" aria-controls="panel-calendar" id="tab-calendar">
+      <span class="tab-label">Calendar</span>
+    </a>
+
   </div>
 
   <!-- Tab Panels -->
@@ -159,6 +164,35 @@
               </div>
             </div>
             <hr>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+
+    <!-- Calendar Panel -->
+    <!-- Calendar Panel -->
+    <div id="panel-calendar" class="tab-panel" role="tabpanel" aria-labelledby="tab-calendar">
+      <!-- Here is where your calendar is integrated -->
+      <div>
+        <%= month_calendar(events: @bookings, attribute: :start_date) do |date, bookings_for_day| %>
+          <div class="calendar-day <%= 'today' if date == Date.today %>">
+            <div class="date-label">
+              <%= date %> <!-- Properly formatted date -->
+            </div>
+
+            <% if bookings_for_day.any? %>
+              <% bookings_for_day.each do |booking| %>
+                <div class="meeting">
+                  <p class="booking-status"><%= booking.booking_status.capitalize %></p>
+                  <p class="booking-time">
+                    <%= booking.start_hour.strftime("%H:%M") %> - <%= booking.end_hour.strftime("%H:%M") %>
+                  </p>
+                </div>
+              <% end %>
+            <% else %>
+              <p class="no-bookings">No bookings</p>
+            <% end %>
           </div>
         <% end %>
       </div>

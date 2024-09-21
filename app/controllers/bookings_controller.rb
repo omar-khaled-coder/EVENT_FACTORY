@@ -18,7 +18,7 @@ class BookingsController < ApplicationController
   end
   def owner_dashboard
     @spaces = current_user.spaces
-
+    @bookings = Booking.where(owner: current_user) || [] # Ensures @bookings is never nil
     @upcoming_bookings = Booking.where(space: @spaces)
     .where('start_date >= ?', Date.today)
     .where.not(booking_status: 'canceled')
