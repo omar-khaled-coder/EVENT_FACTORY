@@ -161,11 +161,12 @@ document.addEventListener("DOMContentLoaded", function() {
     <hr>
 
 <div class="hosted-by-container">
-  <%= image_tag space.owner.profile_picture, class: "avatar-show" %>
   <div class="hosted-by-info">
+      <%= image_tag space.owner.profile_picture, class: "avatar-show" %>
     <h5>Hosted by | <%= space.owner.first_name %></h5>
-    <%= button_to "Message Owner", chatrooms_path(chatroom: { user_id: current_user.id, owner_id: @space.owner.id, space_id: @space.id }), method: :post, class: "btn btn-primary" %>
   </div>
+
+  <%= button_to "Message Owner", chatrooms_path(chatroom: { user_id: current_user.id, owner_id: @space.owner.id, space_id: @space.id }), method: :post, class: "btn btn-primary" %>
 </div>
 
 <style>
@@ -173,6 +174,7 @@ document.addEventListener("DOMContentLoaded", function() {
     display: flex;
     align-items: center;
     margin-bottom: 15px;
+      justify-content: space-between;
   }
 
   .avatar-show {
