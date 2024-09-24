@@ -10,6 +10,9 @@ class ApplicationController < ActionController::Base
   end
 
   private
+  # def set_currency_based_on_location
+    #session[:currency] = "MYR"  # Force MYR for testing
+  #end
 
   def set_currency_based_on_location
     if session[:currency].blank?
@@ -35,4 +38,5 @@ class ApplicationController < ActionController::Base
       end
     end
   end
+
 end

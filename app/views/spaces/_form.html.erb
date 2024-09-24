@@ -20,8 +20,7 @@
     <%= f.input :amenities %>
 
     <!-- Adding the currency field -->
-    <%= f.input :currency, collection: [['USD', 'usd'], ['EUR', 'eur'], ['GBP', 'gbp'], ['SAR', 'sar']], prompt: 'Select Currency', label: "Currency" %>
-
+    <%= f.input :currency, input_html: { value: session[:currency], readonly: true }, label: "Currency (Automatically Detected)" %>
     <!-- Price fields now handle cents via money-rails -->
     <%= f.input :price_per_hour, label: 'Price per Hour' %>
     <%= f.input :price_per_day, label: 'Price per Day' %>
