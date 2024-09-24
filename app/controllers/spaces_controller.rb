@@ -1,6 +1,7 @@
 class SpacesController < ApplicationController
   before_action :set_space, only: %i[ show edit update destroy ]
 
+
   # GET /spaces or /spaces.json
   def index
     @spaces = Space.where(status: 'accepted') # Assuming you're only searching among accepted spaces
@@ -53,6 +54,7 @@ class SpacesController < ApplicationController
     @space = Space.find(params[:id])
     @booking = Booking.new # Initialize a new Booking instance
     @selected_date = params[:booking_date] if params[:booking_date].present?
+    @space.currency = session[:currency] if session[:currency].present?
     if @space.geocoded?
       @marker =
         {
@@ -146,10 +148,11 @@ class SpacesController < ApplicationController
       @space = Space.find(params[:id])
     end
 
+
     # Only allow a list of trusted parameters through.
     def space_params
       params.require(:space).permit(:owner_id, :title, :description, :address, :city, :state, :country,
-       :postal_code,  :capacity, :amenities, :price_per_hour, :status,
+       :postal_code,  :capacity, :amenities, :price_per_hour, :status, :currency,
         :admin_comment, :price_per_day, :start_date, :end_date, :is_hourly_available, :is_daily_available,
          :latitude, :longitude, :available_from, :available_to, :minimum_rental_duration, space_type:[], remove_images: [], images:[])
     end

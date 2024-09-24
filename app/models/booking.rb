@@ -10,4 +10,6 @@ class Booking < ApplicationRecord
   def time
     "#{start_hour.strftime('%I:%M %p')} - #{end_hour.strftime('%I:%M %p')}"  # Use start_hour and end_hour
   end
+  # Monetize the 'price_cents' column (automatically handles the currency)
+  monetize :price_cents, with_model_currency: :currency
 end

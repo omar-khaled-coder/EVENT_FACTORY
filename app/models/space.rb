@@ -26,5 +26,9 @@ class Space < ApplicationRecord
       errors.add(:available_to, "must be after the start time")
     end
   end
+
+    # Monetize price per hour and price per day fields
+    monetize :price_per_hour_cents, with_model_currency: :currency
+    monetize :price_per_day_cents, with_model_currency: :currency
 end
 console
