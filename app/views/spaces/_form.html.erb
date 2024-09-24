@@ -7,6 +7,7 @@
       <%= f.label :owner, 'Owner' %><br />
       <%= "#{current_user.first_name} #{current_user.last_name}" %>
     </div>
+
     <%= f.input :title %>
     <%= f.input :description %>
     <%= f.input :address %>
@@ -17,8 +18,14 @@
     <%= f.input :space_type, as: :check_boxes, collection: ['Event Venue', 'Co-working Space', 'Vacation Rental', 'Shooting Location', 'Studio', 'Wedding Hall', 'Classroom'] %>
     <%= f.input :capacity %>
     <%= f.input :amenities %>
-    <%= f.input :price_per_hour %>
-    <%= f.input :price_per_day %>
+
+    <!-- Adding the currency field -->
+    <%= f.input :currency, collection: [['USD', 'usd'], ['EUR', 'eur'], ['GBP', 'gbp'], ['SAR', 'sar']], prompt: 'Select Currency', label: "Currency" %>
+
+    <!-- Price fields now handle cents via money-rails -->
+    <%= f.input :price_per_hour, label: 'Price per Hour' %>
+    <%= f.input :price_per_day, label: 'Price per Day' %>
+
     <%= f.input :start_date %>
     <%= f.input :end_date %>
     <%= f.input :is_hourly_available %>
@@ -26,19 +33,21 @@
     <%= f.input :latitude, as: :hidden %>
     <%= f.input :longitude, as: :hidden %>
 
-     <!-- Add the new fields here -->
-  <div class="field">
-    <%= f.input :available_from, label: 'Available From', collection: time_options, include_blank: false, input_html: { class: 'form-control' } %>
-  </div>
 
-  <div class="field">
-    <%= f.input :available_to, label: 'Available Until', collection: time_options, include_blank: false, input_html: { class: 'form-control' } %>
-  </div>
+    <!-- Availability and Minimum Rental Duration fields -->
+    <div class="field">
+      <%= f.input :available_from, label: 'Available From', collection: time_options, include_blank: false, input_html: { class: 'form-control' } %>
+    </div>
 
-  <div class="field">
-    <%= f.input :minimum_rental_duration, label: 'Minimum Rental Hours', input_html: { class: 'form-control' } %>
-  </div>
+    <div class="field">
+      <%= f.input :available_to, label: 'Available Until', collection: time_options, include_blank: false, input_html: { class: 'form-control' } %>
+    </div>
 
+    <div class="field">
+      <%= f.input :minimum_rental_duration, label: 'Minimum Rental Hours', input_html: { class: 'form-control' } %>
+    </div>
+
+    <!-- Image handling -->
     <% if @space.images.attached? %>
       <div>
         <h3>Current Images:</h3>
@@ -57,6 +66,7 @@
       <%= f.file_field :images, multiple: true %>
     </div>
   </div>
+
   <div class="form-actions">
     <%= f.button :submit %>
   </div>

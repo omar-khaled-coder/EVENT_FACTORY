@@ -386,10 +386,17 @@ document.addEventListener("DOMContentLoaded", function() {
     <!-- Form Section -->
 <div class="form-section col-12 col-lg-6">
   <%= form_with url: new_booking_path, method: :get, local: true do %>
-    <div style="display: flex; align-items: last baseline;">
-      <h3 style="font-family: initial;">$<%= @space.price_per_hour %></h3>
-      <h6 style="color: #383838ab; font-style: italic;">Per Hour (Min. <%= @space.minimum_rental_duration %> hr)</h6>
-    </div>
+<div style="display: flex; align-items: last baseline;">
+ <h3 style="font-family: initial;">
+  <span class="currency-symbol"><%= @space.price_per_hour.currency.symbol %></span>
+  <span class="price-amount"><%= @space.price_per_hour.format(symbol: false) %></span>
+</h3>
+
+  <h6 style="color: #383838ab; font-style: italic;">
+    Per Hour (Min. <%= @space.minimum_rental_duration %> hr)
+  </h6>
+</div>
+
 
     <div class="field">
       <label for="start_time">Start Time</label>
@@ -442,6 +449,7 @@ document.addEventListener("DOMContentLoaded", function() {
   </div>
 </div>
 
+<%= session[:currency] %>
 
 
 

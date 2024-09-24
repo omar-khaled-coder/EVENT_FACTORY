@@ -32,7 +32,6 @@ class BookingsController < ApplicationController
     @canceled_bookings = Booking.where(space: @spaces, booking_status: 'canceled').order(start_date: :desc)
   end
 
-
   def accept
     update_status('confirmed')
   end

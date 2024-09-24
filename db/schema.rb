@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_09_10_051115) do
+ActiveRecord::Schema[7.1].define(version: 2024_09_24_074956) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -58,6 +58,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_10_051115) do
     t.integer "guest_number"
     t.string "event_type"
     t.boolean "responsibility"
+    t.string "currency"
+    t.integer "price_cents", default: 0, null: false
     t.index ["owner_id"], name: "index_bookings_on_owner_id"
     t.index ["space_id"], name: "index_bookings_on_space_id"
     t.index ["user_id"], name: "index_bookings_on_user_id"
@@ -124,6 +126,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_10_051115) do
     t.time "available_from"
     t.time "available_to"
     t.integer "minimum_rental_duration"
+    t.string "currency"
+    t.integer "price_per_hour_cents", default: 0, null: false
+    t.integer "price_per_day_cents", default: 0, null: false
     t.index ["owner_id"], name: "index_spaces_on_owner_id"
   end
 

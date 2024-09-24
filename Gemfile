@@ -82,3 +82,4 @@ gem "simple_calendar"
 gem "pundit"
 gem "sidekiq", "~> 7"
 gem "sidekiq-failures"
+gem 'money-rails'
