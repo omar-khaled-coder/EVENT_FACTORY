@@ -46,9 +46,18 @@
 
               <!-- Price and Capacity -->
               <div class="price-info" style="display: flex; justify-content: space-between;">
-                <p class="card-text"> <%= number_to_currency(space.price_per_hour) %> per Hour</p>
-                <p class="card-text"><i class="fa-regular fa-user"></i> <%= space.capacity %> MAX</p>
-              </div>
+  <p class="card-text">
+    <span class="currency-symbol"><%= Money::Currency.find(session[:currency]).symbol %></span>
+    <span class="price-amount">
+      <%= Money.new(space.price_per_hour_cents, session[:currency]).format(symbol: false, no_cents: true) %>
+    </span>
+    per Hour
+  </p>
+  <p class="card-text">
+    <i class="fa-regular fa-user"></i> <%= space.capacity %> MAX
+  </p>
+</div>
+
             </div>
           </div>
         <% end %>
