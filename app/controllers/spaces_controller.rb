@@ -1,5 +1,6 @@
 class SpacesController < ApplicationController
   before_action :set_space, only: %i[ show edit update destroy ]
+  before_action :set_currency_based_on_location, only: [:create, :update]
 
 
   # GET /spaces or /spaces.json
@@ -78,7 +79,6 @@ class SpacesController < ApplicationController
   end
 
 
-
   # GET /spaces/new
   def new
     @space = Space.new
@@ -93,6 +93,7 @@ class SpacesController < ApplicationController
     @space = Space.new(space_params)
     @space.owner = current_user
     @space.status = 'pending'
+    @space.currency = session[:currency]  # Use session currency
 
 
     respond_to do |format|
@@ -118,7 +119,7 @@ class SpacesController < ApplicationController
     if space_params[:images].present?
       @space.images.attach(space_params[:images])
     end
-
+    @space.currency = session[:currency]  # Use session currency
     respond_to do |format|
       if @space.update(space_params.except(:images, :remove_images))
         @space.update(status: 'pending') # Ensure status is set to pending

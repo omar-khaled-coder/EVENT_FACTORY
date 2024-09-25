@@ -1,72 +1,127 @@
-<%= simple_form_for(@space) do |f| %>
+<%= simple_form_for(@space, html: { class: 'unique-space-form' }) do |f| %>
   <%= f.error_notification %>
   <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
 
-  <div class="form-inputs">
+  <!-- Section 1: Basic Information -->
+  <div class="unique-form-section unique-card">
+    <h4 class="unique-section-title">Basic Information</h4>
     <div class="form-group">
       <%= f.label :owner, 'Owner' %><br />
       <%= "#{current_user.first_name} #{current_user.last_name}" %>
     </div>
-
-    <%= f.input :title %>
-    <%= f.input :description %>
-    <%= f.input :address %>
-    <%= f.input :city %>
-    <%= f.input :state %>
-    <%= f.input :country %>
-    <%= f.input :postal_code %>
-    <%= f.input :space_type, as: :check_boxes, collection: ['Event Venue', 'Co-working Space', 'Vacation Rental', 'Shooting Location', 'Studio', 'Wedding Hall', 'Classroom'] %>
-    <%= f.input :capacity %>
-    <%= f.input :amenities %>
-
-    <!-- Adding the currency field -->
-    <%= f.input :currency, input_html: { value: session[:currency], readonly: true }, label: "Currency (Automatically Detected)" %>
-    <!-- Price fields now handle cents via money-rails -->
-    <%= f.input :price_per_hour, label: 'Price per Hour' %>
-    <%= f.input :price_per_day, label: 'Price per Day' %>
-
-    <%= f.input :start_date %>
-    <%= f.input :end_date %>
-    <%= f.input :is_hourly_available %>
-    <%= f.input :is_daily_available %>
-    <%= f.input :latitude, as: :hidden %>
-    <%= f.input :longitude, as: :hidden %>
-
-
-    <!-- Availability and Minimum Rental Duration fields -->
-    <div class="field">
-      <%= f.input :available_from, label: 'Available From', collection: time_options, include_blank: false, input_html: { class: 'form-control' } %>
-    </div>
-
-    <div class="field">
-      <%= f.input :available_to, label: 'Available Until', collection: time_options, include_blank: false, input_html: { class: 'form-control' } %>
-    </div>
-
-    <div class="field">
-      <%= f.input :minimum_rental_duration, label: 'Minimum Rental Hours', input_html: { class: 'form-control' } %>
-    </div>
-
-    <!-- Image handling -->
-    <% if @space.images.attached? %>
-      <div>
-        <h3>Current Images:</h3>
-        <% @space.images.each do |image| %>
-          <div class="existing-image">
-            <%= image_tag image, width: 100 %>
-            <%= check_box_tag "space[remove_images][]", image.id %>
-            <%= label_tag "space_remove_images_#{image.id}", "Remove this image" %>
-          </div>
-        <% end %>
+    <div class="unique-form-grid">
+      <div class="unique-form-group">
+        <%= f.input :title, label: 'Space Title', input_html: { class: 'form-control' } %>
       </div>
-    <% end %>
-
-    <div class="form-group">
-      <%= f.label :images, 'Upload Images' %>
-      <%= f.file_field :images, multiple: true %>
+      <div class="unique-form-group">
+        <%= f.input :capacity, label: 'Maximum Capacity', input_html: { class: 'form-control', min: 0 }, placeholder: '0', hint: 'Enter a positive number' %> <!-- Added min: 0 -->
+      </div>
+      <div class="unique-form-group full-width">
+        <%= f.input :description, label: 'Description', input_html: { class: 'form-control', rows: 4 } %>
+      </div>
     </div>
   </div>
 
-  <div class="form-actions">
-    <%= f.button :submit %>
+  <!-- Section 2: Space Type and Amenities -->
+  <div class="unique-form-section unique-card">
+    <h4 class="unique-section-title">Space Type and Amenities</h4>
+    <div class="unique-form-grid">
+      <div class="unique-form-group">
+        <%= f.input :space_type, as: :check_boxes, collection: ["Event Venue", "Co-working Space", "Studio", "Wedding Hall", "Shooting Location", "Rooftop", "Ceremony", "Prom Party", "Conference",
+          "Workshop", "Classroom", "Birthday Party", "Launch Event", "Art Show", "Meeting", "Corporate Event", "Media Event", "Outdoor Event"], label: 'Space Type', input_html: { class: 'form-check-input' } %>
+      </div>
+      <div class="unique-form-group">
+        <%= f.input :amenities, label: 'Amenities', input_html: { class: 'form-control', rows: 2 } %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 3: Location Details -->
+  <div class="unique-form-section unique-card">
+    <h4 class="unique-section-title">Location</h4>
+    <div class="unique-form-grid">
+      <div class="unique-form-group">
+        <%= f.input :address, label: 'Address', input_html: { class: 'form-control' } %>
+      </div>
+      <div class="unique-form-group">
+        <%= f.input :city, label: 'City', input_html: { class: 'form-control' } %>
+      </div>
+      <div class="unique-form-group">
+        <%= f.input :state, label: 'State', input_html: { class: 'form-control' } %>
+      </div>
+      <div class="unique-form-group">
+        <%= f.input :postal_code, label: 'Postal Code', input_html: { class: 'form-control' } %>
+      </div>
+      <div class="unique-form-group full-width">
+        <%= f.input :country, label: 'Country', input_html: { class: 'form-control' } %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 4: Pricing and Currency -->
+  <div class="unique-form-section unique-card">
+    <h4 class="unique-section-title">Pricing</h4>
+    <div class="unique-form-grid">
+      <div class="unique-form-group">
+        <%= f.input :price_per_hour, label: 'Price per Hour', input_html: { class: 'form-control', min: 0, step: 0.01 }, placeholder: '0', hint: 'Enter a positive value' %> <!-- Added min: 0 and step -->
+      </div>
+      <div class="unique-form-group">
+        <%= f.input :price_per_day, label: 'Price per Day', input_html: { class: 'form-control', min: 0, step: 0.01 }, placeholder: '0', hint: 'Enter a positive value' %> <!-- Added min: 0 and step -->
+      </div>
+      <div class="unique-form-group full-width">
+        <label for="currency">Currency (Auto-detected)</label>
+        <input type="text" class="form-control" value="<%= session[:currency] %>" readonly>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 5: Availability -->
+  <div class="unique-form-section unique-card">
+    <h4 class="unique-section-title">Availability</h4>
+    <div class="unique-form-grid">
+      <div class="unique-form-group">
+        <%= f.input :start_date, label: 'Start Date', input_html: { class: 'form-control' } %>
+      </div>
+      <div class="unique-form-group">
+        <%= f.input :end_date, label: 'End Date', input_html: { class: 'form-control' } %>
+      </div>
+      <div class="unique-form-group">
+        <%= f.input :available_from, label: 'Available From', collection: time_options, include_blank: false, input_html: { class: 'form-control' } %>
+      </div>
+      <div class="unique-form-group">
+        <%= f.input :available_to, label: 'Available Until', collection: time_options, include_blank: false, input_html: { class: 'form-control' } %>
+      </div>
+      <div class="unique-form-group full-width">
+        <%= f.input :minimum_rental_duration, label: 'Minimum Rental Hours', input_html: { class: 'form-control', min: 0 }, placeholder: '0', hint: 'Enter a positive number' %> <!-- Added min: 0 -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 6: Image Upload -->
+  <div class="unique-form-section unique-card">
+    <h4 class="unique-section-title">Images</h4>
+    <% if @space.images.attached? %>
+      <div class="unique-current-images">
+        <h5>Current Images</h5>
+        <div class="d-flex flex-wrap">
+          <% @space.images.each do |image| %>
+            <div class="unique-existing-image mr-3">
+              <%= image_tag image, width: 100, class: 'img-thumbnail' %>
+              <%= check_box_tag "space[remove_images][]", image.id %>
+              <%= label_tag "space_remove_images_#{image.id}", "Remove this image" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+    <div class="unique-form-group">
+      <%= f.label :images, 'Upload New Images', class: 'form-label' %>
+      <%= f.file_field :images, multiple: true, class: 'form-control' %>
+    </div>
+  </div>
+
+  <!-- Submit Button -->
+  <div class="unique-form-actions">
+    <%= f.button :submit, 'Save Space', class: 'btn btn-primary btn-lg unique-btn-block' %>
   </div>
 <% end %>
