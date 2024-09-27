@@ -129,27 +129,28 @@
     <%= f.button :submit, 'Save Space', class: 'btn btn-primary btn-lg unique-btn-block' %>
   </div>
 <% end %>
+
 <script>
-function setCurrencyBasedOnCountry() {
-  const country = document.getElementById('space_country').value;
-  console.log("Selected country:", country);  // Debugging line
-  const currencyField = document.getElementById('space_currency');
+  function setCurrencyBasedOnCountry() {
+    const country = document.getElementById('space_country').value;
+    console.log("Selected country:", country);  // Debugging line
+    const currencyField = document.getElementById('space_currency');
 
-  // Map country codes to their respective currencies
-  const countryCurrencyMap = {
-    'US': 'USD',
-    'CA': 'CAD',
-    'GB': 'GBP',
-    'MY': 'MYR',
-    'LU': 'EUR',
-    // Add more country-to-currency mappings here
-  };
+    // Map country codes to their respective currencies
+    const countryCurrencyMap = {
+      'US': 'USD',
+      'CA': 'CAD',
+      'GB': 'GBP',
+      'MY': 'MYR',
+      'LU': 'EUR',
+      // Add more country-to-currency mappings here
+    };
 
-  // Debugging line: show mapped currency
-  console.log("Mapped currency:", countryCurrencyMap[country]);
+    // Debugging line: show mapped currency
+    console.log("Mapped currency:", countryCurrencyMap[country]);
 
-  // Set the currency based on the selected country
-  currencyField.value = countryCurrencyMap[country] || 'USD';
-}
+    // Set the currency based on the selected country
+    currencyField.value = countryCurrencyMap[country] || 'USD';
+  }
 
 </script>

@@ -36,6 +36,7 @@ class SpacesController < ApplicationController
         # (you will also need to create the partial "/flats/map_box")
       }
     end
+
   end
 
   def select_date
@@ -48,33 +49,37 @@ class SpacesController < ApplicationController
       format.turbo_stream
       format.html { redirect_to space_path(@space) }
     end
+
   end
 
   # GET /spaces/1 or /spaces/1.json
   def show
-    @space = Space.find(params[:id])
-    @booking = Booking.new # Initialize a new Booking instance
-    @selected_date = params[:booking_date] if params[:booking_date].present?
-    @space.currency = session[:currency] if session[:currency].present?
-    if @space.geocoded?
-      @marker =
-        {
-          lat: @space.latitude,
-          lng: @space.longitude
-        }
+      @space = Space.find(params[:id])
 
-    end
-    @spaces = [@space]
-    start_date = params.fetch(:start_date, Date.today).to_date
+      @booking = Booking.new # Initialize a new Booking instance
 
+      @selected_date = params[:booking_date] if params[:booking_date].present?
 
-  @spaces = Space.where("start_date <= ? AND end_date >= ?", start_date.end_of_month, start_date.beginning_of_month)
-  respond_to do |format|
-    format.html
-    format.js { render partial: 'simple_calendar/month_calendar', locals: { start_date: start_date, events: [] } }
-  end
+      @space.currency = session[:currency] if session[:currency].present?
+
+      if @space.geocoded?
+        @marker =
+          {
+            lat: @space.latitude,
+            lng: @space.longitude
+          }
+
+      end
+
+      @spaces = [@space]
+      start_date = params.fetch(:start_date, Date.today).to_date
 
 
+      @spaces = Space.where("start_date <= ? AND end_date >= ?", start_date.end_of_month, start_date.beginning_of_month)
+      respond_to do |format|
+        format.html
+        format.js { render partial: 'simple_calendar/month_calendar', locals: { start_date: start_date, events: [] } }
+      end
 
   end
 
@@ -105,10 +110,12 @@ class SpacesController < ApplicationController
         format.json { render json: @space.errors, status: :unprocessable_entity }
       end
     end
+
   end
 
   # PATCH/PUT /spaces/1 or /spaces/1.json
   def update
+
     if space_params[:remove_images].present?
       space_params[:remove_images].each do |image_id|
         image = @space.images.find(image_id)
@@ -119,7 +126,9 @@ class SpacesController < ApplicationController
     if space_params[:images].present?
       @space.images.attach(space_params[:images])
     end
+
     respond_to do |format|
+
       if @space.update(space_params.except(:images, :remove_images))
         @space.update(status: 'pending') # Ensure status is set to pending
         format.html { redirect_to space_url(@space), notice: "Space was successfully updated, And waiting for the admin." }
@@ -128,7 +137,9 @@ class SpacesController < ApplicationController
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @space.errors, status: :unprocessable_entity }
       end
+
     end
+
   end
 
 
@@ -141,6 +152,7 @@ class SpacesController < ApplicationController
       format.json { head :no_content }
     end
   end
+
 
   private
     # Use callbacks to share common setup or constraints between actions.
@@ -156,4 +168,5 @@ class SpacesController < ApplicationController
         :admin_comment, :price_per_day, :start_date, :end_date, :is_hourly_available, :is_daily_available,
          :latitude, :longitude, :available_from, :available_to, :minimum_rental_duration, space_type:[], remove_images: [], images:[])
     end
+
 end

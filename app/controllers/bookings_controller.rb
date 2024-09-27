@@ -1,6 +1,7 @@
 class BookingsController < ApplicationController
   before_action :set_booking, only: [:show, :edit, :update, :destroy, :accept, :decline, :cancel]
   # GET /bookings or /bookings.json
+
   def index
     @future_bookings = current_user.bookings.where('start_date >= ?', Date.today).order(start_date: :asc)
     @past_bookings = current_user.bookings.where('start_date < ?', Date.today).order(start_date: :desc)
@@ -16,6 +17,7 @@ class BookingsController < ApplicationController
     }
 
   end
+
   def owner_dashboard
     @spaces = current_user.spaces
     @bookings = Booking.where(owner: current_user) || [] # Ensures @bookings is never nil
@@ -24,12 +26,12 @@ class BookingsController < ApplicationController
     .where.not(booking_status: 'canceled')
     .order(start_date: :asc)
 
-# Filter previous bookings, excluding canceled ones
-@previous_bookings = Booking.where(space: @spaces)
-    .where('start_date < ?', Date.today)
-    .where.not(booking_status: 'canceled')
-    .order(start_date: :desc)
-    @canceled_bookings = Booking.where(space: @spaces, booking_status: 'canceled').order(start_date: :desc)
+    # Filter previous bookings, excluding canceled ones
+    @previous_bookings = Booking.where(space: @spaces)
+        .where('start_date < ?', Date.today)
+        .where.not(booking_status: 'canceled')
+        .order(start_date: :desc)
+        @canceled_bookings = Booking.where(space: @spaces, booking_status: 'canceled').order(start_date: :desc)
   end
 
   def accept
@@ -51,6 +53,7 @@ class BookingsController < ApplicationController
   # GET /bookings/new
   def new
     @space = Space.find(params[:space_id])
+
     @booking = Booking.new(
       space_id: @space.id,
       user_id: current_user.id,
@@ -64,6 +67,8 @@ class BookingsController < ApplicationController
 
     )
   end
+
+
   # GET /bookings/1/edit
   def edit
   end
@@ -95,6 +100,7 @@ class BookingsController < ApplicationController
     end
   end
 
+
   # DELETE /bookings/1 or /bookings/1.json
   def destroy
     @booking.destroy!
@@ -106,19 +112,25 @@ class BookingsController < ApplicationController
   end
 
   private
+
     # Use callbacks to share common setup or constraints between actions.
     def set_booking
       @booking = Booking.find(params[:id])
     end
+
     def update_status(new_status)
+
       if @booking.update(booking_status: new_status)
         redirect_to owner_dashboard_path, notice: "Booking status updated to #{new_status}."
       else
         redirect_to owner_dashboard_path, alert: 'Failed to update booking status.'
       end
+
     end
+
     # Only allow a list of trusted parameters through.
     def booking_params
       params.require(:booking).permit(:space_id, :user_id, :owner_id, :start_date, :end_date, :start_hour, :end_hour, :price, :payment_status, :booking_status, :guest_number, :event_type, :responsibility)
     end
+
 end
