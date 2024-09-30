@@ -1,0 +1,81 @@
+.login-title {
+  font-size: 2em;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.login-form-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 60px;
+}
+
+.login-form .form-inputs {
+  margin-bottom: 20px;
+}
+
+.login-form .form-control {
+  width: 100%;
+  padding: 10px;
+  font-size: 1.1em;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.login-form .form-check-input {
+  margin-right: 10px;
+}
+
+.login-form .form-actions {
+  margin-top: 20px;
+}
+
+.login-form .btn {
+  padding: 10px;
+  font-size: 1.2em;
+  width: 100%;
+  border-radius: 8px;
+}
+
+.login-links {
+  text-align: center;
+  margin-top: 15px;
+}
+
+/* Error message styling */
+.error-message {
+  color: red;
+  font-size: 0.9em;
+  margin-top: -10px;
+  margin-bottom: 10px;
+}
+
+/* Responsive styling */
+@media (max-width: 768px) {
+  .login-form-container {
+    padding: 15px;
+  }
+
+  .login-title {
+    font-size: 1.5em;
+  }
+
+  .login-form .btn {
+    font-size: 1em;
+  }
+}
+
+@media (max-width: 600px) {
+  .login-form .form-control {
+    font-size: 1em;
+  }
+
+  .login-title {
+    font-size: 1.3em;
+  }
+}
