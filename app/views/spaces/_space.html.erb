@@ -166,7 +166,13 @@ document.addEventListener("DOMContentLoaded", function() {
     <h5>Hosted by | <%= space.owner.first_name %></h5>
   </div>
 
-  <%= button_to "Message Owner", chatrooms_path(chatroom: { user_id: current_user.id, owner_id: @space.owner.id, space_id: @space.id }), method: :post, class: "btn btn-primary" %>
+<div class="space-actions">
+  <% if user_signed_in? %>
+    <%= button_to "Message Owner", chatrooms_path(chatroom: { user_id: current_user.id, owner_id: @space.owner.id, space_id: @space.id }), method: :post, class: "btn btn-primary" %>
+  <% else %>
+    <%= link_to "Sign in to Message Owner", new_user_session_path, class: "btn btn-primary" %>
+  <% end %>
+</div>
 </div>
 
 <style>
@@ -441,7 +447,13 @@ document.addEventListener("DOMContentLoaded", function() {
     </div>
     <hr>
 
+<div class="form-actions">
+  <% if user_signed_in? %>
     <%= submit_tag 'Proceed to Confirmation', class: 'btn btn-info' %>
+  <% else %>
+    <%= link_to 'Sign in to Proceed', new_user_session_path, class: 'btn btn-info' %>
+  <% end %>
+</div>
   <% end %>
 </div>
 
