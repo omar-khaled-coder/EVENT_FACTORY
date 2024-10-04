@@ -1,6 +1,7 @@
 class SpacesController < ApplicationController
   before_action :set_space, only: %i[ show edit update destroy ]
-  before_action :set_currency_based_on_location, only: [:create, :update]
+  before_action :set_currency_based_on_location
+
 
 
   # GET /spaces or /spaces.json
