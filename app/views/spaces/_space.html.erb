@@ -224,66 +224,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
     </div>
 
-    <hr>
 
-    <div >
 
-          <p>
-            <strong>Address:</strong>
-            <%= space.address %>
-          </p>
-
-          <div>
-
-              <div id="map_show"
-                data-controller="map"
-                      data-map-marker-value="<%= @marker.to_json %>"
-                data-map-api-key-value="<%= ENV['GOOGLE_API_BROWSER_KEY'] %>"
-                style="width: 100%; height: 400px;">
-              </div>
-
-          </div>
-
-    </div>
-
-    <hr>
-<div>
-  <h3>Reviews</h3>
-  <% if @space.reviews.any? %>
-    <p>Average Rating: <%= @space.reviews.average(:rating).round(2) %></p>
-
-    <% @space.reviews.each do |review| %>
-      <div class="review-item">
-        <!-- User Info with Avatar, Name, and Account Age -->
-        <div class="user-info">
-          <%= image_tag review.user.profile_picture.attached? ? review.user.profile_picture : 'default-avatar.png', class: "user-avatar", alt: "User Avatar" %>
-          <div>
-            <strong><%= review.user.first_name %></strong>
-            <span class="user-created-at">- Member since <%= review.user.created_at.strftime("%B %Y") %></span>
-          </div>
-        </div>
-
-        <!-- Star Rating with Review Date -->
-        <div class="star-rating">
-          <% review.rating.times do %>
-            <span class="star">&#9733;</span> <!-- Filled star -->
-          <% end %>
-          <% (5 - review.rating).times do %>
-            <span class="star">&#9734;</span> <!-- Empty star -->
-          <% end %>
-
-          <span class="review-date">- Reviewed on <%= review.created_at.strftime("%B %d, %Y") %></span>
-        </div>
-
-        <!-- Review Comment -->
-        <p class="review-comment"><%= review.comment %></p>
-      </div>
-      <hr>
-    <% end %>
-  <% else %>
-    <p>No reviews yet.</p>
-  <% end %>
-</div>
 
 
 
@@ -348,18 +290,85 @@ document.addEventListener("DOMContentLoaded", function() {
     </div>
     <hr>
 
-<div class="form-actions">
-  <% if user_signed_in? %>
-    <%= submit_tag 'Proceed to Confirmation', class: 'btn btn-info' %>
-  <% else %>
-    <%= link_to 'Sign in to Proceed', new_user_session_path, class: 'btn btn-info' %>
-  <% end %>
-</div>
+    <div class="form-actions">
+      <% if user_signed_in? %>
+        <%= submit_tag 'Proceed to Confirmation', class: 'btn btn-info' %>
+      <% else %>
+        <%= link_to 'Sign in to Proceed', new_user_session_path, class: 'btn btn-info' %>
+      <% end %>
+    </div>
   <% end %>
 </div>
 
 
   </div>
+  <hr>
+  <div class="row">
+    <div class="col-12 col-lg-12">
+
+          <p>
+            <strong>Address:</strong>
+            <%= space.address %>
+          </p>
+
+          <div>
+
+              <div id="map_show"
+                data-controller="map"
+                      data-map-marker-value="<%= @marker.to_json %>"
+                data-map-api-key-value="<%= ENV['GOOGLE_API_BROWSER_KEY'] %>"
+                style="width: 100%; height: 400px;">
+              </div>
+
+          </div>
+    </div>
+    </div>
+    <hr>
+
+  <div class="row">
+      <div class="col-12 col-lg-12">
+
+      <div style="display: flex;">
+        <i class="fa-solid fa-star" style="display: flex;align-items: center;padding-bottom: 8px;margin-right: 5px;"></i> <h3>Reviews</h3>
+      </div>
+        <% if @space.reviews.any? %>
+        <p>Average Rating: <%= @space.reviews.average(:rating).round(2) %></p>
+
+
+        <% @space.reviews.each do |review| %>
+          <div class="review-item">
+            <!-- User Info with Avatar, Name, and Account Age -->
+            <div class="user-info">
+              <%= image_tag review.user.profile_picture.attached? ? review.user.profile_picture : 'default-avatar.png', class: "user-avatar", alt: "User Avatar" %>
+              <div>
+                <strong><%= review.user.first_name %></strong>
+                <span class="user-created-at">- Member since <%= review.user.created_at.strftime("%B %Y") %></span>
+              </div>
+            </div>
+
+            <!-- Star Rating with Review Date -->
+            <div class="star-rating">
+              <% review.rating.times do %>
+                <span class="star">&#9733;</span> <!-- Filled star -->
+              <% end %>
+              <% (5 - review.rating).times do %>
+                <span class="star">&#9734;</span> <!-- Empty star -->
+              <% end %>
+
+              <span class="review-date">- Reviewed on <%= review.created_at.strftime("%B %d, %Y") %></span>
+            </div>
+
+            <!-- Review Comment -->
+            <p class="review-comment"><%= review.comment %></p>
+          </div>
+          <hr>
+        <% end %>
+        <% else %>
+        <p>No reviews yet.</p>
+      <% end %>
+    </div>
+  </div>
+
 </div>
 
 <%= session[:currency] %>
