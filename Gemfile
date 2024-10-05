@@ -83,3 +83,4 @@ gem "pundit"
 gem "sidekiq", "~> 7"
 gem "sidekiq-failures"
 gem 'money-rails'
+gem 'will_paginate', '~> 3.3'

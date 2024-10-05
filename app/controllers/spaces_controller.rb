@@ -56,7 +56,8 @@ class SpacesController < ApplicationController
   # GET /spaces/1 or /spaces/1.json
   def show
       @space = Space.find(params[:id])
-
+       # Paginate reviews, 3 reviews per page
+  @reviews = @space.reviews.paginate(page: params[:page], per_page: 3)
       @booking = Booking.new # Initialize a new Booking instance
 
       @selected_date = params[:booking_date] if params[:booking_date].present?
