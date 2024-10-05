@@ -383,3 +383,40 @@ hr {
     color: #333;
     margin-left: 50px;
   }
+
+  .pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+  .pagination a, .pagination span {
+    margin: 0 5px;
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+  }
+
+  .pagination a:hover {
+    background-color: #0056b3;
+  }
+
+  .pagination .current {
+    background-color: #0056b3;
+    pointer-events: none;
+    cursor: default; /* Change cursor to default */
+  }
+
+  .pagination .disabled {
+    background-color: #cccccc; /* Change color for disabled buttons */
+    opacity: 0.6;
+    pointer-events: none;
+    cursor: not-allowed; /* Change cursor to indicate it is not clickable */
+  }
+
+  .pagination .disabled:hover {
+    background-color: #cccccc; /* Prevent hover effect on disabled buttons */
+  }

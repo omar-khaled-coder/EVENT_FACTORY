@@ -325,49 +325,58 @@ document.addEventListener("DOMContentLoaded", function() {
     </div>
     <hr>
 
-  <div class="row">
-      <div class="col-12 col-lg-12">
-
-      <div style="display: flex;">
-        <i class="fa-solid fa-star" style="display: flex;align-items: center;padding-bottom: 8px;margin-right: 5px;"></i> <h3>Reviews</h3>
-      </div>
-        <% if @space.reviews.any? %>
-        <p>Average Rating: <%= @space.reviews.average(:rating).round(2) %></p>
-
-
-        <% @space.reviews.each do |review| %>
-          <div class="review-item">
-            <!-- User Info with Avatar, Name, and Account Age -->
-            <div class="user-info">
-              <%= image_tag review.user.profile_picture.attached? ? review.user.profile_picture : 'default-avatar.png', class: "user-avatar", alt: "User Avatar" %>
-              <div>
-                <strong><%= review.user.first_name %></strong>
-                <span class="user-created-at">- Member since <%= review.user.created_at.strftime("%B %Y") %></span>
-              </div>
-            </div>
-
-            <!-- Star Rating with Review Date -->
-            <div class="star-rating">
-              <% review.rating.times do %>
-                <span class="star">&#9733;</span> <!-- Filled star -->
-              <% end %>
-              <% (5 - review.rating).times do %>
-                <span class="star">&#9734;</span> <!-- Empty star -->
-              <% end %>
-
-              <span class="review-date">- Reviewed on <%= review.created_at.strftime("%B %d, %Y") %></span>
-            </div>
-
-            <!-- Review Comment -->
-            <p class="review-comment"><%= review.comment %></p>
-          </div>
-          <hr>
-        <% end %>
-        <% else %>
-        <p>No reviews yet.</p>
-      <% end %>
+<div class="row">
+  <div class="col-12 col-lg-12">
+    <div style="display: flex;">
+      <i class="fa-solid fa-star" style="display: flex;align-items: center;padding-bottom: 8px;margin-right: 5px;"></i>
+      <h3>Reviews</h3>
     </div>
+
+    <% if @reviews.any? %>
+      <p>Average Rating: <%= @space.reviews.average(:rating).round(2) %></p>
+
+      <% @reviews.each do |review| %>
+        <div class="review-item">
+          <div class="user-info">
+            <%= image_tag review.user.profile_picture.attached? ? review.user.profile_picture : 'default-avatar.png', class: "user-avatar", alt: "User Avatar" %>
+            <div>
+              <strong><%= review.user.first_name %></strong>
+              <span class="user-created-at">- Member since <%= review.user.created_at.strftime("%B %Y") %></span>
+            </div>
+          </div>
+
+          <div class="star-rating">
+            <% review.rating.times do %>
+              <span class="star">&#9733;</span>
+            <% end %>
+            <% (5 - review.rating).times do %>
+              <span class="star">&#9734;</span>
+            <% end %>
+            <span class="review-date">- Reviewed on <%= review.created_at.strftime("%B %d, %Y") %></span>
+          </div>
+
+          <p class="review-comment"><%= review.comment %></p>
+        </div>
+        <hr>
+      <% end %>
+
+      <!-- Pagination Links with Arrows and Page Number -->
+      <div class="pagination">
+        <%= will_paginate @reviews, previous_label: '← Previous', next_label: 'Next →' %>
+      </div>
+
+      <!-- Display current page and total pages -->
+      <div class="page-info text-center">
+        Page <%= @reviews.current_page %> of <%= @reviews.total_pages %>
+      </div>
+
+    <% else %>
+      <p>No reviews yet.</p>
+    <% end %>
   </div>
+</div>
+
+
 
 </div>
 
