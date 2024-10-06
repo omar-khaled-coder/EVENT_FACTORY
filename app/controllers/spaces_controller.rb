@@ -61,7 +61,7 @@ class SpacesController < ApplicationController
 
     @selected_date = params[:booking_date] if params[:booking_date].present?
 
-    @space.currency = session[:currency] if session[:currency].present?
+    #@space.currency = session[:currency] if session[:currency].present?
 
     if @space.geocoded?
       @marker = {
