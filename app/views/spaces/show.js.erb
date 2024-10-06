@@ -1,0 +1,6 @@
+$('#reviews-section').html("<%= j(render partial: 'reviews', locals: { reviews: @reviews }) %>");
+
+// Scroll to the reviews section
+$('html, body').animate({
+  scrollTop: $('#reviews-section').offset().top
+}, 500);

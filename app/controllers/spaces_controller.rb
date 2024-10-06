@@ -55,35 +55,32 @@ class SpacesController < ApplicationController
 
   # GET /spaces/1 or /spaces/1.json
   def show
-      @space = Space.find(params[:id])
-       # Paginate reviews, 3 reviews per page
-  @reviews = @space.reviews.paginate(page: params[:page], per_page: 3)
-      @booking = Booking.new # Initialize a new Booking instance
+    @space = Space.find(params[:id])
+    @reviews = @space.reviews.paginate(page: params[:page], per_page: 3)
+    @booking = Booking.new # Initialize a new Booking instance
 
-      @selected_date = params[:booking_date] if params[:booking_date].present?
+    @selected_date = params[:booking_date] if params[:booking_date].present?
 
-      @space.currency = session[:currency] if session[:currency].present?
+    @space.currency = session[:currency] if session[:currency].present?
 
-      if @space.geocoded?
-        @marker =
-          {
-            lat: @space.latitude,
-            lng: @space.longitude
-          }
+    if @space.geocoded?
+      @marker = {
+        lat: @space.latitude,
+        lng: @space.longitude
+      }
+    end
 
-      end
+    @spaces = [@space]
+    start_date = params.fetch(:start_date, Date.today).to_date
 
-      @spaces = [@space]
-      start_date = params.fetch(:start_date, Date.today).to_date
+    @spaces = Space.where("start_date <= ? AND end_date >= ?", start_date.end_of_month, start_date.beginning_of_month)
 
-
-      @spaces = Space.where("start_date <= ? AND end_date >= ?", start_date.end_of_month, start_date.beginning_of_month)
-      respond_to do |format|
-        format.html
-        format.js { render partial: 'simple_calendar/month_calendar', locals: { start_date: start_date, events: [] } }
-      end
-
+    respond_to do |format|
+      format.html
+      format.js # This allows Rails to respond to AJAX requests if needed
+    end
   end
+
 
 
   # GET /spaces/new

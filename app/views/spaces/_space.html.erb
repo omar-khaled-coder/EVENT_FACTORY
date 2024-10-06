@@ -325,59 +325,72 @@ document.addEventListener("DOMContentLoaded", function() {
     </div>
     <hr>
 
-<div class="row">
-  <div class="col-12 col-lg-12">
-    <div style="display: flex;">
-      <i class="fa-solid fa-star" style="display: flex;align-items: center;padding-bottom: 8px;margin-right: 5px;"></i>
-      <h3>Reviews</h3>
-    </div>
-
-    <% if @reviews.any? %>
-      <p>Average Rating: <%= @space.reviews.average(:rating).round(2) %></p>
-
-      <% @reviews.each do |review| %>
-        <div class="review-item">
-          <div class="user-info">
-            <%= image_tag review.user.profile_picture.attached? ? review.user.profile_picture : 'default-avatar.png', class: "user-avatar", alt: "User Avatar" %>
-            <div>
-              <strong><%= review.user.first_name %></strong>
-              <span class="user-created-at">- Member since <%= review.user.created_at.strftime("%B %Y") %></span>
-            </div>
-          </div>
-
-          <div class="star-rating">
-            <% review.rating.times do %>
-              <span class="star">&#9733;</span>
-            <% end %>
-            <% (5 - review.rating).times do %>
-              <span class="star">&#9734;</span>
-            <% end %>
-            <span class="review-date">- Reviewed on <%= review.created_at.strftime("%B %d, %Y") %></span>
-          </div>
-
-          <p class="review-comment"><%= review.comment %></p>
+<turbo-frame id="reviews">
+  <div id="reviews-section">
+    <div class="row">
+      <div class="col-12 col-lg-12">
+        <div style="display: flex;">
+          <i class="fa-solid fa-star" style="display: flex;align-items: center;padding-bottom: 8px;margin-right: 5px;"></i>
+          <h3>Reviews</h3>
         </div>
-        <hr>
-      <% end %>
 
-      <!-- Pagination Links with Arrows and Page Number -->
-      <div class="pagination">
-        <%= will_paginate @reviews, previous_label: '← Previous', next_label: 'Next →' %>
+        <% if @reviews.any? %>
+          <p>Average Rating: <%= @space.reviews.average(:rating).round(2) %></p>
+
+          <% @reviews.each do |review| %>
+            <div class="review-item">
+              <div class="user-info">
+                <%= image_tag review.user.profile_picture.attached? ? review.user.profile_picture : 'default-avatar.png', class: "user-avatar", alt: "User Avatar" %>
+                <div>
+                  <strong><%= review.user.first_name %></strong>
+                  <span class="user-created-at">- Member since <%= review.user.created_at.strftime("%B %Y") %></span>
+                </div>
+              </div>
+
+              <div class="star-rating">
+                <% review.rating.times do %>
+                  <span class="star">&#9733;</span>
+                <% end %>
+                <% (5 - review.rating).times do %>
+                  <span class="star">&#9734;</span>
+                <% end %>
+                <span class="review-date">- Reviewed on <%= review.created_at.strftime("%B %d, %Y") %></span>
+              </div>
+
+              <p class="review-comment"><%= review.comment %></p>
+            </div>
+            <hr>
+          <% end %>
+
+          <!-- Pagination Links with Arrows and Page Number -->
+          <div class="pagination">
+            <%= will_paginate @reviews, previous_label: '← Previous', next_label: 'Next →', remote: true %>
+          </div>
+
+          <!-- Display current page and total pages -->
+          <div class="page-info text-center">
+            Page <%= @reviews.current_page %> of <%= @reviews.total_pages %>
+          </div>
+
+        <% else %>
+          <p>No reviews yet.</p>
+        <% end %>
       </div>
-
-      <!-- Display current page and total pages -->
-      <div class="page-info text-center">
-        Page <%= @reviews.current_page %> of <%= @reviews.total_pages %>
-      </div>
-
-    <% else %>
-      <p>No reviews yet.</p>
-    <% end %>
+    </div>
   </div>
-</div>
+</turbo-frame>
 
 
 
 </div>
+<!-- Move the script outside the reviews div to avoid duplication -->
+<script>
+  document.addEventListener("turbo:frame-load", function() {
+    // Smooth scroll to reviews section after turbo frame is loaded
+    $('html, body').animate({
+      scrollTop: $('#reviews-section').offset().top
+    }, 500); // 500ms smooth scroll
+  });
+</script>
 
 <%= session[:currency] %>
