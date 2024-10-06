@@ -393,30 +393,46 @@ hr {
   .pagination a, .pagination span {
     margin: 0 5px;
     padding: 10px 15px;
-    background-color: #007bff;
-    color: white;
+    background-color: #f0f0f0; /* Neutral background color */
+    color: #333; /* Text color */
     border-radius: 5px;
     text-decoration: none;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border: 1px solid #ddd; /* Border for clean look */
   }
 
   .pagination a:hover {
-    background-color: #0056b3;
+    background-color: #e0e0e0; /* Hover background color */
+    color: #000; /* Darker text on hover */
   }
 
   .pagination .current {
-    background-color: #0056b3;
+    background-color: #ccc;
+    color: #333;
     pointer-events: none;
-    cursor: default; /* Change cursor to default */
+    cursor: default;
+    margin: 0 5px;
+    padding: 10px 15px;
+    color: #333;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border: 1px solid #ddd;
   }
 
   .pagination .disabled {
-    background-color: #cccccc; /* Change color for disabled buttons */
-    opacity: 0.6;
+    background-color: #f7f7f7; /* Slightly lighter background for disabled */
+    color: #aaa; /* Lighter text color to show it's disabled */
+    border: 1px solid #e0e0e0; /* Lighter border to differentiate it */
     pointer-events: none;
-    cursor: not-allowed; /* Change cursor to indicate it is not clickable */
+    cursor: not-allowed; /* Disabled cursor */
   }
 
   .pagination .disabled:hover {
-    background-color: #cccccc; /* Prevent hover effect on disabled buttons */
+    background-color: #f7f7f7; /* Ensure no hover effect */
+    color: #aaa; /* Ensure no hover effect on color */
+  }
+
+  html {
+    scroll-behavior: smooth;
   }
