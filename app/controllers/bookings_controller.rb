@@ -5,6 +5,7 @@ class BookingsController < ApplicationController
   def index
     @future_bookings = current_user.bookings.where('start_date >= ?', Date.today).order(start_date: :asc)
     @past_bookings = current_user.bookings.where('start_date < ?', Date.today).order(start_date: :desc)
+    @canceled_bookings = current_user.bookings.where(booking_status: 'canceled')
   end
 
   # GET /bookings/1 or /bookings/1.json
