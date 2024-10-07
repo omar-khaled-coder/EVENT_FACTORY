@@ -1,30 +1,136 @@
-<p style="color: green"><%= notice %></p>
 <div class="container">
-<h1>My Bookings</h1>
+  <h1>My Bookings</h1>
 
-<h2>Upcoming Bookings</h2>
-<div id="future_bookings" class="col-12 col-lg-12">
-  <% if @future_bookings.any? %>
-    <% @future_bookings.each do |booking| %>
-      <%= render booking %>
+  <!-- Tab Navigation -->
+  <div class="tab-list" role="tablist">
+    <a class="tab-link active" title="Upcoming Bookings" role="tab" aria-selected="true" aria-controls="panel-upcoming" id="tab-upcoming" href="#panel-upcoming">
+      <span class="tab-label">Upcoming Bookings</span>
+    </a>
+    <a class="tab-link" title="Previous Bookings" role="tab" aria-selected="false" aria-controls="panel-previous" id="tab-previous" href="#panel-previous">
+      <span class="tab-label">Previous Bookings</span>
+    </a>
+    <a class="tab-link" title="Canceled Bookings" role="tab" aria-selected="false" aria-controls="panel-canceled" id="tab-canceled" href="#panel-canceled">
+      <span class="tab-label">Canceled Bookings</span>
+    </a>
+  </div>
 
-    <% end %>
-  <% else %>
-    <p>You have no upcoming bookings.</p>
-  <% end %>
+  <!-- Tab Panels -->
+  <div class="tab-content">
+    <!-- Upcoming Bookings Panel -->
+    <div id="panel-upcoming" class="tab-panel active" role="tabpanel" aria-labelledby="tab-upcoming">
+      <div class="row" style="flex-direction: column;">
+        <% if @future_bookings.any? %>
+          <% @future_bookings.each do |booking| %>
+            <%= render booking %>
+          <% end %>
+        <% else %>
+          <div class="col-12">
+            <p style="text-align: center; color: #555; font-size: 1.2em; margin-top: 20px;">You have no upcoming bookings.</p>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Previous Bookings Panel -->
+    <div id="panel-previous" class="tab-panel" role="tabpanel" aria-labelledby="tab-previous">
+      <div class="row" style="flex-direction: column;">
+        <% if @past_bookings.any? %>
+          <% @past_bookings.each do |booking| %>
+            <%= render booking %>
+          <% end %>
+        <% else %>
+          <div class="col-12">
+            <p style="text-align: center; color: #555; font-size: 1.2em; margin-top: 20px;">You have no previous bookings.</p>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Canceled Bookings Panel -->
+    <div id="panel-canceled" class="tab-panel" role="tabpanel" aria-labelledby="tab-canceled">
+      <div class="row" style="flex-direction: column;">
+        <% if @canceled_bookings.any? %>
+          <% @canceled_bookings.each do |booking| %>
+            <%= render booking %>
+          <% end %>
+        <% else %>
+          <div class="col-12">
+            <p style="text-align: center; color: #555; font-size: 1.2em; margin-top: 20px;">You have no canceled bookings.</p>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
 </div>
-<hr>
-<h2>Previous Bookings</h2>
-<div id="past_bookings">
-  <% if @past_bookings.any? %>
-    <% @past_bookings.each do |booking| %>
-      <%= render booking %>
 
-    <% end %>
-  <% else %>
-    <p>You have no previous bookings.</p>
-  <% end %>
-</div>
+<style>
+  .tab-list {
+    display: flex;
+    margin-bottom: 16px;
+    background-color: #f4f4f4;
+    padding: 8px;
+    border-radius: 8px;
+    margin-top: 20px;
+    box-shadow: 0px 0px 9px;
+  }
 
-<%= link_to "New booking", new_booking_path %>
-</div>
+  .tab-link {
+    padding: 10px 20px;
+    text-decoration: none;
+    color: #333;
+    border: 1px solid transparent;
+    background-color: #f8f8f8;
+    margin-right: 8px;
+    transition: background-color 0.3s ease;
+    border-radius: 6px;
+  }
+
+  .tab-link:hover {
+    background-color: #e0e0e0;
+  }
+
+  .tab-link.active,
+  .tab-link[aria-selected="true"] {
+    background-color: #ff8706de;
+    border-radius: 6px;
+    font-weight: bold;
+    box-shadow: 0px 0px 6px;
+  }
+
+  .tab-content {
+    border: 1px solid #ddd;
+    padding: 20px;
+    background-color: #fff;
+    margin-bottom: 20px;
+    box-shadow: 0px 0px 9px;
+    border-radius: 7px;
+  }
+
+  .tab-panel {
+    display: none;
+  }
+
+  .tab-panel.active {
+    display: block;
+  }
+</style>
+
+<script>
+ document.querySelectorAll('.tab-link').forEach(function (tab) {
+  tab.addEventListener('click', function (event) {
+    event.preventDefault();
+
+    document.querySelectorAll('.tab-link').forEach(function (t) {
+      t.classList.remove('active');
+      t.setAttribute('aria-selected', 'false');
+    });
+    document.querySelectorAll('.tab-panel').forEach(function (panel) {
+      panel.classList.remove('active');
+    });
+
+    this.classList.add('active');
+    this.setAttribute('aria-selected', 'true');
+    document.getElementById(this.getAttribute('aria-controls')).classList.add('active');
+  });
+});
+</script>
