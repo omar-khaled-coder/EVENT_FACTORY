@@ -40,8 +40,10 @@
   <div class="unique-form-section unique-card">
     <h4 class="unique-section-title">Location</h4>
     <div class="unique-form-grid">
-      <div class="unique-form-group">
-        <%= f.input :address, label: 'Address', input_html: { class: 'form-control' } %>
+
+
+      <div class="unique-form-group" data-controller="maps-autocomplete">
+        <%= f.input :address, label: 'Address', input_html: { data: { maps_autocomplete_target: "address"  } , class: 'form-control' } %>
       </div>
       <div class="unique-form-group">
         <%= f.input :city, label: 'City', input_html: { class: 'form-control' } %>
