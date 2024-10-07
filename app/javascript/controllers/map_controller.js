@@ -13,6 +13,8 @@ export default class extends Controller {
       return;
     }
 
+    this.infoWindow = null;  // To track the currently open info window
+
     if (this.hasMarkerValue) {
       this.#initializeMapWithSingleMarker();
     } else if (this.hasMarkersValue) {
@@ -35,10 +37,19 @@ export default class extends Controller {
       center: { lat: lat, lng: lng }
     });
 
-    new google.maps.Marker({
+    const marker = new google.maps.Marker({
       position: { lat: lat, lng: lng },
       map: this.map
     });
+
+    // info widow for show page ..
+    //const infoWindow = new google.maps.InfoWindow({
+      //content: this.markerValue.info_window_html
+    //});
+
+    //marker.addListener('click', () => {
+      //this.#toggleInfoWindow(infoWindow, marker);
+    //});
   }
 
   #initializeMapWithMultipleMarkers() {
@@ -49,15 +60,40 @@ export default class extends Controller {
 
     const bounds = new google.maps.LatLngBounds();
 
-    this.markersValue.forEach((marker) => {
-      const markerInstance = new google.maps.Marker({
-        position: { lat: marker.lat, lng: marker.lng },
+    this.markersValue.forEach((markerData) => {
+      const marker = new google.maps.Marker({
+        position: { lat: markerData.lat, lng: markerData.lng },
         map: this.map
       });
 
-      bounds.extend(markerInstance.position);
+      const infoWindow = new google.maps.InfoWindow({
+        content: markerData.info_window_html
+      });
+
+      marker.addListener('click', () => {
+        this.#toggleInfoWindow(infoWindow, marker);
+      });
+
+      bounds.extend(marker.position);
     });
 
     this.map.fitBounds(bounds);
+  }
+
+  // This method toggles the info window
+  #toggleInfoWindow(infoWindow, marker) {
+    // If there's already an open info window, close it
+    if (this.infoWindow) {
+      this.infoWindow.close();
+    }
+
+    // If the clicked info window is different, open it
+    if (this.infoWindow !== infoWindow) {
+      infoWindow.open(this.map, marker);
+      this.infoWindow = infoWindow;
+    } else {
+      // If the clicked info window is the same, toggle it off
+      this.infoWindow = null;
+    }
   }
 }
