@@ -1,34 +1,35 @@
 <p style="color: green"><%= notice %></p>
 
-<h1>Spaces</h1>
-
 <div id="spaces">
+  <!-- Cards Container -->
   <div class="cards-container">
     <% @spaces.each do |space| %>
       <% if space.accepted? %>
         <%= link_to space, class: "spacecard-link" do %>
           <div class="spacecard">
-            <div class="card-body">
-              <% if space.images.attached? %>
-                <div id="carouselExample-<%= space.id %>" class="carousel slide" data-bs-ride="false">
-                  <div class="carousel-inner">
-                    <% space.images.each_with_index do |image, index| %>
-                      <div class="carousel-item <%= 'active' if index == 0 %>">
-                        <%= image_tag url_for(image), class: "d-block w-100 carousel-image", alt: "Space Image" %>
-                      </div>
-                    <% end %>
-                  </div>
-                  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample-<%= space.id %>" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                  </button>
-                  <button class="carousel-control-next" type="button" data-bs-target="#carouselExample-<%= space.id %>" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                  </button>
+            <% if space.images.attached? %>
+              <!-- Carousel for Images -->
+              <div id="carouselExample-<%= space.id %>" class="carousel slide" data-bs-ride="false">
+                <div class="carousel-inner">
+                  <% space.images.each_with_index do |image, index| %>
+                    <div class="carousel-item <%= 'active' if index == 0 %>">
+                      <%= image_tag url_for(image), class: "d-block w-100 carousel-image", alt: "Space Image" %>
+                    </div>
+                  <% end %>
                 </div>
-              <% end %>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample-<%= space.id %>" data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExample-<%= space.id %>" data-bs-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Next</span>
+                </button>
+              </div>
+            <% end %>
 
+            <!-- Card Body -->
+            <div class="card-body">
               <!-- Space Title and Rating -->
               <div class="space-info" style="display: flex; justify-content: space-between;">
                 <h5 class="card-title"><%= space.title %></h5>
@@ -46,19 +47,17 @@
 
               <!-- Price and Capacity -->
               <div class="price-info" style="display: flex; justify-content: space-between;">
-  <p class="card-text">
-    <span class="currency-symbol"><%= Money::Currency.find(session[:currency]).symbol %></span>
-    <span class="price-amount">
-      <%= Money.new(space.price_per_hour_cents, session[:currency]).format(symbol: false, no_cents: true) %>
-    </span>
-    per Hour
-  </p>
-  <p class="card-text">
-    <i class="fa-regular fa-user"></i> <%= space.capacity %> MAX
-  </p>
-</div>
-
-
+                <p class="card-text">
+                  <span class="currency-symbol"><%= Money::Currency.find(session[:currency]).symbol %></span>
+                  <span class="price-amount">
+                    <%= Money.new(space.price_per_hour_cents, session[:currency]).format(symbol: false, no_cents: true) %>
+                  </span>
+                  per Hour
+                </p>
+                <p class="card-text">
+                  <i class="fa-regular fa-user"></i> <%= space.capacity %> MAX
+                </p>
+              </div>
             </div>
           </div>
         <% end %>
@@ -66,26 +65,33 @@
     <% end %>
   </div>
 
-  <div id="map_index"
-    data-controller="map"
-    data-map-markers-value="<%= @markers.to_json %>">
-  </div>
+  <!-- Map Section -->
+  <div id="map_index" data-controller="map" data-map-markers-value="<%= @markers.to_json %>"></div>
 </div>
 
 <%= link_to "New space", new_space_path, class: "btn btn-success" %>
 
 <style>
+  /* Main Layout */
   #spaces {
     display: flex;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     gap: 20px;
   }
 
+  /* Map is hidden on small screens */
+  #map_index {
+    flex: 1 0 100%;
+    height: 400px;
+    margin-bottom: 20px;
+  }
+
+  /* Cards Container */
   .cards-container {
     display: grid;
     gap: 20px;
-    flex: 1;
-    grid-template-columns: repeat(3, 1fr); /* Three cards per row */
+    flex: 2;
+    grid-template-columns: repeat(3, 1fr); /* Three cards per row on large screens */
   }
 
   .spacecard-link {
@@ -107,6 +113,17 @@
     transform: translateY(-5px);
   }
 
+  /* Carousel Styles */
+  .carousel-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    overflow: hidden;
+  }
+
+  /* Card Body */
   .card-body {
     padding: 15px;
   }
@@ -128,38 +145,41 @@
     color: #ffcc00;
   }
 
-  .location-info, .price-info {
-  }
-
-  .carousel-image {
-    height: 200px;
-    object-fit: cover;
-    border-radius: 10px;
-  }
-
   /* Responsive Design for Mobile */
   @media (max-width: 768px) {
+    /* Cards become single column */
     .cards-container {
-      grid-template-columns: 1fr 1fr; /* Two columns for tablets */
-    }
-  }
-
-  @media (max-width: 576px) {
-    .cards-container {
-      grid-template-columns: 1fr; /* One column for phones */
+      grid-template-columns: 1fr; /* One column for tablets and small screens */
     }
 
+    /* Map goes on top of cards */
     #map_index {
-      display: none; /* Hide map on small screens */
+      order: -1; /* Moves map to the top */
+      width: 100%;
+      height: 300px; /* Adjust map size for small screens */
     }
   }
 
-  #map_index {
-    flex: 0 0 30%;
-    height: 100vh;
-    position: -webkit-sticky !important; /* For Safari */
-    position: sticky !important;
-    top: 0;
-    background: white;
+  /* For large screens, show map on the right side */
+  @media (min-width: 769px) {
+    #spaces {
+      flex-direction: row; /* Ensure map is on the right and cards on the left */
+    }
+
+    /* Map is displayed on the right */
+    #map_index {
+      flex: 0 0 30%; /* Fixed width for map on large screens */
+      height: 100vh; /* Full height map */
+      position: sticky !important;
+      top: 0;
+      order: 2; /* Ensure map is placed after cards */
+    }
+
+    /* Cards remain on the left side */
+    .cards-container {
+      flex: 2;
+      order: 1; /* Ensure cards are placed before map */
+      grid-template-columns: repeat(3, 1fr); /* Three cards per row */
+    }
   }
 </style>

@@ -1,3 +1,159 @@
+<a href="<%= space_path(space) %>" class="info-window-card">
+  <div class="info-window-image">
+    <% if space.images.attached? %>
+      <!-- Add a unique suffix to avoid conflicts -->
+      <div id="carouselExample-map-<%= space.id %>" class="carousel slide" data-bs-ride="false">
+        <div class="carousel-inner">
+          <% space.images.each_with_index do |image, index| %>
+            <div class="carousel-item <%= 'active' if index == 0 %>">
+              <%= image_tag url_for(image), class: "d-block w-100 carousel-image", alt: "Space Image" %>
+            </div>
+          <% end %>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample-map-<%= space.id %>" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample-map-<%= space.id %>" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+    <% end %>
+  </div>
 
-<h2><%= space.title %></h2>
-<p><%= space.address %></p>
+  <div class="info-window-content">
+    <h2 class="info-title"><%= space.title %></h2>
+    <p class="info-address"><%= space.address %></p>
+
+    <div class="info-extra">
+      <p class="info-price">
+        <span class="currency-symbol"><%= Money::Currency.find(session[:currency]).symbol %></span>
+        <span class="price-amount">
+          <%= Money.new(space.price_per_hour_cents, session[:currency]).format(symbol: false, no_cents: true) %>
+        </span> per Hour
+      </p>
+      <p class="info-capacity"><i class="fa-regular fa-user"></i> <%= space.capacity %> MAX</p>
+      <div class="info-rating">
+        <% avg_rating = space.reviews.any? ? space.reviews.average(:rating).round(1) : "No Rating" %>
+        <span class="stars">&#9733;</span>
+        <span class="avg-rating"><%= avg_rating %></span>
+      </div>
+    </div>
+  </div>
+</a>
+
+<style>
+  .info-window-card {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    padding: 0;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 100%;
+    max-width: 300px;
+    max-height: 350px;
+    overflow: hidden; /* Prevent scrolling */
+  }
+
+
+
+  .info-window-image {
+    width: 100%;
+    height: 150px;
+    overflow: hidden;
+    border-top-left-radius: 10px; /* Rounded top edges */
+    border-top-right-radius: 10px; /* Rounded top edges */
+  }
+
+  .carousel-image {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 0; /* Remove any image-specific border-radius */
+  }
+
+  .info-window-content {
+    padding: 15px; /* Add padding to content for better alignment */
+    text-align: center;
+  }
+
+  .info-title {
+    margin-bottom: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+  }
+
+  .info-address {
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #666;
+  }
+
+  .info-extra {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-top: 5px;
+  }
+
+  .info-price {
+    font-size: 14px;
+    color: #28a745;
+    font-weight: bold;
+  }
+
+  .info-capacity {
+    font-size: 14px;
+    color: #666;
+  }
+
+  .info-rating {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #ffcc00;
+  }
+
+  .stars {
+    font-size: 0.9rem;
+    color: #ffcc00;
+    margin-right: 5px;
+  }
+
+  .gm-style-iw {
+    width: auto !important;
+    max-width: 300px;
+    padding: 0 !important;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+  }
+
+  .gm-style-iw-c button.gm-ui-hover-effect {
+    display: block !important;
+    position: absolute;
+    top: 5px;
+    right: 6px;
+    background-color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    z-index: 1000;
+  }
+
+  .gm-style-iw-c button.gm-ui-hover-effect:hover {
+    background-color: #f0f0f0;
+    transform: scale(1.1);
+  }
+  .gm-style-iw-chr{
+height: 0px;
+}
+</style>

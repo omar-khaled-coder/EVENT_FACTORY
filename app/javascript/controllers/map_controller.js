@@ -22,6 +22,13 @@ export default class extends Controller {
     } else {
       console.error('No marker or markers data provided.');
     }
+
+    // Close the info window when clicking outside of it on the map
+    this.map.addListener('click', () => {
+      if (this.infoWindow) {
+        this.infoWindow.close();
+      }
+    });
   }
 
   #initializeMapWithSingleMarker() {
@@ -42,14 +49,13 @@ export default class extends Controller {
       map: this.map
     });
 
-    // info widow for show page ..
-    //const infoWindow = new google.maps.InfoWindow({
-      //content: this.markerValue.info_window_html
-    //});
+    const infoWindow = new google.maps.InfoWindow({
+      content: this.markerValue.info_window_html
+    });
 
-    //marker.addListener('click', () => {
-      //this.#toggleInfoWindow(infoWindow, marker);
-    //});
+    marker.addListener('click', () => {
+      this.#toggleInfoWindow(infoWindow, marker);
+    });
   }
 
   #initializeMapWithMultipleMarkers() {
