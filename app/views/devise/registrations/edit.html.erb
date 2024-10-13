@@ -1,64 +1,238 @@
-<h2>Edit <%= resource_name.to_s.humanize %></h2>
+<h2 class="edit-profile-title">Edit Profile</h2>
 
-<%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, multipart: true }) do |f| %>
+<%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, multipart: true, class: "edit-profile-form" }) do |f| %>
   <%= f.error_notification %>
 
-  <div class="form-inputs">
-    <%= f.input :email, required: true, autofocus: true %>
+  <div class="edit-profile-inputs">
+    <!-- Personal Information Section -->
+    <div class="edit-profile-section">
+      <div class="edit-profile-row">
+        <div class="edit-profile-group">
+          <%= f.label :first_name, class: "edit-profile-label" %>
+          <%= f.text_field :first_name, class: "edit-profile-control" %>
+        </div>
+        <div class="edit-profile-group">
+          <%= f.label :last_name, class: "edit-profile-label" %>
+          <%= f.text_field :last_name, class: "edit-profile-control" %>
+        </div>
+      </div>
 
-    <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
-      <p>Currently waiting confirmation for: <%= resource.unconfirmed_email %></p>
-    <% end %>
+      <div class="edit-profile-group">
+        <%= f.label :email, class: "edit-profile-label" %>
+        <%= f.text_field :email, class: "edit-profile-control" %>
+        <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+          <p class="edit-profile-pending-confirmation">Waiting confirmation for: <%= resource.unconfirmed_email %></p>
+        <% end %>
+      </div>
 
-    <div>
-    <%= f.label :first_name %><br />
-    <%= f.text_field :first_name %>
-  </div>
+      <div class="edit-profile-group">
+        <%= f.label :phone_number, class: "edit-profile-label" %>
+        <%= f.text_field :phone_number, class: "edit-profile-control" %>
+      </div>
+    </div>
 
-  <div>
-    <%= f.label :last_name %><br />
-    <%= f.text_field :last_name %>
-  </div>
-  <div>
-    <%= f.label :phone_number %><br />
-    <%= f.text_field :phone_number %>
-  </div>
+    <!-- Profile Picture Section -->
+    <div class="edit-profile-section">
+      <div class="edit-profile-group edit-profile-file-upload">
+        <%= f.label :profile_picture, class: "edit-profile-label" %>
+        <%= f.file_field :profile_picture, class: "edit-profile-control-file" %>
+        <% if resource.persisted? && resource.profile_picture.attached? %>
+          <div class="edit-profile-image-preview">
+            <%= image_tag resource.profile_picture, alt: 'Profile Picture' %>
+          </div>
+        <% end %>
+      </div>
+    </div>
 
-  <div>
-    <%= f.label :profile_picture %><br />
-    <%= f.file_field :profile_picture %>
-    <% if resource.profile_picture.present? %>
-      <%= image_tag resource.profile_picture, alt: 'Profile Picture', width: 100 %>
-    <% end %>
-  </div>
+    <!-- Government ID Section -->
+    <div class="edit-profile-section">
+      <div class="edit-profile-group edit-profile-file-upload">
+        <%= f.label :govt_id_picture, "Upload Government ID", class: "edit-profile-label" %>
+        <%= f.file_field :govt_id_picture, class: "edit-profile-control-file" %>
+        <% if resource.persisted? && resource.govt_id_picture.attached? %>
+          <div class="edit-profile-image-preview">
+            <%= image_tag url_for(resource.govt_id_picture), alt: 'Government ID Picture' %>
+          </div>
+        <% end %>
+      </div>
+    </div>
 
-  <div>
-    <%= f.label :govt_id_picture %><br />
-    <%= f.file_field :govt_id_picture %>
-    <% if resource.govt_id_picture.present? %>
-      <%= image_tag resource.govt_id_picture, alt: 'Government ID Picture', width: 100 %>
-    <% end %>
-  </div>
-    <%= f.input :password,
-                hint: "leave it blank if you don't want to change it",
-                required: false,
-                input_html: { autocomplete: "new-password" } %>
-    <%= f.input :password_confirmation,
-                required: false,
-                input_html: { autocomplete: "new-password" } %>
-    <%= f.input :current_password,
-                hint: "we need your current password to confirm your changes",
-                required: true,
-                input_html: { autocomplete: "current-password" } %>
-  </div>
+    <!-- Password Section -->
+    <div class="edit-profile-section">
+      <%= f.input :password,
+                  label: "New Password",
+                  hint: "Leave blank if you don't want to change it",
+                  required: false,
+                  input_html: { class: "edit-profile-control", autocomplete: "new-password" } %>
 
-  <div class="form-actions">
-    <%= f.button :submit, "Update" %>
+      <%= f.input :password_confirmation,
+                  label: "Confirm New Password",
+                  required: false,
+                  input_html: { class: "edit-profile-control", autocomplete: "new-password" } %>
+
+      <%= f.input :current_password,
+                  label: "Current Password",
+                  hint: "Enter current password to confirm changes",
+                  required: true,
+                  input_html: { class: "edit-profile-control", autocomplete: "current-password" } %>
+    </div>
+
+    <!-- Update Button -->
+    <div class="edit-profile-actions">
+      <%= f.button :submit, "Update Profile", class: "edit-profile-btn edit-profile-btn-primary" %>
+    </div>
   </div>
 <% end %>
 
-<h3>Cancel my account</h3>
+<h3 class="edit-profile-cancel-title">Cancel Account</h3>
+<div class="edit-profile-cancel-account">
+  <%= button_to "Cancel Account", registration_path(resource_name), data: { confirm: "Are you sure you want to cancel your account?" }, method: :delete, class: "edit-profile-btn edit-profile-btn-danger" %>
+</div>
 
-<div>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete %></div>
+<%= link_to "Back", :back, class: "edit-profile-btn edit-profile-btn-secondary" %>
 
-<%= link_to "Back", :back %>
+<!-- CSS Styles -->
+<style>
+  .edit-profile-title {
+    text-align: center;
+    font-size: 2em;
+    margin-bottom: 20px;
+    font-weight: bold;
+    color: #333;
+  }
+
+  .edit-profile-form {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    font-family: 'Arial', sans-serif;
+  }
+
+  .edit-profile-section {
+    margin-bottom: 30px;
+    padding: 20px;
+    border-radius: 10px;
+    background: #f9f9f9;
+  }
+
+  .edit-profile-group {
+    margin-bottom: 15px;
+  }
+
+  .edit-profile-label {
+    font-weight: 500;
+    margin-bottom: 5px;
+    display: block;
+    color: #555;
+  }
+
+  .edit-profile-control {
+    padding: 12px;
+    width: 100%;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    transition: border-color 0.3s ease-in-out;
+  }
+
+  .edit-profile-control:focus {
+    border-color: #4CAF50;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
+  }
+
+  .edit-profile-file-upload input {
+    padding: 10px;
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fff;
+  }
+
+  .edit-profile-image-preview {
+    margin-top: 10px;
+    width: 100px;
+    height: 100px;
+    border-radius: 5px;
+    overflow: hidden;
+    border: 1px solid #ddd;
+  }
+
+  .edit-profile-image-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .edit-profile-actions {
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  .edit-profile-btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: none;
+    transition: background-color 0.3s ease-in-out;
+    margin-top: 10px;
+  }
+
+  .edit-profile-btn-primary {
+    background-color: #4CAF50;
+    color: white;
+  }
+
+  .edit-profile-btn-primary:hover {
+    background-color: #45A049;
+  }
+
+  .edit-profile-btn-danger {
+    background-color: #E53935;
+    color: white;
+  }
+
+  .edit-profile-btn-secondary {
+    background-color: #6c757d;
+    color: white;
+  }
+
+  .edit-profile-cancel-title {
+    text-align: center;
+    font-size: 1.5em;
+    margin-top: 30px;
+    color: #E53935;
+  }
+
+  .edit-profile-cancel-account {
+    text-align: center;
+    margin-top: 30px;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .edit-profile-form {
+      padding: 20px;
+    }
+
+    .edit-profile-section {
+      padding: 15px;
+    }
+
+    .edit-profile-title {
+      font-size: 1.8em;
+    }
+
+    .edit-profile-btn {
+      width: 100%;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .edit-profile-form {
+      max-width: 800px;
+    }
+  }
+</style>
