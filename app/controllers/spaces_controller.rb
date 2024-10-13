@@ -32,7 +32,8 @@ class SpacesController < ApplicationController
       {
         lat: space.latitude,
         lng: space.longitude,
-        info_window_html: render_to_string(partial: "info_window", locals: {space: space})
+        info_window_html: render_to_string(partial: "info_window", locals: {space: space}),
+        marker_html: render_to_string(partial: "marker", locals: { space: space }) # Pass space to the marker partial
         # infoWindow: { content: render_to_string(partial: "/flats/map_box", locals: { flat: flat }) }
         # Uncomment the above line if you want each of your markers to display a info window when clicked
         # (you will also need to create the partial "/flats/map_box")
