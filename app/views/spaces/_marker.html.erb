@@ -1,0 +1,41 @@
+<!-- app/views/spaces/_marker.html.erb -->
+<div class="custom-marker">
+  <span class="currency-symbol"><%= Money::Currency.find(session[:currency]).symbol %></span>
+  <span class="price-amount">
+    <%= Money.new(space.price_per_hour_cents, session[:currency]).format(symbol: false, no_cents: true) %>
+  </span>
+</div>
+
+<style>
+/* app/assets/stylesheets/map.scss */
+.custom-marker {
+background-color: #f4f4f4;
+  color: black;
+  padding: 10px;
+  border-radius: 105px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.86);
+  white-space: nowrap;
+}
+
+.custom-marker h6 {
+  margin: 0;
+  padding: 0;
+}
+
+.custom-marker::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 10px solid #f4f4f4;
+}
+
+</style>
