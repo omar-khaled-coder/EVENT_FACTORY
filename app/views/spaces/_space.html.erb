@@ -111,29 +111,103 @@ document.addEventListener("DOMContentLoaded", function() {
       </div>
     <% end %>
   </div>-->
-  <div id="carouselExample" class="carousel slide" > <!-- 5000ms = 5 seconds OR use data-bs-ride="carousel" to make it change automatic -->
-    <div class="carousel-inner">
-      <% @space.images.each_with_index do |image, index| %>
-        <div class="carousel-item <%= 'active' if index == 0 %>">
-          <%= image_tag url_for(image), class: "d-block w-100 carousel-image", alt: "Space Image" %>
-        </div>
-      <% end %>
-    </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Next</span>
-    </button>
-  </div>
-
-<div class="thumbnail-images d-flex justify-content-center flex-wrap mt-2">
+<!-- Carousel -->
+<div id="carouselExample" class="carousel slide" >
+  <div class="carousel-inner">
     <% @space.images.each_with_index do |image, index| %>
-      <%= image_tag url_for(image), class: "thumbnail #{'active' if index == 0}", data: { bs_target: '#carouselExample', bs_slide_to: index } %>
+      <div class="carousel-item <%= 'active' if index == 0 %>">
+        <%= image_tag url_for(image), class: "d-block w-100 carousel-image", alt: "Space Image", data: { toggle: "modal", target: "#carouselModal" } %>
+      </div>
     <% end %>
   </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+
+<!-- Thumbnail Images -->
+<div class="thumbnail-images d-flex justify-content-center flex-wrap mt-2">
+  <% @space.images.each_with_index do |image, index| %>
+    <%= image_tag url_for(image), class: "thumbnail #{'active' if index == 0}", data: { bs_target: '#carouselExample', bs_slide_to: index } %>
+  <% end %>
+</div>
+
+<!-- Modal for Carousel -->
+<div class="modal fade" id="carouselModal" tabindex="-1" aria-labelledby="carouselModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl"> <!-- You can change modal-lg to modal-xl for a bigger modal -->
+    <div class="modal-content">
+      <div class="modal-header" style="justify-content: space-between;">
+        <h5 class="modal-title" id="carouselModalLabel">Space Images</h5>
+          <button type="button" class="closeshow" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+      </div>
+      <div class="modal-body">
+        <!-- Embed the same carousel inside the modal -->
+        <div id="carouselModalInner" class="carousel slide">
+          <div class="carousel-inner">
+            <% @space.images.each_with_index do |image, index| %>
+              <div class="carousel-item <%= 'active' if index == 0 %>">
+                <%= image_tag url_for(image), class: "d-block w-100", alt: "Space Image" %>
+              </div>
+            <% end %>
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselModalInner" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselModalInner" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Custom CSS for Thumbnails and Modal -->
+<style>
+
+
+  .thumbnail {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    margin: 5px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: border 0.3s;
+  }
+
+  .thumbnail:hover {
+    border: 2px solid #007bff;
+  }
+
+  .thumbnail.active {
+    border: 2px solid #007bff;
+  }
+
+  .modal-body .carousel-image {
+    height: 500px; /* Adjust the height for modal carousel */
+    object-fit: cover;
+  }
+  .closeshow{
+    float: right;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #000;
+  text-shadow: 0 1px 0 #fff;
+  opacity: .5;
+  }
+</style>
+
 
   <div class="row content-section">
     <div class="col-12 col-lg-6">
