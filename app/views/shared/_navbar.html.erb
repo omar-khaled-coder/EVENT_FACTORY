@@ -1,61 +1,54 @@
-<div class="navbar navbar-expand-sm navbar-light navbar-lewagon">
+<nav class="navbar navbar-expand-lg navbar-light bg-light custom-navbar">
   <div class="container-fluid">
-    <!-- Wrapper for logo and toggle button -->
-    <div class="navbar-header d-flex align-items-center">
-      <%= link_to root_path, class: "navbar-brand d-flex align-items-center" do %>
-        <%= image_tag "logo.png" %>
-        <h4 style="font-style: italic; font-family: initial; margin-left: 10px;">Event Factory</h4>
-      <% end %>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-    </div>
+    <!-- Logo and Brand Name -->
+    <%= link_to root_path, class: "navbar-brand d-flex align-items-center" do %>
+      <%= image_tag "logo.png", class: "navbar-logo" %>
+      <span class="brand-name ms-2">Event Factory</span>
+    <% end %>
 
-    <!-- Search bar outside the collapse navbar -->
-    <div class="search-bar ms-auto">
-      <%= form_with url: spaces_path, method: :get, local: true, class: "search-form-inline" do %>
-        <%= text_field_tag :city, params[:city], class: "form-control-inline", placeholder: "City" %>
-        <%= select_tag :space_type, options_for_select(["Event Venue", "Co-working Space", "Studio", "Classroom"], params[:space_type]), prompt: "Space Type", class: "form-select-inline" %>
-        <button type="submit" class="btn btn-primary search-btn-inline">
-          <i class="fa-solid fa-magnifying-glass"></i>
-        </button>
-      <% end %>
-    </div>
+    <!-- Toggler for Mobile View -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-    <!-- Navbar content -->
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <!-- Navbar Links and Search Bar -->
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <!-- Search Form -->
+      <form class="d-flex ms-auto search-bar" method="get" action="<%= spaces_path %>">
+        <%= text_field_tag :city, params[:city], class: "form-control me-2", placeholder: "Search by City" %>
+        <%= select_tag :country, options_for_select(ISO3166::Country.all.map { |c| [c.iso_short_name, c.alpha2] }, params[:country]),
+                  prompt: "Select Country", class: "form-control me-2" %>
+        <%= select_tag :space_type, options_for_select(["Event Venue", "Co-working Space", "Studio", "Classroom"], params[:space_type]), prompt: "Space Type", class: "form-select me-2" %>
+        <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>
+      </form>
+
+      <!-- Right-aligned Links -->
       <ul class="navbar-nav ms-auto">
         <% if user_signed_in? %>
-
-
           <li class="nav-item">
             <%= link_to chatrooms_path, class: "nav-link" do %>
               <i class="fa-regular fa-envelope"></i> Messages
             <% end %>
           </li>
-
           <li class="nav-item">
             <%= link_to bookings_path, class: "nav-link" do %>
-              <i class="fa-regular fa-calendar-days"></i> Bookings
+              <i class="fa-regular fa-calendar"></i> Bookings
             <% end %>
+          </li>
+          <li class="nav-item">
+            <%= link_to "Space Requests", space_requests_path, class: "nav-link" %>
           </li>
 
-          <li class="nav-item">
-            <%= link_to "Space requests", space_requests_path, class: "nav-link" %>
-          </li>
+          <!-- Profile Dropdown -->
           <li class="nav-item dropdown">
-            <% if current_user.profile_picture.key.nil? %>
-              <%= image_tag "https://static.vecteezy.com/system/resources/previews/005/005/788/original/user-icon-in-trendy-flat-style-isolated-on-grey-background-user-symbol-for-your-web-site-design-logo-app-ui-illustration-eps10-free-vector.jpg", height: 41, width: 50, crop: :fill, class: "avatar dropdown-toggle", id: "navbarDropdown", data: { bs_toggle: "dropdown" }, 'aria-haspopup': true, 'aria-expanded': false %>
-            <% else %>
-              <%= image_tag current_user.profile_picture, height: 41, width: 50, crop: :fill, class: "avatar dropdown-toggle", id: "navbarDropdown", data: { bs_toggle: "dropdown" }, 'aria-haspopup': true, 'aria-expanded': false  %>
-            <% end %>
-            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-              <%= link_to "Profile", user_profile_path(current_user.id), class: "dropdown-item" %>
+            <%= image_tag current_user.profile_picture.attached? ? current_user.profile_picture : "default_avatar.jpg", class: "avatar dropdown-toggle", id: "navbarDropdown", data: { bs_toggle: "dropdown" }, 'aria-haspopup': true, 'aria-expanded': false %>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+              <li><%= link_to "Profile", user_profile_path(current_user.id), class: "dropdown-item" %></li>
               <% if current_user&.owner? %>
-                <%= link_to 'Owner Dashboard', owner_dashboard_path, class: "dropdown-item" %>
+                <li><%= link_to "Owner Dashboard", owner_dashboard_path, class: "dropdown-item" %></li>
               <% end %>
-              <%= link_to "Log out", destroy_user_session_path, data: { turbo_method: :delete }, class: "dropdown-item" %>
-            </div>
+              <li><%= link_to "Log Out", destroy_user_session_path, data: { method: :delete }, class: "dropdown-item" %></li>
+            </ul>
           </li>
         <% else %>
           <li class="nav-item">
@@ -65,4 +58,4 @@
       </ul>
     </div>
   </div>
-</div>
+</nav>
