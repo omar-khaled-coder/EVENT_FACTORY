@@ -64,53 +64,62 @@
     </div>
   </div>
 
-  <div class="spaces-section">
-    <h2>My Spaces</h2>
-    <% if @spaces.any? %>
-      <table class="spaces-table">
-        <thead>
+ <div class="spaces-section">
+  <h2>My Spaces</h2>
+  <% if @spaces.any? %>
+    <table class="spaces-table">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Status</th>
+          <th>Admin Comment</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @spaces.each do |space| %>
           <tr>
-            <th>Title</th>
-            <th>Status</th>
-            <th>Admin Comment</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% @spaces.each do |space| %>
-            <tr>
-              <td><%= space.title %></td>
-              <td><%= space.status %></td>
-              <td>
-               <% if space.status == 'declined' %>
-  <% if space.admin_comment.present? %>
-    <%= space.admin_comment %>
-  <% else %>
-    Declined without a specific comment.
-  <% end %>
-<% elsif space.status == 'accepted' %>
-  <% if space.admin_comment.present? %>
-    <%= space.admin_comment %>
-  <% else %>
-    Approved by admin.
-  <% end %>
-<% else %>
-  N/A
-<% end %>
-
-              </td>
-              <td>
+            <td>
+              <!-- Link to the space's "Show" page for all users -->
+              <%= link_to space.title, space_path(space), class: "space-title-link" %>
+            </td>
+            <td><%= space.status %></td>
+            <td>
+              <% if space.status == 'declined' %>
+                <% if space.admin_comment.present? %>
+                  <%= space.admin_comment %>
+                <% else %>
+                  Declined without a specific comment.
+                <% end %>
+              <% elsif space.status == 'accepted' %>
+                <% if space.admin_comment.present? %>
+                  <%= space.admin_comment %>
+                <% else %>
+                  Approved by admin.
+                <% end %>
+              <% else %>
+                N/A
+              <% end %>
+            </td>
+            <td>
+              <!-- Only show edit and delete buttons if the current user is the space owner -->
+              <% if current_user == space.owner %>
                 <%= link_to "Edit", edit_space_path(space), class: "btn-action" %>
                 <%= link_to "Delete", space, method: :delete, data: { confirm: "Are you sure?" }, class: "btn-action-delete" %>
-              </td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
-    <% else %>
-      <p>You have not created any spaces.</p>
-    <% end %>
-  </div>
+              <% else %>
+                <!-- For other users, link to the show page -->
+                <%= link_to "View", space_path(space), class: "btn-view-space" %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p>You have not created any spaces.</p>
+  <% end %>
+</div>
+
 </div>
 
 <style>

@@ -1,6 +1,7 @@
 class SpacesController < ApplicationController
   before_action :set_space, only: %i[ show edit update destroy ]
   before_action :set_currency_based_on_location
+  before_action :authorize_space_owner, only: [:edit, :update, :destroy]
 
 
 
@@ -161,6 +162,13 @@ class SpacesController < ApplicationController
       @space = Space.find(params[:id])
     end
 
+    def authorize_space_owner
+      @space = Space.find(params[:id])
+      unless current_user == @space.owner
+        flash[:alert] = "You are not authorized to perform this action."
+        redirect_to space_path(@space)
+      end
+    end
 
     # Only allow a list of trusted parameters through.
     def space_params
