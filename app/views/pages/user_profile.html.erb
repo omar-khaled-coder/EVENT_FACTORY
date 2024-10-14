@@ -15,10 +15,51 @@
       <p><strong>Phone number:</strong> <%= @user.phone_number %></p>
       <% if @user.govt_id_picture.present? %>
         <p><strong>Government ID:</strong></p>
-        <%= image_tag @user.govt_id_picture, alt: 'Government ID Picture', class: "id-picture" %>
+        <%= image_tag @user.govt_id_picture, alt: 'Government ID Picture', class: "id-picture", data: { toggle: "modal", target: "#idPictureModal" } %>
+
+        <!-- Modal HTML -->
+        <div class="modal fade" id="idPictureModal" tabindex="-1" role="dialog" aria-labelledby="idPictureModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header" style="justify-content: space-between;">
+                <h5 class="modal-title" id="idPictureModalLabel">Government ID Picture</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <%= image_tag @user.govt_id_picture, alt: 'Government ID Picture', class: "modal-picture" %>
+              </div>
+            </div>
+          </div>
+        </div>
       <% else %>
         <p>No government ID picture uploaded</p>
       <% end %>
+
+      <!-- Add custom styles -->
+      <style>
+        .id-picture {
+          width: 100px; /* Adjust the size for the thumbnail */
+          height: auto;
+          cursor: pointer;
+        }
+
+        .modal-picture {
+          width: 100%; /* Full width image in the modal */
+          height: auto;
+        }
+         .close{
+    float: right;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #000;
+  text-shadow: 0 1px 0 #fff;
+  opacity: .5;
+  }
+      </style>
+
       <%= link_to "Edit Profile", edit_user_registration_path, class: "btn btn-edit" %>
     </div>
   </div>
