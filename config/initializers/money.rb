@@ -6,6 +6,10 @@ MoneyRails.configure do |config|
   #
    config.default_currency = :usd
 
+    # Add exchange rates manually (from USD to MYR and vice versa)
+  config.add_rate "USD", "MYR", 4.20   # 1 USD = 4.20 MYR
+  config.add_rate "MYR", "USD", 1 / 4.20 # 1 MYR = 0.238 USD
+
   # Set default bank object
   #
   # Example:

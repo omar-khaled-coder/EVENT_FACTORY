@@ -1,0 +1,8 @@
+// Append the new message to the messages container
+$("#messages-container").append("<%= j(render @message) %>");
+
+// Clear the input field
+$("#message-content").val('');
+
+// Scroll to the bottom of the messages container
+$("#messages-container").scrollTop($("#messages-container")[0].scrollHeight);

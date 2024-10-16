@@ -2,7 +2,7 @@
 <div class="custom-marker">
   <span class="currency-symbol"><%= Money::Currency.find(session[:currency]).symbol %></span>
   <span class="price-amount">
-    <%= Money.new(space.price_per_hour_cents, session[:currency]).format(symbol: false, no_cents: true) %>
+    <%= Money.new(space.price_per_hour_cents, space.currency).exchange_to(session[:currency]).format(symbol: false, no_cents: true) %>
   </span>
 </div>
 
