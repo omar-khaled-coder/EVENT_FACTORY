@@ -311,8 +311,10 @@ document.addEventListener("DOMContentLoaded", function() {
   <%= form_with url: new_booking_path, method: :get, local: true do %>
 <div style="display: flex; align-items: last baseline;">
  <h3 style="font-family: initial;">
-  <span class="currency-symbol"><%= @space.price_per_hour.currency.symbol %></span>
-  <span class="price-amount"><%= @space.price_per_hour.format(symbol: false) %></span>
+    <span class="currency-symbol"><%= Money::Currency.new(session[:currency]).symbol %></span>
+
+
+  <span class="price-amount"><%= @space.price_per_hour.exchange_to(session[:currency]) %></span>
 </h3>
 
   <h6 style="color: #383838ab; font-style: italic;">
