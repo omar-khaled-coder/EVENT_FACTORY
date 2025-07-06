@@ -31,4 +31,3 @@ class Space < ApplicationRecord
     monetize :price_per_hour_cents, with_model_currency: :currency
     monetize :price_per_day_cents, with_model_currency: :currency
 end
-console
