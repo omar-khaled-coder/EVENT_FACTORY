@@ -24,4 +24,11 @@ class User < ApplicationRecord
   def owner?
     spaces.exists? # Checks if the user owns any spaces
   end
+
+
+  # Validations
+  validates :first_name, presence: true
+  validates :last_name, presence: true
+  validates :phone_number, presence: true
+
 end
