@@ -3,49 +3,33 @@
 <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name), html: { id: 'sign-up-form', class: 'sign-up-form' }) do |f| %>
   <%= f.error_notification %>
 
-  <div class="field">
-    <%= f.label :first_name %>
-    <%= f.text_field :first_name, class: 'form-control' %>
-  </div>
+  <%= f.input :first_name, required: true, input_html: { class: 'form-control' } %>
 
-  <div class="field">
-    <%= f.label :last_name %>
-    <%= f.text_field :last_name, class: 'form-control' %>
-  </div>
+  <%= f.input :last_name, required: true, input_html: { class: 'form-control' } %>
 
-  <div class="field">
-    <%= f.label :profile_picture %>
-    <%= f.file_field :profile_picture, class: 'form-control-file' %>
-  </div>
+  <%= f.input :profile_picture, as: :file, required: true, input_html: { class: 'form-control-file' } %>
 
- <div class="field">
-  <%= f.label :govt_id_picture %>
-  <%= f.file_field :govt_id_picture, class: 'form-control-file' %>
+  <%= f.input :govt_id_picture, as: :file, required: true, input_html: { class: 'form-control-file' } %>
   <small class="form-text text-muted">A valid government ID, passport, or driving license is also accepted.</small>
-</div>
 
+  <%= f.input :phone_number, required: true, input_html: { class: 'form-control' } %>
 
-  <div class="field">
-    <%= f.label :phone_number %>
-    <%= f.text_field :phone_number, class: 'form-control' %>
-  </div>
+  <%= f.input :email, required: true, autofocus: true, input_html: { autocomplete: "email", class: 'form-control' } %>
 
-  <div class="form-inputs">
-    <%= f.input :email, required: true, autofocus: true, input_html: { autocomplete: "email", class: 'form-control' } %>
-    <%= f.input :password, required: true, hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length), input_html: { autocomplete: "new-password", class: 'form-control' } %>
-    <%= f.input :password_confirmation, required: true, input_html: { autocomplete: "new-password", class: 'form-control' } %>
-  </div>
+  <%= f.input :password, required: true,
+              hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length),
+              input_html: { autocomplete: "new-password", class: 'form-control' } %>
+
+  <%= f.input :password_confirmation, required: true, input_html: { autocomplete: "new-password", class: 'form-control' } %>
 
   <!-- Policies Accepted Field -->
-  <div class="field policies-field">
-    <%= f.input :policies_accepted, as: :boolean, label: "I agree to the terms and policies", required: true %>
-    <small>
-      By signing up, you agree to our
-      <%= link_to "Terms of Service", "#", target: "_blank" %> and
-      <%= link_to "Privacy Policy", policies_path, target: "_blank" %>.
-    </small>
-    <div id="policies-error" class="error-message">You must accept the terms and policies to sign up.</div>
-  </div>
+  <%= f.input :policies_accepted, as: :boolean, required: true, label: "I agree to the terms and policies" %>
+  <small>
+    By signing up, you agree to our
+    <%= link_to "Terms of Service", "#", target: "_blank" %> and
+    <%= link_to "Privacy Policy", policies_path, target: "_blank" %>.
+  </small>
+  <div id="policies-error" class="error-message" style="display: none;">You must accept the terms and policies to sign up.</div>
 
   <div class="form-actions">
     <%= f.button :submit, "Sign up", class: 'btn btn-primary btn-lg btn-block' %>
@@ -60,10 +44,10 @@
     const errorDiv = document.getElementById('policies-error');
 
     if (!policiesAccepted) {
-      event.preventDefault(); // Prevent form submission
-      errorDiv.style.display = 'block'; // Show error message
+      event.preventDefault();
+      errorDiv.style.display = 'block';
     } else {
-      errorDiv.style.display = 'none'; // Hide error message if accepted
+      errorDiv.style.display = 'none';
     }
   });
 </script>
